@@ -1,4 +1,4 @@
-package tests.db;
+package tests.config;
 
 import java.util.HashMap;
 

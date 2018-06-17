@@ -10,7 +10,7 @@ import org.springframework.integration.config.EnableIntegration;
 // simple SpringBoot application
 @EnableIntegration
 @IntegrationComponentScan(basePackages = { "org.batch" })
-@ComponentScan(basePackages = { "tests.db" })
+@ComponentScan(basePackages = { "tests.config" })
 public class Application {
 
     public static void main(String[] args) {

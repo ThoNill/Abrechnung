@@ -1,6 +1,6 @@
 package tests.flow;
 
-import tests.TestSachKonto;
+import tests.konten.TestSachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.helper.LeitungsGebührRepository;
 

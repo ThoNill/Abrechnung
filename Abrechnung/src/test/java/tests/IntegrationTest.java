@@ -37,7 +37,7 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableIntegration
-@SpringBootTest(classes = { tests.TestConfig.class, tests.db.TestDbConfig.class,
+@SpringBootTest(classes = { tests.config.TestConfig.class, tests.config.TestDbConfig.class,
         boundingContext.abrechnung.flow.AbrechnungFlow.class })
 // @SpringBootTest(classes = { boundingContext.abrechnung.flow.AbrechnungFlow.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)

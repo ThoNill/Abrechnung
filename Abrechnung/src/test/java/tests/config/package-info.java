@@ -5,4 +5,4 @@
  * @author javaman
  *
  */
-package tests.db;
+package tests.config;

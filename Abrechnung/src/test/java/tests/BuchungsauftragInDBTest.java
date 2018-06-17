@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import tests.konten.TestSachKonto;
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
@@ -32,7 +33,7 @@ import boundingContext.gemeinsam.BetragsBündelMap;
 
 @RunWith(SpringRunner.class)
 // Class that run the tests
-@SpringBootTest(classes = { tests.db.TestDbConfig.class })
+@SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class BuchungsauftragInDBTest {
 
     @Autowired

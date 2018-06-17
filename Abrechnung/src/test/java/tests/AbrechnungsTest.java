@@ -23,7 +23,7 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 
 @RunWith(SpringRunner.class)
 // Class that run the tests
-@SpringBootTest(classes = { tests.db.TestDbConfig.class })
+@SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class AbrechnungsTest {
 
     @Autowired

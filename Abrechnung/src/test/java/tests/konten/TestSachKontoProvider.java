@@ -1,4 +1,4 @@
-package tests;
+package tests.konten;
 
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;

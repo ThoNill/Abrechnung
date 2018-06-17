@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tests.flow.TestAbrechnungsKonfigurator;
 import tests.flow.TestGebührFabrik;
 import tests.flow.TestLeistungsRepository;
+import tests.konten.TestSachKonto;
+import tests.konten.TestSachKontoProvider;
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
@@ -40,7 +42,7 @@ import boundingContext.gemeinsam.BetragsBündel;
 
 @RunWith(SpringRunner.class)
 // Class that run the tests
-@SpringBootTest(classes = { tests.db.TestDbConfig.class })
+@SpringBootTest(classes = { tests.config.TestDbConfig.class })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GebührenKonfigurationsTest {
 
@@ -199,8 +201,7 @@ public class GebührenKonfigurationsTest {
         gebührDefinition.setBuchungsArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setBuchungstext("Testbuchung");
 
-        AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(new TestSachKontoProvider(),
-                leistungRepository);
+        AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(leistungRepository);
         GebührenBerechnung berechnung = konfigurator
                 .erzeugeGebührenBerechner(gebührDefinition);
         BuchungsAuftrag<SachKonto> auftrag = berechnung
