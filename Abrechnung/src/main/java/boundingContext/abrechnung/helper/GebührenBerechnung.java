@@ -31,7 +31,7 @@ public class GebührenBerechnung extends SachKontoDelegate{
             BetragsBündel<SachKonto> bündel) {
         MonetaryAmount basisBetrag = daten.getGebührenBasis(abrechnung);
         MonetaryAmount gebührBetrag = erzeugeGebühr().apply(basisBetrag);
-        bündel.put(sachKontoFrom(definition.getKontoNr())c,
+        bündel.put(sachKontoFrom(definition.getKontoNr()),
                 gebührBetrag.negate());
         if (definition.getMwstSatz() > 0.0) {
             MonetaryAmount mwstBetrag = Geld.round(gebührBetrag
