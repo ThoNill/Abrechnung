@@ -2,6 +2,7 @@ package boundingContext.abrechnung.flow.handler;
 
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
+import boundingContext.abrechnung.aufz‰hlungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.flow.payloads.AbrechnungPayload;
 import boundingContext.abrechnung.helper.AbrechnungAbschlieﬂen;
@@ -15,11 +16,13 @@ public class SchlieﬂeDieAbrechnungAb extends
     private AbrechnungRepository abrechnungRepository;
     private BuchungRepository buchungRepository;
     private KontoBewegungRepository kontoBewegungRepository;
+    private SachKontoProvider sachKontoProvider;
 
-    public SchlieﬂeDieAbrechnungAb(AbrechnungRepository abrechnungRepository,
+    public SchlieﬂeDieAbrechnungAb(SachKontoProvider sachKontoProvider,AbrechnungRepository abrechnungRepository,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository) {
         super();
+        this.sachKontoProvider = sachKontoProvider;
         this.abrechnungRepository = abrechnungRepository;
         this.buchungRepository = buchungRepository;
         this.kontoBewegungRepository = kontoBewegungRepository;
@@ -28,7 +31,7 @@ public class SchlieﬂeDieAbrechnungAb extends
     @Override
     protected AbrechnungPayload transformPayload(AbrechnungPayload payload)
             throws Exception {
-        AbrechnungAbschlieﬂen abchluss = new AbrechnungAbschlieﬂen(
+        AbrechnungAbschlieﬂen abchluss = new AbrechnungAbschlieﬂen(sachKontoProvider,
                 buchungRepository, kontoBewegungRepository,
                 abrechnungRepository, 0.06);
         Abrechnung n‰chsteAbrechnung = abchluss.abschleiﬂen(

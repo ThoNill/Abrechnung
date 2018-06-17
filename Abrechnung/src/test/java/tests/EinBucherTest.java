@@ -56,7 +56,7 @@ public class EinBucherTest {
 
     public BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag() {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
-        beträge.put(SachKonto.BETRAG, Geld.createAmount(1.12));
+        beträge.put(TestSachKonto.BETRAG, Geld.createAmount(1.12));
         Beschreibung beschreibung = new Beschreibung(BuchungsArt.TESTBUCHUNG,
                 "Testbuchung");
 
@@ -110,7 +110,7 @@ public class EinBucherTest {
     }
 
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(buchungRepository, kontoBewegungRepository);
+        return new EinBucher(new TestSachKontoProvider(), buchungRepository,kontoBewegungRepository);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class EinBucherTest {
         EinBucher bucher = erzeugeEinbucher();
         BetragsBündel<SachKonto> beträge = bucher.beträgeEinerBuchungsartHolen(
                 buchung.getAbrechnung(), BuchungsArt.TESTBUCHUNG);
-        assertEquals(Geld.createAmount(1.12), beträge.getValue(SachKonto.BETRAG));
+        assertEquals(Geld.createAmount(1.12), beträge.getValue(TestSachKonto.BETRAG));
     }
 
     @Test

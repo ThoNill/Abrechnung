@@ -6,6 +6,7 @@ import javax.money.MonetaryAmount;
 
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
@@ -16,13 +17,15 @@ import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class SchuldenInDieAbrechnung extends EinBucher {
 
-    public SchuldenInDieAbrechnung(BuchungRepository buchungRepository,
+    public SchuldenInDieAbrechnung(
+            SachKontoProvider sachKontoProvider,
+            BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
             int buchungstypSchuldenStart, int buchungstypSchulden,
             SachKonto kontonrSchulden, SachKonto kontonrZinsen, String text,
             double zinssatz) {
-        super(buchungRepository, kontoBewegungRepository);
+        super(sachKontoProvider,buchungRepository, kontoBewegungRepository);
         this.buchungstypSchuldenStart = buchungstypSchuldenStart;
         this.kontonrZinsen = kontonrZinsen;
         this.text = text;

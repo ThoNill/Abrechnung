@@ -2,6 +2,7 @@ package boundingContext.abrechnung.flow.handler;
 
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.flow.payloads.BuchungAuftragPayload;
 import boundingContext.abrechnung.helper.EinBucher;
 import boundingContext.abrechnung.repositories.BuchungRepository;
@@ -12,18 +13,19 @@ public class BucheDenBuchungsauftrag
         AbstractPayloadTransformer<BuchungAuftragPayload, BuchungAuftragPayload> {
 
     protected BuchungRepository buchungRepository;
-
     protected KontoBewegungRepository kontoBewegungRepository;
+    protected SachKontoProvider sachKontoProvider;
 
-    public BucheDenBuchungsauftrag(BuchungRepository buchungRepository,
+    public BucheDenBuchungsauftrag(SachKontoProvider sachKontoProvider,BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository) {
         super();
+        this.sachKontoProvider = sachKontoProvider;
         this.buchungRepository = buchungRepository;
         this.kontoBewegungRepository = kontoBewegungRepository;
     }
 
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(buchungRepository, kontoBewegungRepository);
+        return new EinBucher(sachKontoProvider,buchungRepository, kontoBewegungRepository);
     }
 
     @Override

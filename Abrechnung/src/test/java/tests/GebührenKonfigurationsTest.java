@@ -16,6 +16,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import tests.flow.TestAbrechnungsKonfigurator;
+import tests.flow.TestGebührFabrik;
+import tests.flow.TestLeistungsRepository;
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
@@ -26,9 +29,6 @@ import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.helper.EinBucher;
 import boundingContext.abrechnung.helper.GebührenBerechnung;
-import boundingContext.abrechnung.helper.TestAbrechnungsKonfigurator;
-import boundingContext.abrechnung.helper.TestGebührFabrik;
-import boundingContext.abrechnung.helper.TestLeistungsRepository;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.GebührenDefinitionRepository;
@@ -114,7 +114,7 @@ public class GebührenKonfigurationsTest {
     private GebuehrDefinition erzeugeGebührDefinition() {
         GebuehrDefinition d = new GebuehrDefinition();
         d.setArt(BuchungsArt.TESTBUCHUNG);
-        d.setKontoNr(SachKonto.GEBÜHR.ordinal());
+        d.setKontoNr(TestSachKonto.GEBÜHR.ordinal());
         d.setGebührArt(1);
         d.setDatenArt(1);
         d.setParameter(0.05);
@@ -190,16 +190,16 @@ public class GebührenKonfigurationsTest {
 
         GebuehrDefinition gebührDefinition = new GebuehrDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
-        gebührDefinition.setKontoNr(SachKonto.GEBÜHR.ordinal());
+        gebührDefinition.setKontoNr(TestSachKonto.GEBÜHR.ordinal());
         gebührDefinition.setGebührArt(1);
         gebührDefinition.setDatenArt(1);
         gebührDefinition.setParameter(0.06);
-        gebührDefinition.setMwstKonto(SachKonto.MWST.ordinal());
+        gebührDefinition.setMwstKonto(TestSachKonto.MWST.ordinal());
         gebührDefinition.setMwstSatz(0.19);
         gebührDefinition.setBuchungsArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setBuchungstext("Testbuchung");
 
-        AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(
+        AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(new TestSachKontoProvider(),
                 leistungRepository);
         GebührenBerechnung berechnung = konfigurator
                 .erzeugeGebührenBerechner(gebührDefinition);
@@ -208,13 +208,13 @@ public class GebührenKonfigurationsTest {
         BetragsBündel<SachKonto> auftragBündel = auftrag.getPositionen();
 
         assertEquals(Geld.createAmount(summe),
-                auftragBündel.getBetrag(SachKonto.BETRAG));
+                auftragBündel.getBetrag(TestSachKonto.BETRAG));
         assertEquals(Geld.createAmount(-summe * 0.06),
-                auftragBündel.getBetrag(SachKonto.GEBÜHR));
+                auftragBündel.getBetrag(TestSachKonto.GEBÜHR));
         assertEquals(Geld.createAmount(-summe * 0.06 * 0.19),
-                auftragBündel.getBetrag(SachKonto.MWST));
+                auftragBündel.getBetrag(TestSachKonto.MWST));
 
-        EinBucher bucher = new EinBucher(buchungRepository,
+        EinBucher bucher = new EinBucher(new TestSachKontoProvider(),buchungRepository,
                 kontoBewegungRepository);
         bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
         // Noch einmal, darf nichts ausmachen
@@ -224,11 +224,11 @@ public class GebührenKonfigurationsTest {
                 abrechnung, BuchungsArt.TESTBUCHUNG);
 
         assertEquals(Geld.createAmount(summe),
-                bündel.getBetrag(SachKonto.BETRAG));
+                bündel.getBetrag(TestSachKonto.BETRAG));
         assertEquals(Geld.createAmount(-summe * 0.06),
-                bündel.getBetrag(SachKonto.GEBÜHR));
+                bündel.getBetrag(TestSachKonto.GEBÜHR));
         assertEquals(Geld.createAmount(-summe * 0.06 * 0.19),
-                bündel.getBetrag(SachKonto.MWST));
+                bündel.getBetrag(TestSachKonto.MWST));
 
         assertEquals(3, leistungRepository.count());
 

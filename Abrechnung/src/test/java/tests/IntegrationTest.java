@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.StandardIntegrationFlow;
@@ -17,11 +18,14 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import tests.flow.TestAbrechnungsKonfigurator;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Mandant;
+import boundingContext.abrechnung.flow.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.flow.payloads.AufrufPayload;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
@@ -33,7 +37,7 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableIntegration
-@SpringBootTest(classes = { tests.db.TestDbConfig.class,
+@SpringBootTest(classes = { tests.TestConfig.class, tests.db.TestDbConfig.class,
         boundingContext.abrechnung.flow.AbrechnungFlow.class })
 // @SpringBootTest(classes = { boundingContext.abrechnung.flow.AbrechnungFlow.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -57,6 +61,9 @@ public class IntegrationTest {
     @Autowired
     private KontoBewegungRepository kontoBewegungRepository;
 
+    @Autowired
+    private SachKontoProvider sachKontoProvider;
+    
     @Before
     @Transactional("dbATransactionManager")
     public void clear() {
@@ -73,11 +80,11 @@ public class IntegrationTest {
 
         GebuehrDefinition gebührDefinition = new GebuehrDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
-        gebührDefinition.setKontoNr(SachKonto.GEBÜHR.ordinal());
+        gebührDefinition.setKontoNr(sachKontoProvider.GEBÜHR().ordinal());
         gebührDefinition.setGebührArt(1);
         gebührDefinition.setDatenArt(1);
         gebührDefinition.setParameter(0.06);
-        gebührDefinition.setMwstKonto(SachKonto.MWST.ordinal());
+        gebührDefinition.setMwstKonto(sachKontoProvider.MWST().ordinal());
         gebührDefinition.setMwstSatz(0.19);
         gebührDefinition.setBuchungsArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setBuchungstext("Testbuchung");
@@ -86,7 +93,7 @@ public class IntegrationTest {
         mandant.addGebuehrDefinitionen(gebührDefinition);
         return mandantRepository.save(mandant);
     }
-
+   
     @Autowired
     @Qualifier("parameterChannel")
     public DirectChannel parameterChannel;

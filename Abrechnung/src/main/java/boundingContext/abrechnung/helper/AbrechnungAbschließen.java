@@ -2,6 +2,7 @@ package boundingContext.abrechnung.helper;
 
 import boundingContext.abrechnung.aufz‰hlungen.BuchungsArt;
 import boundingContext.abrechnung.aufz‰hlungen.SachKonto;
+import boundingContext.abrechnung.aufz‰hlungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
@@ -12,22 +13,23 @@ public class AbrechnungAbschlieﬂen extends EinBucher {
     private SchuldenInDieAbrechnung schulden‹bertragen;
     private SaldoAusgleichen ausgleichen;
     private AbrechnungRepository abrechnungRepository;
-
-    public AbrechnungAbschlieﬂen(BuchungRepository buchungRepository,
+ 
+    public AbrechnungAbschlieﬂen(SachKontoProvider sachKontoProvider,BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
-            AbrechnungRepository abrechnungRepository, double zinssatz) {
-        super(buchungRepository, kontoBewegungRepository);
+            AbrechnungRepository abrechnungRepository,
+            double zinssatz) {
+        super(sachKontoProvider,buchungRepository, kontoBewegungRepository);
         this.abrechnungRepository = abrechnungRepository;
-
-        ausgleichen = new SaldoAusgleichen(buchungRepository,
+ 
+        ausgleichen = new SaldoAusgleichen(sachKontoProvider,buchungRepository,
                 kontoBewegungRepository, BuchungsArt.ABGLEICH_GUTHABEN,
-                SachKonto.GUTHABEN, "Guthaben", BuchungsArt.ABGLEICH_SCHULDEN,
-                SachKonto.SCHULDEN, "Schulden");
+                GUTHABEN(), "Guthaben", BuchungsArt.ABGLEICH_SCHULDEN,
+                SCHULDEN(), "Schulden");
 
-        schulden‹bertragen = new SchuldenInDieAbrechnung(buchungRepository,
+        schulden‹bertragen = new SchuldenInDieAbrechnung(sachKontoProvider,buchungRepository,
                 kontoBewegungRepository, abrechnungRepository,
                 BuchungsArt.ABGLEICH_SCHULDEN, BuchungsArt.‹BERNAHME_SCHULDEN,
-                SachKonto.SCHULDEN, SachKonto.ZINS, "Schulden ¸bernehmen",
+                SCHULDEN(), ZINS(), "Schulden ¸bernehmen",
                 zinssatz);
 
     }

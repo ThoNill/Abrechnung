@@ -4,6 +4,7 @@ import javax.money.MonetaryAmount;
 
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.gebühren.Gebühr;
@@ -13,14 +14,14 @@ import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.daten.GebührRepository;
 import boundingContext.gemeinsam.BetragsBündel;
 
-public class GebührenBerechnung {
+public class GebührenBerechnung extends SachKontoDelegate{
     private GebuehrDefinition definition;
     private GebührRepository<SachKonto> daten;
     private GebührFabrik gebührFabrik;
 
-    public GebührenBerechnung(GebuehrDefinition definition,
+    public GebührenBerechnung(SachKontoProvider sachKontoProvider,GebuehrDefinition definition,
             GebührRepository<SachKonto> daten, GebührFabrik gebührFabrik) {
-        super();
+        super(sachKontoProvider);
         this.definition = definition;
         this.daten = daten;
         this.gebührFabrik = gebührFabrik;
@@ -30,12 +31,12 @@ public class GebührenBerechnung {
             BetragsBündel<SachKonto> bündel) {
         MonetaryAmount basisBetrag = daten.getGebührenBasis(abrechnung);
         MonetaryAmount gebührBetrag = erzeugeGebühr().apply(basisBetrag);
-        bündel.put(SachKonto.values()[definition.getKontoNr()],
+        bündel.put(sachKontoFrom(definition.getKontoNr())c,
                 gebührBetrag.negate());
         if (definition.getMwstSatz() > 0.0) {
             MonetaryAmount mwstBetrag = Geld.round(gebührBetrag
                     .multiply(definition.getMwstSatz()));
-            bündel.put(SachKonto.values()[definition.getMwstKonto()],
+            bündel.put(sachKontoFrom(definition.getMwstKonto()),
                     mwstBetrag.negate());
         }
         return bündel;

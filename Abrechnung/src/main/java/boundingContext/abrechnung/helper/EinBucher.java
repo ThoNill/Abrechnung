@@ -3,6 +3,7 @@ package boundingContext.abrechnung.helper;
 import javax.money.MonetaryAmount;
 
 import boundingContext.abrechnung.aufzählungen.SachKonto;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.KontoBewegung;
@@ -12,15 +13,15 @@ import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.gemeinsam.BetragsBündel;
 import boundingContext.gemeinsam.BetragsBündelMap;
 
-public class EinBucher {
+public class EinBucher extends SachKontoDelegate{
 
     protected BuchungRepository buchungRepository;
 
     protected KontoBewegungRepository kontoBewegungRepository;
 
-    public EinBucher(BuchungRepository buchungRepository,
+    public EinBucher(SachKontoProvider sachKontoProvider,BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository) {
-        super();
+        super(sachKontoProvider);
         this.buchungRepository = buchungRepository;
         this.kontoBewegungRepository = kontoBewegungRepository;
     }
@@ -61,7 +62,7 @@ public class EinBucher {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         for (Object o : buchungRepository.getSumBewegungen(abrechnung, art)) {
             Object[] werte = (Object[]) o;
-            SachKonto p = SachKonto.values()[(int) werte[0]];
+            SachKonto p = sachKontoFrom((int) werte[0]);
             beträge.put(p, (MonetaryAmount) werte[1]);
         }
         return beträge;

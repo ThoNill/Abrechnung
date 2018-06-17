@@ -1,19 +1,23 @@
-package boundingContext.abrechnung.helper;
+package tests.flow;
 
 import boundingContext.abrechnung.aufzählungen.SachKonto;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.flow.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.gebühren.GebührFabrik;
+import boundingContext.abrechnung.helper.GebührenBerechnung;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.daten.GebührRepository;
 
 public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
 
     private LeistungRepository leistungRepository;
+    private SachKontoProvider sachKontoProvider;
 
-    public TestAbrechnungsKonfigurator(LeistungRepository leistungRepository) {
+    public TestAbrechnungsKonfigurator(SachKontoProvider sachKontoProvider,LeistungRepository leistungRepository) {
         super();
         this.leistungRepository = leistungRepository;
+        this.sachKontoProvider = sachKontoProvider;
     }
 
     @Override
@@ -31,7 +35,7 @@ public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
     @Override
     public GebührenBerechnung erzeugeGebührenBerechner(
             GebuehrDefinition definition) {
-        return new GebührenBerechnung(definition,
+        return new GebührenBerechnung(sachKontoProvider,definition,
                 erzeugeGebührRepository(definition.getDatenArt()),
                 erzeugeGebührFabrik(definition.getGebührArt()));
     }

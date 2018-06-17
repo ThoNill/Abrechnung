@@ -58,7 +58,7 @@ public class BuchungsauftragInDBTest {
 
     public BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag() {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
-        beträge.put(SachKonto.BETRAG, Geld.createAmount(1.12));
+        beträge.put(TestSachKonto.BETRAG, Geld.createAmount(1.12));
         Beschreibung beschreibung = new Beschreibung(BuchungsArt.TESTBUCHUNG,
                 "Testbuchung");
 
@@ -107,7 +107,7 @@ public class BuchungsauftragInDBTest {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         for (Object o : buchungRepository.getSumBewegungen(abrechnung, art)) {
             Object[] werte = (Object[]) o;
-            SachKonto p = SachKonto.values()[(int) werte[0]];
+            SachKonto p = TestSachKonto.values()[(int) werte[0]];
             beträge.put(p, (MonetaryAmount) werte[1]);
         }
 
@@ -147,7 +147,7 @@ public class BuchungsauftragInDBTest {
         Buchung buchung = insertBuchung();
         BetragsBündel<SachKonto> beträge = beträgeEinerBuchungsartHolen(
                 buchung.getAbrechnung(), BuchungsArt.TESTBUCHUNG);
-        assertEquals(Geld.createAmount(1.12), beträge.getValue(SachKonto.BETRAG));
+        assertEquals(Geld.createAmount(1.12), beträge.getValue(TestSachKonto.BETRAG));
     }
 
     @Test

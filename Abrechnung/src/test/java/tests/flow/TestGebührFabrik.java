@@ -1,4 +1,4 @@
-package boundingContext.abrechnung.helper;
+package tests.flow;
 
 import boundingContext.abrechnung.gebühren.Gebühr;
 import boundingContext.abrechnung.gebühren.GebührFabrik;

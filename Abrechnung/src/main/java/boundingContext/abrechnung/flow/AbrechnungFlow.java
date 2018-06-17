@@ -7,6 +7,7 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.StandardIntegrationFlow;
 
+import boundingContext.abrechnung.aufz‰hlungen.SachKontoProvider;
 import boundingContext.abrechnung.flow.handler.BerechneBuchungsauftrag;
 import boundingContext.abrechnung.flow.handler.BucheDenBuchungsauftrag;
 import boundingContext.abrechnung.flow.handler.Geb¸hrDefinitionAggregator;
@@ -35,11 +36,13 @@ public class AbrechnungFlow {
 
     @Bean
     public StandardIntegrationFlow processFileFlowBuilder(
+            SachKontoProvider sachKontoProvider,
             MandantRepository mandantRepository,
             AbrechnungRepository abrechnungRepository,
             LeistungRepository leistungRepository,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
+            AbrechnungsKonfigurator konfigurator,
             ApplicationContext applicationContext) {
         return IntegrationFlows
                 .from("parameterChannel")
@@ -47,13 +50,13 @@ public class AbrechnungFlow {
                         holeAbrechnung(mandantRepository, abrechnungRepository))
                 .channel("mandantChannel")
                 .split(geb¸hrDefinitionSplitter())
-                .transform(berechneBuchungsauftrag(leistungRepository))
+                .transform(berechneBuchungsauftrag(konfigurator))
                 .transform(
-                        bucheDenBuchungsauftrag(buchungRepository,
+                        bucheDenBuchungsauftrag(sachKontoProvider,buchungRepository,
                                 kontoBewegungRepository))
                 .aggregate(a -> a.processor(new Geb¸hrDefinitionAggregator()))
                 .transform(
-                        schlieﬂeDieAbrechnungAb(abrechnungRepository,
+                        schlieﬂeDieAbrechnungAb(sachKontoProvider,abrechnungRepository,
                                 buchungRepository, kontoBewegungRepository))
                 .handle(x -> System.out.println("im Handler: " + x.toString()))
                 .get();
@@ -61,10 +64,11 @@ public class AbrechnungFlow {
     }
 
     private SchlieﬂeDieAbrechnungAb schlieﬂeDieAbrechnungAb(
+            SachKontoProvider sachKontoProvider,
             AbrechnungRepository abrechnungRepository,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository) {
-        return new SchlieﬂeDieAbrechnungAb(abrechnungRepository,
+        return new SchlieﬂeDieAbrechnungAb(sachKontoProvider,abrechnungRepository,
                 buchungRepository, kontoBewegungRepository);
     }
 
@@ -81,15 +85,15 @@ public class AbrechnungFlow {
 
     @Bean
     BerechneBuchungsauftrag berechneBuchungsauftrag(
-            LeistungRepository leistungRepository) {
-        return new BerechneBuchungsauftrag(leistungRepository);
+            AbrechnungsKonfigurator konfigurator) {
+        return new BerechneBuchungsauftrag(konfigurator);
     }
 
     @Bean
-    BucheDenBuchungsauftrag bucheDenBuchungsauftrag(
+    BucheDenBuchungsauftrag bucheDenBuchungsauftrag(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository) {
-        return new BucheDenBuchungsauftrag(buchungRepository,
+        return new BucheDenBuchungsauftrag(sachKontoProvider,buchungRepository,
                 kontoBewegungRepository);
     }
 }
