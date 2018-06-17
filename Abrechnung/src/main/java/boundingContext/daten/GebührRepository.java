@@ -2,7 +2,7 @@ package boundingContext.daten;
 
 import javax.money.MonetaryAmount;
 
-import app.entities.Abrechnung;
+import boundaryContext.abrechnung.entities.Abrechnung;
 import boundingContext.gemeinsam.BetragsBündel;
 
 public interface GebührRepository<KEY> {
