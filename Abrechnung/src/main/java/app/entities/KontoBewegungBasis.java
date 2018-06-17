@@ -1,7 +1,6 @@
 package app.entities;
 
-public class KontoBewegungBasis implements
-        boundingContext.buchhaltung.KontoBewegung {
+public class KontoBewegungBasis  {
 
     public KontoBewegungBasis() {
         super();
@@ -25,12 +24,11 @@ public class KontoBewegungBasis implements
         return this.kontonr;
     };
 
-    @Override
+   
     public javax.money.MonetaryAmount getBetrag() {
         return this.betrag;
     };
 
-    @Override
     public Buchung getBuchung() {
         return this.buchung;
     };
@@ -55,7 +53,6 @@ public class KontoBewegungBasis implements
         this.buchung = buchung;
     };
 
-    @Override
     public String toString() {
         return "KontoBewegungBasis " + " KontoBewegungId ="
                 + this.getKontoBewegungId() + " Art =" + this.getArt()
@@ -64,7 +61,6 @@ public class KontoBewegungBasis implements
                 + " Buchung =" + this.getBuchung();
     }
 
-    @Override
     public Long getId() {
         return getKontoBewegungId();
     }

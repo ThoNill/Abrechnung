@@ -9,8 +9,7 @@ import boundingContext.abrechnung.entities.AbrechnungsTyp;
 import boundingContext.abrechnung.entities.RunStatus;
 import boundingContext.abrechnung.entities.Zeitraum;
 
-public class AbrechnungBasis implements
-        boundingContext.abrechnung.entities.Abrechnung<Long> {
+public class AbrechnungBasis {
 
     public AbrechnungBasis() {
         super();
@@ -40,7 +39,7 @@ public class AbrechnungBasis implements
         return this.Jahr;
     };
 
-    @Override
+    
     public Mandant getMandant() {
         return this.mandant;
     };
@@ -77,7 +76,7 @@ public class AbrechnungBasis implements
         this.buchung.remove(buchung);
     };
 
-    @Override
+    
     public String toString() {
         return "AbrechnungBasis " + " AbrechnungId =" + this.getAbrechnungId()
                 + " Monat =" + this.getMonat() + " Jahr =" + this.getJahr()
@@ -86,17 +85,17 @@ public class AbrechnungBasis implements
         ;
     }
 
-    @Override
+    
     public AbrechnungsTyp getTyp() {
         return typ;
     }
 
-    @Override
+    
     public void setTyp(AbrechnungsTyp typ) {
         this.typ = typ;
     }
 
-    @Override
+    
     public String getBezeichnung() {
         return bezeichnung;
     }
@@ -105,7 +104,7 @@ public class AbrechnungBasis implements
         this.bezeichnung = bezeichnung;
     }
 
-    @Override
+    
     public int getNummer() {
         return nummer;
     }
@@ -114,17 +113,17 @@ public class AbrechnungBasis implements
         this.nummer = nummer;
     }
 
-    @Override
+    
     public RunStatus getRunStatus() {
         return runStatus;
     }
 
-    @Override
+    
     public void setRunStatus(RunStatus runStatus) {
         this.runStatus = runStatus;
     }
 
-    @Override
+    
     public Date getAngelegt() {
         return angelegt;
     }
@@ -133,7 +132,7 @@ public class AbrechnungBasis implements
         this.angelegt = angelegt;
     }
 
-    @Override
+    
     public Zeitraum getZeitraum() {
         return zeitraum;
     }
@@ -142,19 +141,19 @@ public class AbrechnungBasis implements
         this.zeitraum = zeitraum;
     }
 
-    @Override
+    
     public Long getId() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public AbrechnungsStatus getStatus() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public void setStatus(AbrechnungsStatus status) {
         // TODO Auto-generated method stub
 

@@ -3,8 +3,7 @@ package app.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MandantBasis implements
-        boundingContext.abrechnung.entities.Mandant<Long> {
+public class MandantBasis  {
 
     public MandantBasis() {
         super();
@@ -55,7 +54,6 @@ public class MandantBasis implements
         ;
     }
 
-    @Override
     public Long getId() {
         return getMandantId();
     }

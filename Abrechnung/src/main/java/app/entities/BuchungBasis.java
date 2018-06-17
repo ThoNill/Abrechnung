@@ -2,11 +2,9 @@ package app.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import boundingContext.buchhaltung.Buchung;
 import ddd.Entity;
 
-public class BuchungBasis implements boundingContext.buchhaltung.Buchung {
+public class BuchungBasis  {
 
     public BuchungBasis() {
         super();
@@ -22,17 +20,17 @@ public class BuchungBasis implements boundingContext.buchhaltung.Buchung {
         return this.BuchungId;
     };
 
-    @Override
+   
     public String getText() {
         return this.text;
     };
 
-    @Override
+   
     public int getArt() {
         return this.art;
     };
 
-    @Override
+   
     public List<KontoBewegung> getBewegungen() {
         return this.bewegungen;
     };
@@ -69,7 +67,7 @@ public class BuchungBasis implements boundingContext.buchhaltung.Buchung {
         this.abrechnung = abrechnung;
     };
 
-    @Override
+   
     public String toString() {
         return "BuchungBasis " + " BuchungId =" + this.getBuchungId()
                 + " Text =" + this.getText() + " Art =" + this.getArt()
@@ -77,25 +75,25 @@ public class BuchungBasis implements boundingContext.buchhaltung.Buchung {
                 + " Abrechnung =" + this.getAbrechnung();
     }
 
-    @Override
+   
     public Long getId() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+   
     public void stornieren() {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
+   
     public Buchung getStornoBuchung() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+   
     public List<Entity<?>> getReferenzen() {
         // TODO Auto-generated method stub
         return null;

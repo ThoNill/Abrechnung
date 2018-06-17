@@ -1,8 +1,7 @@
 package app.entities;
 
-import boundingContext.buchhaltung.Konto;
 
-public class SimpleKonto implements Konto {
+public class SimpleKonto {
     int art;
     int nummer;
     String bezeichnung;
@@ -14,22 +13,18 @@ public class SimpleKonto implements Konto {
         this.bezeichnung = bezeichnung;
     }
 
-    @Override
     public int getArt() {
         return art;
     }
 
-    @Override
     public int getNummer() {
         return nummer;
     }
 
-    @Override
     public String getBezeichnung() {
         return bezeichnung;
     }
 
-    @Override
     public Long getId() {
         return 1000 * (long) art + nummer;
     }

@@ -2,8 +2,8 @@ package tests;
 
 import javax.money.MonetaryAmount;
 
+import app.entities.Abrechnung;
 import app.repositories.LeistungRepository;
-import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.daten.GebührRepository;
 import boundingContext.gemeinsam.BetragsBündel;
 import boundingContext.gemeinsam.BetragsBündelMap;

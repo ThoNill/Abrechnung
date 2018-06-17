@@ -1,8 +1,6 @@
 package app.entities;
 
 import java.util.List;
-
-import boundingContext.buchhaltung.Buchung;
 import ddd.Entity;
 
 /**
