@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.money.MonetaryAmount;
 
 import betrag.Geld;
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
@@ -20,7 +20,7 @@ public class SchuldenInDieAbrechnung extends EinBucher {
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
             int buchungstypSchuldenStart, int buchungstypSchulden,
-            Position kontonrSchulden, Position kontonrZinsen, String text,
+            SachKonto kontonrSchulden, SachKonto kontonrZinsen, String text,
             double zinssatz) {
         super(buchungRepository, kontoBewegungRepository);
         this.buchungstypSchuldenStart = buchungstypSchuldenStart;
@@ -33,11 +33,11 @@ public class SchuldenInDieAbrechnung extends EinBucher {
     }
 
     private int buchungstypSchuldenStart;
-    private Position kontonrZinsen;
+    private SachKonto kontonrZinsen;
     private String text;
 
     private int buchungstypSchulden;
-    private Position kontonrSchulden;
+    private SachKonto kontonrSchulden;
     private AbrechnungRepository abrechnungRepository;
     private double zinssatz;
 
@@ -56,19 +56,19 @@ public class SchuldenInDieAbrechnung extends EinBucher {
 
     private void buche(Abrechnung abrechnung, MonetaryAmount betrag,
             int zinsDauer) {
-        BuchungsAuftrag<Position> auftrag = erzeugeBuchungsAuftrag(betrag,
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(betrag,
                 zinsDauer);
         erzeugeDifferenzBuchung(auftrag, abrechnung);
     }
 
-    private BuchungsAuftrag<Position> erzeugeBuchungsAuftrag(
+    private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(
             MonetaryAmount betrag, int zinsDauer) {
-        BetragsBündelMap<Position> beträge = new BetragsBündelMap<>();
+        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         beträge.put(kontonrSchulden, betrag);
         MonetaryAmount zins = berechneZins(betrag, zinsDauer);
         beträge.put(kontonrZinsen, zins);
         Beschreibung beschreibung = new Beschreibung(buchungstypSchulden, text);
-        return new BuchungsAuftrag<Position>(beschreibung, beträge);
+        return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
     }
 
     private MonetaryAmount berechneZins(MonetaryAmount betrag, int zinsDauer) {

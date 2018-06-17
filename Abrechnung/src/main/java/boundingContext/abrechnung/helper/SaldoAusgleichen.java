@@ -2,7 +2,7 @@ package boundingContext.abrechnung.helper;
 
 import javax.money.MonetaryAmount;
 
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
@@ -12,18 +12,18 @@ import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class SaldoAusgleichen extends EinBucher {
     private int buchungstypGuthaben;
-    private Position kontonrGuthaben;
+    private SachKonto kontonrGuthaben;
     private String textGuthaben;
 
     private int buchungstypSchulden;
-    private Position kontonrSchulden;
+    private SachKonto kontonrSchulden;
     private String textSchulden;
 
     public SaldoAusgleichen(BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
-            int buchungstypGuthaben, Position kontonrGuthaben,
+            int buchungstypGuthaben, SachKonto kontonrGuthaben,
             String textGuthaben, int buchungstypSchulden,
-            Position kontonrSchulden, String textSchulden) {
+            SachKonto kontonrSchulden, String textSchulden) {
         super(buchungRepository, kontoBewegungRepository);
         this.buchungstypGuthaben = buchungstypGuthaben;
         this.kontonrGuthaben = kontonrGuthaben;
@@ -45,18 +45,18 @@ public class SaldoAusgleichen extends EinBucher {
     }
 
     private void buche(Abrechnung abrechnung, int buchungstyp,
-            Position kontonr, String text, MonetaryAmount betrag) {
-        BuchungsAuftrag<Position> auftrag = erzeugeBuchungsAuftrag(buchungstyp,
+            SachKonto kontonr, String text, MonetaryAmount betrag) {
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(buchungstyp,
                 kontonr, text, betrag);
         erzeugeBuchung(auftrag, abrechnung);
     }
 
-    private BuchungsAuftrag<Position> erzeugeBuchungsAuftrag(int buchungstyp,
-            Position kontonr, String text, MonetaryAmount betrag) {
-        BetragsBündelMap<Position> beträge = new BetragsBündelMap<>();
+    private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(int buchungstyp,
+            SachKonto kontonr, String text, MonetaryAmount betrag) {
+        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         beträge.put(kontonr, betrag);
         Beschreibung beschreibung = new Beschreibung(buchungstyp, text);
-        return new BuchungsAuftrag<Position>(beschreibung, beträge);
+        return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
     }
 
 }

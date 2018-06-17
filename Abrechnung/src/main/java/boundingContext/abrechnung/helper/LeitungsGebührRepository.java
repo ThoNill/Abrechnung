@@ -2,23 +2,23 @@ package boundingContext.abrechnung.helper;
 
 import javax.money.MonetaryAmount;
 
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.daten.GebührRepository;
 import boundingContext.gemeinsam.BetragsBündel;
 import boundingContext.gemeinsam.BetragsBündelMap;
 
-public class LeitungsGebührRepository implements GebührRepository<Position> {
+public class LeitungsGebührRepository implements GebührRepository<SachKonto> {
 
     private LeistungRepository leistungRepository;
 
-    private Position position;
+    private SachKonto sachKonto;
     private int art;
 
-    public LeitungsGebührRepository(Position position, int art) {
+    public LeitungsGebührRepository(SachKonto sachKonto, int art) {
         super();
-        this.position = position;
+        this.sachKonto = sachKonto;
         this.art = art;
     }
 
@@ -29,10 +29,10 @@ public class LeitungsGebührRepository implements GebührRepository<Position> {
     }
 
     @Override
-    public BetragsBündel<Position> getBeträge(Abrechnung abrechnung) {
+    public BetragsBündel<SachKonto> getBeträge(Abrechnung abrechnung) {
         MonetaryAmount betrag = getGebührenBasis(abrechnung);
-        BetragsBündelMap<Position> bündel = new BetragsBündelMap<>();
-        bündel.put(position, betrag);
+        BetragsBündelMap<SachKonto> bündel = new BetragsBündelMap<>();
+        bündel.put(sachKonto, betrag);
         return bündel;
     }
 

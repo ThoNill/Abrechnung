@@ -1,7 +1,7 @@
 package boundingContext.abrechnung.helper;
 
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
@@ -21,13 +21,13 @@ public class AbrechnungAbschließen extends EinBucher {
 
         ausgleichen = new SaldoAusgleichen(buchungRepository,
                 kontoBewegungRepository, BuchungsArt.ABGLEICH_GUTHABEN,
-                Position.GUTHABEN, "Guthaben", BuchungsArt.ABGLEICH_SCHULDEN,
-                Position.SCHULDEN, "Schulden");
+                SachKonto.GUTHABEN, "Guthaben", BuchungsArt.ABGLEICH_SCHULDEN,
+                SachKonto.SCHULDEN, "Schulden");
 
         schuldenÜbertragen = new SchuldenInDieAbrechnung(buchungRepository,
                 kontoBewegungRepository, abrechnungRepository,
                 BuchungsArt.ABGLEICH_SCHULDEN, BuchungsArt.ÜBERNAHME_SCHULDEN,
-                Position.SCHULDEN, Position.ZINS, "Schulden übernehmen",
+                SachKonto.SCHULDEN, SachKonto.ZINS, "Schulden übernehmen",
                 zinssatz);
 
     }

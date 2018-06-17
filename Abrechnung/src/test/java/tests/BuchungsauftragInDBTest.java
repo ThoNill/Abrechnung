@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.KontoBewegung;
@@ -56,13 +56,13 @@ public class BuchungsauftragInDBTest {
         mandantRepository.deleteAll();
     }
 
-    public BuchungsAuftrag<Position> erzeugeBuchungsAuftrag() {
-        BetragsBündelMap<Position> beträge = new BetragsBündelMap<>();
-        beträge.put(Position.BETRAG, Geld.createAmount(1.12));
+    public BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag() {
+        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
+        beträge.put(SachKonto.BETRAG, Geld.createAmount(1.12));
         Beschreibung beschreibung = new Beschreibung(BuchungsArt.TESTBUCHUNG,
                 "Testbuchung");
 
-        return new BuchungsAuftrag<Position>(beschreibung, beträge);
+        return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
     }
 
     public Mandant erzeugeMandant() {
@@ -82,15 +82,15 @@ public class BuchungsauftragInDBTest {
         return abrechnung;
     }
 
-    public Buchung erzeugeBuchung(BuchungsAuftrag<Position> auftrag,
+    public Buchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,
             Abrechnung abrechnung) {
-        BetragsBündel<Position> beträge = auftrag.getPositionen();
+        BetragsBündel<SachKonto> beträge = auftrag.getPositionen();
         Buchung buchung = new Buchung();
         buchung.setText(auftrag.getBeschreibung().getText());
         buchung.setArt(auftrag.getBeschreibung().getArt());
         buchung.setAbrechnung(abrechnung);
         buchung = buchungRepository.save(buchung);
-        for (Position p : beträge.getKeys()) {
+        for (SachKonto p : beträge.getKeys()) {
             KontoBewegung bew = new KontoBewegung();
             bew.setBetrag(beträge.getValue(p));
             bew.setArt(1);
@@ -102,12 +102,12 @@ public class BuchungsauftragInDBTest {
         return buchung;
     }
 
-    public BetragsBündel<Position> beträgeEinerBuchungsartHolen(
+    public BetragsBündel<SachKonto> beträgeEinerBuchungsartHolen(
             Abrechnung abrechnung, int art) {
-        BetragsBündelMap<Position> beträge = new BetragsBündelMap<>();
+        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         for (Object o : buchungRepository.getSumBewegungen(abrechnung, art)) {
             Object[] werte = (Object[]) o;
-            Position p = Position.values()[(int) werte[0]];
+            SachKonto p = SachKonto.values()[(int) werte[0]];
             beträge.put(p, (MonetaryAmount) werte[1]);
         }
 
@@ -125,7 +125,7 @@ public class BuchungsauftragInDBTest {
         Mandant mandant = erzeugeMandant();
 
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        BuchungsAuftrag<Position> auftrag = erzeugeBuchungsAuftrag();
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag();
         Buchung buchung = erzeugeBuchung(auftrag, abrechnung);
 
         return buchungRepository.save(buchung);
@@ -145,9 +145,9 @@ public class BuchungsauftragInDBTest {
     @Test
     public void insertAndLoadTest() {
         Buchung buchung = insertBuchung();
-        BetragsBündel<Position> beträge = beträgeEinerBuchungsartHolen(
+        BetragsBündel<SachKonto> beträge = beträgeEinerBuchungsartHolen(
                 buchung.getAbrechnung(), BuchungsArt.TESTBUCHUNG);
-        assertEquals(Geld.createAmount(1.12), beträge.getValue(Position.BETRAG));
+        assertEquals(Geld.createAmount(1.12), beträge.getValue(SachKonto.BETRAG));
     }
 
     @Test

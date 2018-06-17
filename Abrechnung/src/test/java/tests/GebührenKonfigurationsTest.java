@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Leistung;
@@ -114,7 +114,7 @@ public class GebührenKonfigurationsTest {
     private GebuehrDefinition erzeugeGebührDefinition() {
         GebuehrDefinition d = new GebuehrDefinition();
         d.setArt(BuchungsArt.TESTBUCHUNG);
-        d.setKontoNr(Position.GEBÜHR.ordinal());
+        d.setKontoNr(SachKonto.GEBÜHR.ordinal());
         d.setGebührArt(1);
         d.setDatenArt(1);
         d.setParameter(0.05);
@@ -190,11 +190,11 @@ public class GebührenKonfigurationsTest {
 
         GebuehrDefinition gebührDefinition = new GebuehrDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
-        gebührDefinition.setKontoNr(Position.GEBÜHR.ordinal());
+        gebührDefinition.setKontoNr(SachKonto.GEBÜHR.ordinal());
         gebührDefinition.setGebührArt(1);
         gebührDefinition.setDatenArt(1);
         gebührDefinition.setParameter(0.06);
-        gebührDefinition.setMwstKonto(Position.MWST.ordinal());
+        gebührDefinition.setMwstKonto(SachKonto.MWST.ordinal());
         gebührDefinition.setMwstSatz(0.19);
         gebührDefinition.setBuchungsArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setBuchungstext("Testbuchung");
@@ -203,16 +203,16 @@ public class GebührenKonfigurationsTest {
                 leistungRepository);
         GebührenBerechnung berechnung = konfigurator
                 .erzeugeGebührenBerechner(gebührDefinition);
-        BuchungsAuftrag<Position> auftrag = berechnung
+        BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(abrechnung);
-        BetragsBündel<Position> auftragBündel = auftrag.getPositionen();
+        BetragsBündel<SachKonto> auftragBündel = auftrag.getPositionen();
 
         assertEquals(Geld.createAmount(summe),
-                auftragBündel.getBetrag(Position.BETRAG));
+                auftragBündel.getBetrag(SachKonto.BETRAG));
         assertEquals(Geld.createAmount(-summe * 0.06),
-                auftragBündel.getBetrag(Position.GEBÜHR));
+                auftragBündel.getBetrag(SachKonto.GEBÜHR));
         assertEquals(Geld.createAmount(-summe * 0.06 * 0.19),
-                auftragBündel.getBetrag(Position.MWST));
+                auftragBündel.getBetrag(SachKonto.MWST));
 
         EinBucher bucher = new EinBucher(buchungRepository,
                 kontoBewegungRepository);
@@ -220,15 +220,15 @@ public class GebührenKonfigurationsTest {
         // Noch einmal, darf nichts ausmachen
         bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
 
-        BetragsBündel<Position> bündel = bucher.beträgeEinerBuchungsartHolen(
+        BetragsBündel<SachKonto> bündel = bucher.beträgeEinerBuchungsartHolen(
                 abrechnung, BuchungsArt.TESTBUCHUNG);
 
         assertEquals(Geld.createAmount(summe),
-                bündel.getBetrag(Position.BETRAG));
+                bündel.getBetrag(SachKonto.BETRAG));
         assertEquals(Geld.createAmount(-summe * 0.06),
-                bündel.getBetrag(Position.GEBÜHR));
+                bündel.getBetrag(SachKonto.GEBÜHR));
         assertEquals(Geld.createAmount(-summe * 0.06 * 0.19),
-                bündel.getBetrag(Position.MWST));
+                bündel.getBetrag(SachKonto.MWST));
 
         assertEquals(3, leistungRepository.count());
 

@@ -2,7 +2,7 @@ package boundingContext.abrechnung.flow.handler;
 
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.flow.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.flow.payloads.BuchungAuftragPayload;
 import boundingContext.abrechnung.flow.payloads.GebührDefinitionPayload;
@@ -29,7 +29,7 @@ public class BerechneBuchungsauftrag
                 leistungRepository);
         GebührenBerechnung berechnung = konfigurator
                 .erzeugeGebührenBerechner(payload.getDefinition());
-        BuchungsAuftrag<Position> auftrag = berechnung
+        BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(payload.getAbrechnung());
         return new BuchungAuftragPayload(payload.getAbrechnung(),
                 payload.getMandant(), payload.getArt(),

@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
@@ -60,13 +60,13 @@ public class AbrechnungAbschließenTest {
         mandantRepository.deleteAll();
     }
 
-    public BuchungsAuftrag<Position> erzeugeBuchungsAuftrag(double betrag) {
-        BetragsBündelMap<Position> beträge = new BetragsBündelMap<>();
-        beträge.put(Position.BETRAG, Geld.createAmount(betrag));
+    public BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(double betrag) {
+        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
+        beträge.put(SachKonto.BETRAG, Geld.createAmount(betrag));
         Beschreibung beschreibung = new Beschreibung(BuchungsArt.TESTBUCHUNG,
                 "Testbuchung");
 
-        return new BuchungsAuftrag<Position>(beschreibung, beträge);
+        return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
     }
 
     public Mandant erzeugeMandant() {
@@ -93,14 +93,14 @@ public class AbrechnungAbschließenTest {
     @Test
     public void ausgleichGuthaben() {
         checkAbgleich(saldoAbgleichen(1.24), BuchungsArt.ABGLEICH_GUTHABEN,
-                Position.GUTHABEN, -1.24);
+                SachKonto.GUTHABEN, -1.24);
     }
 
     @Test
     @Transactional("dbATransactionManager")
     public void ausgleichSchulden() {
         checkAbgleich(saldoAbgleichen(-1.24), BuchungsArt.ABGLEICH_SCHULDEN,
-                Position.SCHULDEN, 1.24);
+                SachKonto.SCHULDEN, 1.24);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class AbrechnungAbschließenTest {
     public void abschluss180() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        BuchungsAuftrag<Position> auftrag = erzeugeBuchungsAuftrag(-100);
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(-100);
         EinBucher bucher = erzeugeEinbucher();
         bucher.erzeugeBuchung(auftrag, abrechnung);
 
@@ -140,7 +140,7 @@ public class AbrechnungAbschließenTest {
     public void abschlussOhneWirkung180() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        BuchungsAuftrag<Position> auftrag = erzeugeBuchungsAuftrag(100);
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(100);
         EinBucher bucher = erzeugeEinbucher();
         bucher.erzeugeBuchung(auftrag, abrechnung);
 
@@ -155,20 +155,20 @@ public class AbrechnungAbschließenTest {
     public Abrechnung saldoAbgleichen(double betrag) {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        BuchungsAuftrag<Position> auftrag = erzeugeBuchungsAuftrag(betrag);
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(betrag);
         EinBucher bucher = erzeugeEinbucher();
         Buchung buchung = bucher.erzeugeBuchung(auftrag, abrechnung);
 
         SaldoAusgleichen abschluss = new SaldoAusgleichen(buchungRepository,
                 kontoBewegungRepository, BuchungsArt.ABGLEICH_GUTHABEN,
-                Position.GUTHABEN, "Guthaben", BuchungsArt.ABGLEICH_SCHULDEN,
-                Position.SCHULDEN, "Schulden");
+                SachKonto.GUTHABEN, "Guthaben", BuchungsArt.ABGLEICH_SCHULDEN,
+                SachKonto.SCHULDEN, "Schulden");
         abschluss.saldoAusgleichen(abrechnung);
         return abrechnung;
     }
 
     @Transactional("dbATransactionManager")
-    public void checkAbgleich(Abrechnung abrechnung, int art, Position kontonr,
+    public void checkAbgleich(Abrechnung abrechnung, int art, SachKonto kontonr,
             double betrag) {
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
@@ -196,8 +196,8 @@ public class AbrechnungAbschließenTest {
         SchuldenInDieAbrechnung übernehmen = new SchuldenInDieAbrechnung(
                 buchungRepository, kontoBewegungRepository,
                 abrechnungRepository, BuchungsArt.ABGLEICH_SCHULDEN,
-                BuchungsArt.ÜBERNAHME_SCHULDEN, Position.SCHULDEN,
-                Position.ZINS, "Schulden übernehmen", zinssatz);
+                BuchungsArt.ÜBERNAHME_SCHULDEN, SachKonto.SCHULDEN,
+                SachKonto.ZINS, "Schulden übernehmen", zinssatz);
         übernehmen.übertragen(nächsteAbrechnung, tage);
         return nächsteAbrechnung;
     }
@@ -209,9 +209,9 @@ public class AbrechnungAbschließenTest {
         assertEquals(3, buchungRepository.count());
 
         MonetaryAmount dbBetrag = buchungRepository.getSumKonto(abrechnung,
-                BuchungsArt.ÜBERNAHME_SCHULDEN, Position.SCHULDEN.ordinal());
+                BuchungsArt.ÜBERNAHME_SCHULDEN, SachKonto.SCHULDEN.ordinal());
         MonetaryAmount dbZins = buchungRepository.getSumKonto(abrechnung,
-                BuchungsArt.ÜBERNAHME_SCHULDEN, Position.ZINS.ordinal());
+                BuchungsArt.ÜBERNAHME_SCHULDEN, SachKonto.ZINS.ordinal());
         assertEquals(Geld.createAmount(betrag), dbBetrag);
         assertEquals(Geld.createAmount(zins), dbZins);
         MonetaryAmount saldo = buchungRepository.getSaldo(abrechnung);
@@ -226,9 +226,9 @@ public class AbrechnungAbschließenTest {
         assertEquals(2, buchungRepository.count());
 
         MonetaryAmount dbBetrag = buchungRepository.getSumKonto(abrechnung,
-                BuchungsArt.ÜBERNAHME_SCHULDEN, Position.SCHULDEN.ordinal());
+                BuchungsArt.ÜBERNAHME_SCHULDEN, SachKonto.SCHULDEN.ordinal());
         MonetaryAmount dbZins = buchungRepository.getSumKonto(abrechnung,
-                BuchungsArt.ÜBERNAHME_SCHULDEN, Position.ZINS.ordinal());
+                BuchungsArt.ÜBERNAHME_SCHULDEN, SachKonto.ZINS.ordinal());
         assertTrue(dbBetrag == null || dbBetrag.isZero());
         assertTrue(dbZins == null || dbZins.isZero());
         MonetaryAmount saldo = buchungRepository.getSaldo(abrechnung);

@@ -2,7 +2,7 @@ package boundingContext.abrechnung.helper;
 
 import javax.money.MonetaryAmount;
 
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.KontoBewegung;
@@ -25,16 +25,16 @@ public class EinBucher {
         this.kontoBewegungRepository = kontoBewegungRepository;
     }
 
-    public Buchung erzeugeBuchung(BuchungsAuftrag<Position> auftrag,
+    public Buchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,
             Abrechnung abrechnung) {
         if (!auftrag.isEmpty()) {
-            BetragsBündel<Position> beträge = auftrag.getPositionen();
+            BetragsBündel<SachKonto> beträge = auftrag.getPositionen();
             Buchung buchung = new Buchung();
             buchung.setText(auftrag.getBeschreibung().getText());
             buchung.setArt(auftrag.getBeschreibung().getArt());
             buchung.setAbrechnung(abrechnung);
             buchung = buchungRepository.save(buchung);
-            for (Position p : beträge.getKeys()) {
+            for (SachKonto p : beträge.getKeys()) {
                 MonetaryAmount betrag = beträge.getValue(p);
                 bewegungHinzufügen(buchung, p, betrag);
             }
@@ -43,7 +43,7 @@ public class EinBucher {
         return null;
     }
 
-    private void bewegungHinzufügen(Buchung buchung, Position p,
+    private void bewegungHinzufügen(Buchung buchung, SachKonto p,
             MonetaryAmount betrag) {
         if (!betrag.isZero()) {
             KontoBewegung bew = new KontoBewegung();
@@ -56,24 +56,24 @@ public class EinBucher {
         }
     }
 
-    public BetragsBündel<Position> beträgeEinerBuchungsartHolen(
+    public BetragsBündel<SachKonto> beträgeEinerBuchungsartHolen(
             Abrechnung abrechnung, int art) {
-        BetragsBündelMap<Position> beträge = new BetragsBündelMap<>();
+        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         for (Object o : buchungRepository.getSumBewegungen(abrechnung, art)) {
             Object[] werte = (Object[]) o;
-            Position p = Position.values()[(int) werte[0]];
+            SachKonto p = SachKonto.values()[(int) werte[0]];
             beträge.put(p, (MonetaryAmount) werte[1]);
         }
         return beträge;
     }
 
-    public Buchung erzeugeDifferenzBuchung(BuchungsAuftrag<Position> auftrag,
+    public Buchung erzeugeDifferenzBuchung(BuchungsAuftrag<SachKonto> auftrag,
             Abrechnung abrechnung) {
-        BetragsBündel<Position> aktuell = beträgeEinerBuchungsartHolen(
+        BetragsBündel<SachKonto> aktuell = beträgeEinerBuchungsartHolen(
                 abrechnung, auftrag.getBeschreibung().getArt());
-        BetragsBündel<Position> differenz = (BetragsBündel<Position>) aktuell
+        BetragsBündel<SachKonto> differenz = (BetragsBündel<SachKonto>) aktuell
                 .subtract(auftrag.getPositionen(), aktuell);
-        BuchungsAuftrag<Position> differenzAuftrag = new BuchungsAuftrag<>(
+        BuchungsAuftrag<SachKonto> differenzAuftrag = new BuchungsAuftrag<>(
                 auftrag.getBeschreibung(), differenz);
         return erzeugeBuchung(differenzAuftrag, abrechnung);
     }

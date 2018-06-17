@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
@@ -73,11 +73,11 @@ public class IntegrationTest {
 
         GebuehrDefinition gebührDefinition = new GebuehrDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
-        gebührDefinition.setKontoNr(Position.GEBÜHR.ordinal());
+        gebührDefinition.setKontoNr(SachKonto.GEBÜHR.ordinal());
         gebührDefinition.setGebührArt(1);
         gebührDefinition.setDatenArt(1);
         gebührDefinition.setParameter(0.06);
-        gebührDefinition.setMwstKonto(Position.MWST.ordinal());
+        gebührDefinition.setMwstKonto(SachKonto.MWST.ordinal());
         gebührDefinition.setMwstSatz(0.19);
         gebührDefinition.setBuchungsArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setBuchungstext("Testbuchung");

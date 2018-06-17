@@ -1,6 +1,6 @@
 package boundingContext.abrechnung.helper;
 
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.flow.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.gebühren.GebührFabrik;
@@ -22,7 +22,7 @@ public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
     }
 
     @Override
-    public GebührRepository<Position> erzeugeGebührRepository(int datenArt) {
+    public GebührRepository<SachKonto> erzeugeGebührRepository(int datenArt) {
         TestLeistungsRepository repo = new TestLeistungsRepository();
         repo.setLeistungsRepository(leistungRepository);
         return repo;

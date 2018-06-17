@@ -1,11 +1,11 @@
 package boundingContext.abrechnung.helper;
 
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 
 public class TestLeistungsRepository extends LeitungsGebührRepository {
 
     public TestLeistungsRepository() {
-        super(Position.BETRAG, 1);
+        super(SachKonto.BETRAG, 1);
     }
 
 }

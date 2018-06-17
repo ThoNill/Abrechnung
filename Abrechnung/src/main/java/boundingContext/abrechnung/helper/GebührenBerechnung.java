@@ -3,7 +3,7 @@ package boundingContext.abrechnung.helper;
 import javax.money.MonetaryAmount;
 
 import betrag.Geld;
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.gebühren.Gebühr;
@@ -15,27 +15,27 @@ import boundingContext.gemeinsam.BetragsBündel;
 
 public class GebührenBerechnung {
     private GebuehrDefinition definition;
-    private GebührRepository<Position> daten;
+    private GebührRepository<SachKonto> daten;
     private GebührFabrik gebührFabrik;
 
     public GebührenBerechnung(GebuehrDefinition definition,
-            GebührRepository<Position> daten, GebührFabrik gebührFabrik) {
+            GebührRepository<SachKonto> daten, GebührFabrik gebührFabrik) {
         super();
         this.definition = definition;
         this.daten = daten;
         this.gebührFabrik = gebührFabrik;
     }
 
-    public BetragsBündel<Position> gebührDazu(Abrechnung abrechnung,
-            BetragsBündel<Position> bündel) {
+    public BetragsBündel<SachKonto> gebührDazu(Abrechnung abrechnung,
+            BetragsBündel<SachKonto> bündel) {
         MonetaryAmount basisBetrag = daten.getGebührenBasis(abrechnung);
         MonetaryAmount gebührBetrag = erzeugeGebühr().apply(basisBetrag);
-        bündel.put(Position.values()[definition.getKontoNr()],
+        bündel.put(SachKonto.values()[definition.getKontoNr()],
                 gebührBetrag.negate());
         if (definition.getMwstSatz() > 0.0) {
             MonetaryAmount mwstBetrag = Geld.round(gebührBetrag
                     .multiply(definition.getMwstSatz()));
-            bündel.put(Position.values()[definition.getMwstKonto()],
+            bündel.put(SachKonto.values()[definition.getMwstKonto()],
                     mwstBetrag.negate());
         }
         return bündel;
@@ -45,15 +45,15 @@ public class GebührenBerechnung {
         return gebührFabrik.createGebühr(definition.getParameter());
     }
 
-    public BuchungsAuftrag<Position> berechnen(Abrechnung abrechnung) {
-        BetragsBündel<Position> bündel = daten.getBeträge(abrechnung);
+    public BuchungsAuftrag<SachKonto> berechnen(Abrechnung abrechnung) {
+        BetragsBündel<SachKonto> bündel = daten.getBeträge(abrechnung);
         bündel = gebührDazu(abrechnung, bündel);
         Beschreibung beschreibung = new Beschreibung(
                 definition.getBuchungsArt(), definition.getBuchungstext());
         return new BuchungsAuftrag<>(beschreibung, bündel);
     }
 
-    public BuchungsAuftrag<Position> markierenUndberechnen(Abrechnung abrechnung) {
+    public BuchungsAuftrag<SachKonto> markierenUndberechnen(Abrechnung abrechnung) {
         daten.markieren(abrechnung);
         return berechnen(abrechnung);
     }

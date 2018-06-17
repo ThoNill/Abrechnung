@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
-import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
@@ -54,13 +54,13 @@ public class EinBucherTest {
         mandantRepository.deleteAll();
     }
 
-    public BuchungsAuftrag<Position> erzeugeBuchungsAuftrag() {
-        BetragsBündelMap<Position> beträge = new BetragsBündelMap<>();
-        beträge.put(Position.BETRAG, Geld.createAmount(1.12));
+    public BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag() {
+        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
+        beträge.put(SachKonto.BETRAG, Geld.createAmount(1.12));
         Beschreibung beschreibung = new Beschreibung(BuchungsArt.TESTBUCHUNG,
                 "Testbuchung");
 
-        return new BuchungsAuftrag<Position>(beschreibung, beträge);
+        return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
     }
 
     public Mandant erzeugeMandant() {
@@ -91,7 +91,7 @@ public class EinBucherTest {
         Mandant mandant = erzeugeMandant();
 
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        BuchungsAuftrag<Position> auftrag = erzeugeBuchungsAuftrag();
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag();
         EinBucher bucher = erzeugeEinbucher();
         Buchung buchung = bucher.erzeugeBuchung(auftrag, abrechnung);
 
@@ -117,9 +117,9 @@ public class EinBucherTest {
     public void insertAndLoadTest() {
         Buchung buchung = insertBuchung();
         EinBucher bucher = erzeugeEinbucher();
-        BetragsBündel<Position> beträge = bucher.beträgeEinerBuchungsartHolen(
+        BetragsBündel<SachKonto> beträge = bucher.beträgeEinerBuchungsartHolen(
                 buchung.getAbrechnung(), BuchungsArt.TESTBUCHUNG);
-        assertEquals(Geld.createAmount(1.12), beträge.getValue(Position.BETRAG));
+        assertEquals(Geld.createAmount(1.12), beträge.getValue(SachKonto.BETRAG));
     }
 
     @Test
@@ -133,7 +133,7 @@ public class EinBucherTest {
     public void erzeugeDifferenBuchung() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        BuchungsAuftrag<Position> auftrag = erzeugeBuchungsAuftrag();
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag();
         EinBucher bucher = erzeugeEinbucher();
         Buchung buchung = bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
 
@@ -149,7 +149,7 @@ public class EinBucherTest {
     public void erzeugeDoppelteDifferenBuchung() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        BuchungsAuftrag<Position> auftrag = erzeugeBuchungsAuftrag();
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag();
         EinBucher bucher = erzeugeEinbucher();
         bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
         bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
