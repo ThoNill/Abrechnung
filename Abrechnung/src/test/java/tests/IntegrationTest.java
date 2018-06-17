@@ -17,19 +17,19 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import boundaryContext.abrechnung.entities.GebuehrDefinition;
-import boundaryContext.abrechnung.entities.Mandant;
-import boundaryContext.abrechnung.flow.payloads.AbrechnungsArt;
-import boundaryContext.abrechnung.flow.payloads.AufrufPayload;
-import boundaryContext.abrechnung.repositories.AbrechnungRepository;
-import boundaryContext.abrechnung.repositories.BuchungRepository;
-import boundaryContext.abrechnung.repositories.GebührenDefinitionRepository;
-import boundaryContext.abrechnung.repositories.KontoBewegungRepository;
-import boundaryContext.abrechnung.repositories.LeistungRepository;
-import boundaryContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.Position;
+import boundingContext.abrechnung.entities.GebuehrDefinition;
+import boundingContext.abrechnung.entities.Mandant;
+import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
+import boundingContext.abrechnung.flow.payloads.AufrufPayload;
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.BuchungRepository;
+import boundingContext.abrechnung.repositories.GebührenDefinitionRepository;
+import boundingContext.abrechnung.repositories.KontoBewegungRepository;
+import boundingContext.abrechnung.repositories.LeistungRepository;
+import boundingContext.abrechnung.repositories.MandantRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableIntegration

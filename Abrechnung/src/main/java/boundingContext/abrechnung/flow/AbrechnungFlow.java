@@ -7,17 +7,17 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.StandardIntegrationFlow;
 
-import boundaryContext.abrechnung.flow.handler.BerechneBuchungsauftrag;
-import boundaryContext.abrechnung.flow.handler.BucheDenBuchungsauftrag;
-import boundaryContext.abrechnung.flow.handler.GebührDefinitionAggregator;
-import boundaryContext.abrechnung.flow.handler.GebührDefinitionSplitter;
-import boundaryContext.abrechnung.flow.handler.HoleAbrechnung;
-import boundaryContext.abrechnung.flow.handler.SchließeDieAbrechnungAb;
-import boundaryContext.abrechnung.repositories.AbrechnungRepository;
-import boundaryContext.abrechnung.repositories.BuchungRepository;
-import boundaryContext.abrechnung.repositories.KontoBewegungRepository;
-import boundaryContext.abrechnung.repositories.LeistungRepository;
-import boundaryContext.abrechnung.repositories.MandantRepository;
+import boundingContext.abrechnung.flow.handler.BerechneBuchungsauftrag;
+import boundingContext.abrechnung.flow.handler.BucheDenBuchungsauftrag;
+import boundingContext.abrechnung.flow.handler.GebührDefinitionAggregator;
+import boundingContext.abrechnung.flow.handler.GebührDefinitionSplitter;
+import boundingContext.abrechnung.flow.handler.HoleAbrechnung;
+import boundingContext.abrechnung.flow.handler.SchließeDieAbrechnungAb;
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.BuchungRepository;
+import boundingContext.abrechnung.repositories.KontoBewegungRepository;
+import boundingContext.abrechnung.repositories.LeistungRepository;
+import boundingContext.abrechnung.repositories.MandantRepository;
 
 public class AbrechnungFlow {
 

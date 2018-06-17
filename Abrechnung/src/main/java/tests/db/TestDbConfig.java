@@ -17,7 +17,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 // Eine der Datenbankkonfigurationen muss eine Primary Annotation haben
 @Configuration
-@EnableJpaRepositories(basePackageClasses = boundaryContext.abrechnung.repositories.BuchungRepository.class // eine
+@EnableJpaRepositories(basePackageClasses = boundingContext.abrechnung.repositories.BuchungRepository.class // eine
                                                                                      // Klasse
                                                                                      // aus
                                                                                      // dem
@@ -70,7 +70,7 @@ public class TestDbConfig {
     public LocalContainerEntityManagerFactoryBean dbAEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { boundaryContext.abrechnung.entities.Abrechnung.class
+        em.setPackagesToScan(new String[] { boundingContext.abrechnung.entities.Abrechnung.class
                 .getPackage().getName() }); // Hier steht der Packagename zu den
                                             // Entities
         /*

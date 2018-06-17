@@ -15,11 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import boundaryContext.abrechnung.entities.Abrechnung;
-import boundaryContext.abrechnung.entities.Mandant;
-import boundaryContext.abrechnung.helper.AbrechnungHelper;
-import boundaryContext.abrechnung.repositories.AbrechnungRepository;
-import boundaryContext.abrechnung.repositories.MandantRepository;
+import boundingContext.abrechnung.entities.Abrechnung;
+import boundingContext.abrechnung.entities.Mandant;
+import boundingContext.abrechnung.helper.AbrechnungHelper;
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.MandantRepository;
 
 @RunWith(SpringRunner.class)
 // Class that run the tests
