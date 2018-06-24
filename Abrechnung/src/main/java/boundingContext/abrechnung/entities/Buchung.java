@@ -1,5 +1,6 @@
 package boundingContext.abrechnung.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -60,5 +61,13 @@ public class Buchung extends BuchungUser {
     public Abrechnung getAbrechnung() {
         return super.getAbrechnung();
     };
+    
+    @Override
+    @Basic
+    @Column(name = "BUCHUNGSDATUM")
+    public Date getBuchungsDatum() {
+        return super.getBuchungsDatum();
+    };
+
 
 }

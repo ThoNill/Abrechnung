@@ -1,15 +1,19 @@
 package boundingContext.abrechnung.entities;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import ddd.Entity;
 
 public class BuchungBasis  {
 
     public BuchungBasis() {
         super();
+        buchungsDatum = new Date();
     }
 
+    private Date buchungsDatum;
     private java.lang.Long BuchungId;
     private String text;
     private int art;
@@ -97,6 +101,16 @@ public class BuchungBasis  {
     public List<Entity<?>> getReferenzen() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+
+    public Date getBuchungsDatum() {
+        return buchungsDatum;
+    }
+
+
+    public void setBuchungsDatum(Date buchungsDatum) {
+        this.buchungsDatum = buchungsDatum;
     }
 
 }

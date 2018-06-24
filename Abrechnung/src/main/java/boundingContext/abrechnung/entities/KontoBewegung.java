@@ -54,7 +54,7 @@ public class KontoBewegung extends KontoBewegungUser {
     };
 
     @Override
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "BuchungId")
     public Buchung getBuchung() {
         return super.getBuchung();

@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,6 +47,7 @@ public class Mandant extends MandantUser {
 
     @Override
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant")
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Abrechnung> getAbrechnung() {
         return super.getAbrechnung();
     };
@@ -56,6 +58,13 @@ public class Mandant extends MandantUser {
     @LazyCollection(LazyCollectionOption.FALSE)
     public List<GebuehrDefinition> getGebuehrDefinitionen() {
         return super.getGebuehrDefinitionen();
+    };
+
+    @Override
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<ZahlungsDefinition> getZahlungsDefinitionen() {
+        return super.getZahlungsDefinitionen();
     };
 
 }

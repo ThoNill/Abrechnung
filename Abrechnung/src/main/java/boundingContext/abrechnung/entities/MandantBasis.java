@@ -13,6 +13,7 @@ public class MandantBasis  {
     private String name;
     private List<Abrechnung> abrechnung = new ArrayList<>();
     private List<GebuehrDefinition> gebuehren = new ArrayList<>();
+    private List<ZahlungsDefinition> zahlungen = new ArrayList<>();
 
     public java.lang.Long getMandantId() {
         return this.MandantId;
@@ -68,6 +69,20 @@ public class MandantBasis  {
 
     public void addGebuehrDefinitionen(GebuehrDefinition gebuehrDefinition) {
         this.gebuehren.add(gebuehrDefinition);
+    }
+
+    
+    public List<ZahlungsDefinition> getZahlungsDefinitionen() {
+        return zahlungen;
     };
+
+
+    public void setZahlungsDefinitionen(List<ZahlungsDefinition> zahlungen) {
+        this.zahlungen = zahlungen;
+    };
+
+    public void addZahlungsDefinitionen(ZahlungsDefinition zahlung) {
+        this.zahlungen.add(zahlung);
+    }
 
 }
