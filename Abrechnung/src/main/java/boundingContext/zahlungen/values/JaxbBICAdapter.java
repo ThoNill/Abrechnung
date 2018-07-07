@@ -3,7 +3,8 @@ package boundingContext.zahlungen.values;
 import javax.persistence.AttributeConverter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class JaxbBICAdapter extends XmlAdapter<String, BIC> implements AttributeConverter<BIC, String> {
+public class JaxbBICAdapter extends XmlAdapter<String, BIC> implements
+        AttributeConverter<BIC, String> {
 
     @Override
     public String marshal(BIC obj) throws Exception {

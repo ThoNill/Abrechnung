@@ -16,7 +16,8 @@ public class BucheDenBuchungsauftrag
     protected KontoBewegungRepository kontoBewegungRepository;
     protected SachKontoProvider sachKontoProvider;
 
-    public BucheDenBuchungsauftrag(SachKontoProvider sachKontoProvider,BuchungRepository buchungRepository,
+    public BucheDenBuchungsauftrag(SachKontoProvider sachKontoProvider,
+            BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository) {
         super();
         this.sachKontoProvider = sachKontoProvider;
@@ -25,7 +26,8 @@ public class BucheDenBuchungsauftrag
     }
 
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(sachKontoProvider,buchungRepository, kontoBewegungRepository);
+        return new EinBucher(sachKontoProvider, buchungRepository,
+                kontoBewegungRepository);
     }
 
     @Override

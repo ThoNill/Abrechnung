@@ -15,13 +15,14 @@ import boundingContext.buchhaltung.eingang.SachKontoDelegate;
 import boundingContext.daten.GebührRepository;
 import boundingContext.gemeinsam.BetragsBündel;
 
-public class GebührenBerechnung extends SachKontoDelegate{
+public class GebührenBerechnung extends SachKontoDelegate {
     private GebuehrDefinition definition;
     private GebührRepository<SachKonto> daten;
     private GebührFabrik gebührFabrik;
 
-    public GebührenBerechnung(SachKontoProvider sachKontoProvider,GebuehrDefinition definition,
-            GebührRepository<SachKonto> daten, GebührFabrik gebührFabrik) {
+    public GebührenBerechnung(SachKontoProvider sachKontoProvider,
+            GebuehrDefinition definition, GebührRepository<SachKonto> daten,
+            GebührFabrik gebührFabrik) {
         super(sachKontoProvider);
         this.definition = definition;
         this.daten = daten;
@@ -55,7 +56,8 @@ public class GebührenBerechnung extends SachKontoDelegate{
         return new BuchungsAuftrag<>(beschreibung, bündel);
     }
 
-    public BuchungsAuftrag<SachKonto> markierenUndberechnen(Abrechnung abrechnung) {
+    public BuchungsAuftrag<SachKonto> markierenUndberechnen(
+            Abrechnung abrechnung) {
         daten.markieren(abrechnung);
         return berechnen(abrechnung);
     }

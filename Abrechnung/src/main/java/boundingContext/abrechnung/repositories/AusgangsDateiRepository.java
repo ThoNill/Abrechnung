@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 
 import boundingContext.abrechnung.entities.AusgangsDatei;
 
-public interface AusgangsDateiRepository extends CrudRepository<AusgangsDatei, Long> {
-
+public interface AusgangsDateiRepository extends
+        CrudRepository<AusgangsDatei, Long> {
 
     @Query("select a from boundingContext.abrechnung.entities.AusgangsDatei a where a.gesendet is null and a.fileArt = :art ")
-    public List<AusgangsDatei> getNichVersendeteDateien(@Param("art") int art );
+    public List<AusgangsDatei> getNichVersendeteDateien(@Param("art") int art);
 
 }

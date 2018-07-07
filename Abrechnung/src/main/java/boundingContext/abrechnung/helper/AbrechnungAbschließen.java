@@ -16,35 +16,36 @@ public class AbrechnungAbschlieﬂen extends EinBucher {
     private SchuldenInDieAbrechnung schulden‹bertragen;
     private SaldoAusgleichen ausgleichen;
     private AbrechnungRepository abrechnungRepository;
- 
-    public AbrechnungAbschlieﬂen(SachKontoProvider sachKontoProvider,BuchungRepository buchungRepository,
+
+    public AbrechnungAbschlieﬂen(SachKontoProvider sachKontoProvider,
+            BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
-            ZahlungsAuftragRepository zahlungsAuftragRepository,
-            double zinssatz) {
-        super(sachKontoProvider,buchungRepository, kontoBewegungRepository);
+            ZahlungsAuftragRepository zahlungsAuftragRepository, double zinssatz) {
+        super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
         this.abrechnungRepository = abrechnungRepository;
-        
-        zahlungenEntfernen = new ZahlungenEntfernenManager(sachKontoProvider, buchungRepository, kontoBewegungRepository, 
-                zahlungsAuftragRepository, 
-                BuchungsArt.ABGLEICH_GUTHABEN, 
-                GUTHABEN());
- 
-        ausgleichen = new SaldoAusgleichen(sachKontoProvider,buchungRepository,
-                kontoBewegungRepository, BuchungsArt.ABGLEICH_GUTHABEN,
-                GUTHABEN(), "Guthaben", BuchungsArt.ABGLEICH_SCHULDEN,
-                SCHULDEN(), "Schulden");
 
-        schulden‹bertragen = new SchuldenInDieAbrechnung(sachKontoProvider,buchungRepository,
-                kontoBewegungRepository, abrechnungRepository,
-                BuchungsArt.ABGLEICH_SCHULDEN, BuchungsArt.‹BERNAHME_SCHULDEN,
-                SCHULDEN(), ZINS(), "Schulden ¸bernehmen",
-                zinssatz);
+        zahlungenEntfernen = new ZahlungenEntfernenManager(sachKontoProvider,
+                buchungRepository, kontoBewegungRepository,
+                zahlungsAuftragRepository, BuchungsArt.ABGLEICH_GUTHABEN,
+                GUTHABEN());
+
+        ausgleichen = new SaldoAusgleichen(sachKontoProvider,
+                buchungRepository, kontoBewegungRepository,
+                BuchungsArt.ABGLEICH_GUTHABEN, GUTHABEN(), "Guthaben",
+                BuchungsArt.ABGLEICH_SCHULDEN, SCHULDEN(), "Schulden");
+
+        schulden‹bertragen = new SchuldenInDieAbrechnung(sachKontoProvider,
+                buchungRepository, kontoBewegungRepository,
+                abrechnungRepository, BuchungsArt.ABGLEICH_SCHULDEN,
+                BuchungsArt.‹BERNAHME_SCHULDEN, SCHULDEN(), ZINS(),
+                "Schulden ¸bernehmen", zinssatz);
 
     }
 
     public Abrechnung abschleiﬂen(Abrechnung abrechnung, int zinsDauer) {
-        zahlungenEntfernen.entferneZahlungsauftr‰geFallsRestguthaben(abrechnung);
+        zahlungenEntfernen
+                .entferneZahlungsauftr‰geFallsRestguthaben(abrechnung);
         ausgleichen.saldoAusgleichen(abrechnung);
         AbrechnungHelper h = new AbrechnungHelper(abrechnungRepository);
         Abrechnung n‰chsteAbrechnung = h

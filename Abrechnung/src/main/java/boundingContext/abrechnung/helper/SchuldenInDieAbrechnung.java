@@ -18,15 +18,14 @@ import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class SchuldenInDieAbrechnung extends EinBucher {
 
-    public SchuldenInDieAbrechnung(
-            SachKontoProvider sachKontoProvider,
+    public SchuldenInDieAbrechnung(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
             int buchungstypSchuldenStart, int buchungstypSchulden,
             SachKonto kontonrSchulden, SachKonto kontonrZinsen, String text,
             double zinssatz) {
-        super(sachKontoProvider,buchungRepository, kontoBewegungRepository);
+        super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
         this.buchungstypSchuldenStart = buchungstypSchuldenStart;
         this.kontonrZinsen = kontonrZinsen;
         this.text = text;

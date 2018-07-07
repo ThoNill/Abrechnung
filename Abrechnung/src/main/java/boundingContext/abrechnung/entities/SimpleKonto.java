@@ -1,6 +1,5 @@
 package boundingContext.abrechnung.entities;
 
-
 public class SimpleKonto {
     int art;
     int nummer;

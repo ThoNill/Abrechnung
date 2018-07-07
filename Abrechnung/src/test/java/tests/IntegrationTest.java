@@ -33,9 +33,11 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableIntegration
-@SpringBootTest(classes = { tests.config.TestConfig.class, tests.config.TestDbConfig.class,
+@SpringBootTest(classes = { tests.config.TestConfig.class,
+        tests.config.TestDbConfig.class,
         boundingContext.abrechnung.flow.AbrechnungFlow.class })
-// @SpringBootTest(classes = { boundingContext.abrechnung.flow.AbrechnungFlow.class})
+// @SpringBootTest(classes = {
+// boundingContext.abrechnung.flow.AbrechnungFlow.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class IntegrationTest {
 
@@ -59,7 +61,7 @@ public class IntegrationTest {
 
     @Autowired
     private SachKontoProvider sachKontoProvider;
-    
+
     @Before
     @Transactional("dbATransactionManager")
     public void clear() {
@@ -89,7 +91,7 @@ public class IntegrationTest {
         mandant.addGebuehrDefinitionen(gebührDefinition);
         return mandantRepository.save(mandant);
     }
-   
+
     @Autowired
     @Qualifier("parameterChannel")
     public DirectChannel parameterChannel;

@@ -112,7 +112,8 @@ public class EinBucherTest {
     }
 
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(new TestSachKontoProvider(), buchungRepository,kontoBewegungRepository);
+        return new EinBucher(new TestSachKontoProvider(), buchungRepository,
+                kontoBewegungRepository);
     }
 
     @Test
@@ -121,7 +122,8 @@ public class EinBucherTest {
         EinBucher bucher = erzeugeEinbucher();
         BetragsBündel<SachKonto> beträge = bucher.beträgeEinerBuchungsartHolen(
                 buchung.getAbrechnung(), BuchungsArt.TESTBUCHUNG);
-        assertEquals(Geld.createAmount(1.12), beträge.getValue(TestSachKonto.BETRAG));
+        assertEquals(Geld.createAmount(1.12),
+                beträge.getValue(TestSachKonto.BETRAG));
     }
 
     @Test

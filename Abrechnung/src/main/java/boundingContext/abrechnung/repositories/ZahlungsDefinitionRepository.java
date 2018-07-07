@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import boundingContext.abrechnung.entities.ZahlungsDefinition;
 
-public interface ZahlungsDefinitionRepository extends CrudRepository<ZahlungsDefinition, Long> {
-
+public interface ZahlungsDefinitionRepository extends
+        CrudRepository<ZahlungsDefinition, Long> {
 
 }

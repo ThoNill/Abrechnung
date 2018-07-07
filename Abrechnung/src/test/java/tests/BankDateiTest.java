@@ -45,7 +45,6 @@ import boundingContext.zahlungen.values.IBAN;
 import boundingContext.zahlungen.vorlagen.STModel;
 import boundingContext.zahlungen.vorlagen.STVorlage;
 
-
 @RunWith(SpringRunner.class)
 // Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
@@ -62,11 +61,10 @@ public class BankDateiTest {
 
     @Autowired
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
-    
+
     @Autowired
     private ÜberweisungRepository überweisungRepository;
- 
-    
+
     @Autowired
     private BuchungRepository buchungRepository;
 
@@ -75,7 +73,7 @@ public class BankDateiTest {
 
     @Value("classpath:pain.001.003.03.xsd")
     Resource überweisungsXmlSchema;
-    
+
     @Before
     @Transactional("dbATransactionManager")
     public void clear() {
@@ -89,17 +87,18 @@ public class BankDateiTest {
     }
 
     public Mandant erzeugeMandant() {
-        Mandant mandant =  mandantRepository.save(new Mandant());
-        return addZahlungsDefinition(addZahlungsDefinition(mandant, 0.3),0.7);
+        Mandant mandant = mandantRepository.save(new Mandant());
+        return addZahlungsDefinition(addZahlungsDefinition(mandant, 0.3), 0.7);
     }
 
     private Mandant addZahlungsDefinition(Mandant mandant, double prozentSatz) {
         ZahlungsDefinition d = new ZahlungsDefinition();
         d.setBuchungsart(1);
-        d.setBank(new BankVerbindung(new IBAN("DE02120300000000202051"),new BIC("BYLADEM1001")));
+        d.setBank(new BankVerbindung(new IBAN("DE02120300000000202051"),
+                new BIC("BYLADEM1001")));
         d.setProzentSatz(prozentSatz);
         d.setTag(1);
-        d  = zahlungsDefinitionRepository.save(d);
+        d = zahlungsDefinitionRepository.save(d);
         d.setMandant(mandant);
         mandant.addZahlungsDefinitionen(d);
         zahlungsDefinitionRepository.save(d);
@@ -124,36 +123,41 @@ public class BankDateiTest {
     private SachKontoProvider sachKontoProvider() {
         return new TestSachKontoProvider();
     }
-    
+
     @Test
     public void aufträgeErzeugen() {
         List<Überweisung> überweisungen = new ArrayList<>();
-        createÜberweisung(überweisungen,1.2,1);
-        createÜberweisung(überweisungen,2.2,2);
-        createÜberweisung(überweisungen,3.2,3);
-        STModel model = new STModel(123,"Test Name", überweisungen);
-        
-        STVorlage<STModel> vorlage = new STVorlage<>("pain.001.003.03",".",Charset.defaultCharset(),model);
+        createÜberweisung(überweisungen, 1.2, 1);
+        createÜberweisung(überweisungen, 2.2, 2);
+        createÜberweisung(überweisungen, 3.2, 3);
+        STModel model = new STModel(123, "Test Name", überweisungen);
+
+        STVorlage<STModel> vorlage = new STVorlage<>("pain.001.003.03", ".",
+                Charset.defaultCharset(), model);
         try {
-            XmlValidator validator = XmlValidatorFactory.createValidator(überweisungsXmlSchema,XmlValidatorFactory.SCHEMA_W3C_XML);
+            XmlValidator validator = XmlValidatorFactory.createValidator(
+                    überweisungsXmlSchema, XmlValidatorFactory.SCHEMA_W3C_XML);
             String dateiName = vorlage.erzeugeAusgabe();
             Source source = new StreamSource(new File(dateiName));
-            SAXParseException[]  r = validator.validate(source);
+            SAXParseException[] r = validator.validate(source);
             assertTrue(r == null || r.length == 0);
         } catch (Exception e) {
-           fail(e.getMessage());
+            fail(e.getMessage());
         }
-        
+
     }
 
-    private void createÜberweisung(List<Überweisung> überweisungen,double betrag,int nummer) {
+    private void createÜberweisung(List<Überweisung> überweisungen,
+            double betrag, int nummer) {
         Überweisung ü = new Überweisung();
-        ü.setVon(new BankVerbindung(new IBAN("DE02500105170137075030"), new BIC("INGDDEFF")));
-        ü.setAn(new BankVerbindung(new IBAN("DE02300209000106531065"), new BIC("CMCIDEDD")));
+        ü.setVon(new BankVerbindung(new IBAN("DE02500105170137075030"),
+                new BIC("INGDDEFF")));
+        ü.setAn(new BankVerbindung(new IBAN("DE02300209000106531065"), new BIC(
+                "CMCIDEDD")));
         ü.setBetrag(Geld.createAmount(betrag));
-        ü.setVerwendungszweck("V "+ nummer);
+        ü.setVerwendungszweck("V " + nummer);
         ü.setAusbezahlt(new Date());
         überweisungen.add(überweisungRepository.save(ü));
     }
-        
+
 }

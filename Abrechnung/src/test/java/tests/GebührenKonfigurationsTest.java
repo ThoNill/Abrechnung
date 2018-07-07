@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import tests.flow.TestAbrechnungsKonfigurator;
-import tests.flow.TestGebührFabrik;
 import tests.flow.TestLeistungsRepository;
 import tests.konten.TestSachKonto;
 import tests.konten.TestSachKontoProvider;
@@ -188,7 +187,7 @@ public class GebührenKonfigurationsTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         TestLeistungsRepository leistungsRepository = new TestLeistungsRepository();
         leistungsRepository.setLeistungsRepository(leistungRepository);
-     
+
         GebuehrDefinition gebührDefinition = new GebuehrDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setKontoNr(TestSachKonto.GEBÜHR.ordinal());
@@ -200,7 +199,8 @@ public class GebührenKonfigurationsTest {
         gebührDefinition.setBuchungsArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setBuchungstext("Testbuchung");
 
-        AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(leistungRepository);
+        AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(
+                leistungRepository);
         GebührenBerechnung berechnung = konfigurator
                 .erzeugeGebührenBerechner(gebührDefinition);
         BuchungsAuftrag<SachKonto> auftrag = berechnung
@@ -214,8 +214,8 @@ public class GebührenKonfigurationsTest {
         assertEquals(Geld.createAmount(-summe * 0.06 * 0.19),
                 auftragBündel.getBetrag(TestSachKonto.MWST));
 
-        EinBucher bucher = new EinBucher(new TestSachKontoProvider(),buchungRepository,
-                kontoBewegungRepository);
+        EinBucher bucher = new EinBucher(new TestSachKontoProvider(),
+                buchungRepository, kontoBewegungRepository);
         bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
         // Noch einmal, darf nichts ausmachen
         bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);

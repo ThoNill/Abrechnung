@@ -39,7 +39,6 @@ public class AbrechnungBasis {
         return this.Jahr;
     };
 
-    
     public Mandant getMandant() {
         return this.mandant;
     };
@@ -76,7 +75,7 @@ public class AbrechnungBasis {
         this.buchung.remove(buchung);
     };
 
-    
+    @Override
     public String toString() {
         return "AbrechnungBasis " + " AbrechnungId =" + this.getAbrechnungId()
                 + " Monat =" + this.getMonat() + " Jahr =" + this.getJahr()
@@ -85,17 +84,14 @@ public class AbrechnungBasis {
         ;
     }
 
-    
     public AbrechnungsTyp getTyp() {
         return typ;
     }
 
-    
     public void setTyp(AbrechnungsTyp typ) {
         this.typ = typ;
     }
 
-    
     public String getBezeichnung() {
         return bezeichnung;
     }
@@ -104,7 +100,6 @@ public class AbrechnungBasis {
         this.bezeichnung = bezeichnung;
     }
 
-    
     public int getNummer() {
         return nummer;
     }
@@ -113,17 +108,14 @@ public class AbrechnungBasis {
         this.nummer = nummer;
     }
 
-    
     public RunStatus getRunStatus() {
         return runStatus;
     }
 
-    
     public void setRunStatus(RunStatus runStatus) {
         this.runStatus = runStatus;
     }
 
-    
     public Date getAngelegt() {
         return angelegt;
     }
@@ -132,7 +124,6 @@ public class AbrechnungBasis {
         this.angelegt = angelegt;
     }
 
-    
     public Zeitraum getZeitraum() {
         return zeitraum;
     }
@@ -141,19 +132,16 @@ public class AbrechnungBasis {
         this.zeitraum = zeitraum;
     }
 
-    
     public Long getId() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    
     public AbrechnungsStatus getStatus() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    
     public void setStatus(AbrechnungsStatus status) {
         // TODO Auto-generated method stub
 

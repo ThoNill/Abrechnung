@@ -61,13 +61,12 @@ public class Buchung extends BuchungUser {
     public Abrechnung getAbrechnung() {
         return super.getAbrechnung();
     };
-    
+
     @Override
     @Basic
     @Column(name = "BUCHUNGSDATUM")
     public Date getBuchungsDatum() {
         return super.getBuchungsDatum();
     };
-
 
 }

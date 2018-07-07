@@ -31,15 +31,14 @@ import boundingContext.zahlungen.values.BankVerbindung;
 public class ZahlungsAuftragsManager extends EinBucher {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
     private ÜberweisungRepository überweisungsRepository;
-    private SachKonto  offen;
-    private SachKonto  überwiesen;
+    private SachKonto offen;
+    private SachKonto überwiesen;
 
     public ZahlungsAuftragsManager(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
-            ÜberweisungRepository überweisungsRepository,
-            SachKonto offen,
+            ÜberweisungRepository überweisungsRepository, SachKonto offen,
             SachKonto überwiesen) {
         super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
@@ -91,7 +90,9 @@ public class ZahlungsAuftragsManager extends EinBucher {
             überweisung.setAuftrag(auftrag);
             überweisung.setMandant(auftrag.getMandant());
             überweisung = überweisungsRepository.save(überweisung);
-            erzeugeBuchung(überweisung.getBetrag(),überweisung.getBuchungsart(),offen,überwiesen,"Überweisung erzeugt",auftrag.getAbrechnung());
+            erzeugeBuchung(überweisung.getBetrag(),
+                    überweisung.getBuchungsart(), offen, überwiesen,
+                    "Überweisung erzeugt", auftrag.getAbrechnung());
         }
     }
 
@@ -113,8 +114,5 @@ public class ZahlungsAuftragsManager extends EinBucher {
                 erzeugeBuchungsAuftrag(betrag, buchungsart, von, nach,
                         buchungstext), abrechnung);
     }
-    
-  
 
-   
 }

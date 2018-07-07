@@ -1,6 +1,6 @@
 package boundingContext.abrechnung.entities;
 
-public class KontoBewegungBasis  {
+public class KontoBewegungBasis {
 
     public KontoBewegungBasis() {
         super();
@@ -24,7 +24,6 @@ public class KontoBewegungBasis  {
         return this.kontonr;
     };
 
-   
     public javax.money.MonetaryAmount getBetrag() {
         return this.betrag;
     };
@@ -53,6 +52,7 @@ public class KontoBewegungBasis  {
         this.buchung = buchung;
     };
 
+    @Override
     public String toString() {
         return "KontoBewegungBasis " + " KontoBewegungId ="
                 + this.getKontoBewegungId() + " Art =" + this.getArt()

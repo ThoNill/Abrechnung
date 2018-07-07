@@ -3,7 +3,7 @@ package boundingContext.abrechnung.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MandantBasis  {
+public class MandantBasis {
 
     public MandantBasis() {
         super();
@@ -71,11 +71,9 @@ public class MandantBasis  {
         this.gebuehren.add(gebuehrDefinition);
     }
 
-    
     public List<ZahlungsDefinition> getZahlungsDefinitionen() {
         return zahlungen;
     };
-
 
     public void setZahlungsDefinitionen(List<ZahlungsDefinition> zahlungen) {
         this.zahlungen = zahlungen;

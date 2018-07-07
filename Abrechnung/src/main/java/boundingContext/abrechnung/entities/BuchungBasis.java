@@ -6,7 +6,7 @@ import java.util.List;
 
 import ddd.Entity;
 
-public class BuchungBasis  {
+public class BuchungBasis {
 
     public BuchungBasis() {
         super();
@@ -24,17 +24,14 @@ public class BuchungBasis  {
         return this.BuchungId;
     };
 
-   
     public String getText() {
         return this.text;
     };
 
-   
     public int getArt() {
         return this.art;
     };
 
-   
     public List<KontoBewegung> getBewegungen() {
         return this.bewegungen;
     };
@@ -71,7 +68,7 @@ public class BuchungBasis  {
         this.abrechnung = abrechnung;
     };
 
-   
+    @Override
     public String toString() {
         return "BuchungBasis " + " BuchungId =" + this.getBuchungId()
                 + " Text =" + this.getText() + " Art =" + this.getArt()
@@ -79,35 +76,29 @@ public class BuchungBasis  {
                 + " Abrechnung =" + this.getAbrechnung();
     }
 
-   
     public Long getId() {
         // TODO Auto-generated method stub
         return null;
     }
 
-   
     public void stornieren() {
         // TODO Auto-generated method stub
 
     }
 
-   
     public Buchung getStornoBuchung() {
         // TODO Auto-generated method stub
         return null;
     }
 
-   
     public List<Entity<?>> getReferenzen() {
         // TODO Auto-generated method stub
         return null;
     }
 
-
     public Date getBuchungsDatum() {
         return buchungsDatum;
     }
-
 
     public void setBuchungsDatum(Date buchungsDatum) {
         this.buchungsDatum = buchungsDatum;

@@ -12,9 +12,9 @@ import boundingContext.abrechnung.repositories.LeistungRepository;
 @Configuration
 public class TestConfig {
 
-    
     @Bean
-    public AbrechnungsKonfigurator configurator(LeistungRepository leistungRepository) {
+    public AbrechnungsKonfigurator configurator(
+            LeistungRepository leistungRepository) {
         return new TestAbrechnungsKonfigurator(leistungRepository);
     }
 

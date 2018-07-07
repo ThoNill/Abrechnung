@@ -12,13 +12,14 @@ import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.gemeinsam.BetragsBündel;
 import boundingContext.gemeinsam.BetragsBündelMap;
 
-public class EinBucher extends SachKontoDelegate{
+public class EinBucher extends SachKontoDelegate {
 
     protected BuchungRepository buchungRepository;
 
     protected KontoBewegungRepository kontoBewegungRepository;
 
-    public EinBucher(SachKontoProvider sachKontoProvider,BuchungRepository buchungRepository,
+    public EinBucher(SachKontoProvider sachKontoProvider,
+            BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository) {
         super(sachKontoProvider);
         this.buchungRepository = buchungRepository;

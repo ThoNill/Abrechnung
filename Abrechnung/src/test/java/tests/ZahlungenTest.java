@@ -49,11 +49,10 @@ public class ZahlungenTest {
 
     @Autowired
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
-    
+
     @Autowired
     private ÜberweisungRepository überweisungRepository;
- 
-    
+
     @Autowired
     private BuchungRepository buchungRepository;
 
@@ -73,17 +72,17 @@ public class ZahlungenTest {
     }
 
     public Mandant erzeugeMandant() {
-        Mandant mandant =  mandantRepository.save(new Mandant());
-        return addZahlungsDefinition(addZahlungsDefinition(mandant, 0.3),0.7);
+        Mandant mandant = mandantRepository.save(new Mandant());
+        return addZahlungsDefinition(addZahlungsDefinition(mandant, 0.3), 0.7);
     }
 
     private Mandant addZahlungsDefinition(Mandant mandant, double prozentSatz) {
         ZahlungsDefinition d = new ZahlungsDefinition();
         d.setBuchungsart(1);
-        d.setBank(new BankVerbindung(new IBAN("123"),new BIC("999")));
+        d.setBank(new BankVerbindung(new IBAN("123"), new BIC("999")));
         d.setProzentSatz(prozentSatz);
         d.setTag(1);
-        d  = zahlungsDefinitionRepository.save(d);
+        d = zahlungsDefinitionRepository.save(d);
         d.setMandant(mandant);
         mandant.addZahlungsDefinitionen(d);
         zahlungsDefinitionRepository.save(d);
@@ -108,34 +107,42 @@ public class ZahlungenTest {
     private SachKontoProvider sachKontoProvider() {
         return new TestSachKontoProvider();
     }
-    
+
     @Test
     public void aufträgeErzeugen() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         SachKontoProvider sachKontoProvider = sachKontoProvider();
-        
-        ZahlungsAuftragsManager manager = new ZahlungsAuftragsManager(sachKontoProvider, buchungRepository, kontoBewegungRepository, zahlungsAuftragRepository, überweisungRepository, TestSachKonto.GUTHABEN,TestSachKonto.AUSBEZAHLT);
-        List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,Geld.createAmount(100), "verwendungszweck");
-        assertEquals(2,aufträge.size());
-        assertEquals(Geld.createAmount(30),aufträge.get(0).getBetrag());
-        assertEquals(Geld.createAmount(70),aufträge.get(1).getBetrag());
-        
+
+        ZahlungsAuftragsManager manager = new ZahlungsAuftragsManager(
+                sachKontoProvider, buchungRepository, kontoBewegungRepository,
+                zahlungsAuftragRepository, überweisungRepository,
+                TestSachKonto.GUTHABEN, TestSachKonto.AUSBEZAHLT);
+        List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
+                Geld.createAmount(100), "verwendungszweck");
+        assertEquals(2, aufträge.size());
+        assertEquals(Geld.createAmount(30), aufträge.get(0).getBetrag());
+        assertEquals(Geld.createAmount(70), aufträge.get(1).getBetrag());
+
         assertEquals(2, zahlungsAuftragRepository.count());
     }
-    
 
     @Test
     public void überweisungenErzeugen() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         SachKontoProvider sachKontoProvider = sachKontoProvider();
-        
-        ZahlungsAuftragsManager manager = new ZahlungsAuftragsManager(sachKontoProvider, buchungRepository, kontoBewegungRepository, zahlungsAuftragRepository, überweisungRepository, TestSachKonto.GUTHABEN,TestSachKonto.AUSBEZAHLT);
-        List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,Geld.createAmount(100), "verwendungszweck");
-        
-        manager.erzeugeÜberweisungen(mandant,aufträge, new BankVerbindung(new IBAN("1"),new BIC("9")));       
+
+        ZahlungsAuftragsManager manager = new ZahlungsAuftragsManager(
+                sachKontoProvider, buchungRepository, kontoBewegungRepository,
+                zahlungsAuftragRepository, überweisungRepository,
+                TestSachKonto.GUTHABEN, TestSachKonto.AUSBEZAHLT);
+        List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
+                Geld.createAmount(100), "verwendungszweck");
+
+        manager.erzeugeÜberweisungen(mandant, aufträge, new BankVerbindung(
+                new IBAN("1"), new BIC("9")));
         assertEquals(2, überweisungRepository.count());
     }
-    
+
 }

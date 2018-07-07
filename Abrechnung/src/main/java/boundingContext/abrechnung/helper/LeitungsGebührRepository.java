@@ -24,8 +24,7 @@ public class LeitungsGebührRepository implements GebührRepository<SachKonto> {
 
     @Override
     public void markieren(Abrechnung abrechnung) {
-        leistungRepository.markData((boundingContext.abrechnung.entities.Abrechnung) abrechnung,
-                (boundingContext.abrechnung.entities.Mandant) abrechnung.getMandant(), art);
+        leistungRepository.markData(abrechnung, abrechnung.getMandant(), art);
     }
 
     @Override
@@ -38,8 +37,7 @@ public class LeitungsGebührRepository implements GebührRepository<SachKonto> {
 
     @Override
     public MonetaryAmount getGebührenBasis(Abrechnung abrechnung) {
-        return leistungRepository.getBetrag(
-                (boundingContext.abrechnung.entities.Abrechnung) abrechnung, art);
+        return leistungRepository.getBetrag(abrechnung, art);
     }
 
     public void setLeistungsRepository(LeistungRepository leistungRepository) {

@@ -21,14 +21,13 @@ public class SaldoAusgleichen extends EinBucher {
     private SachKonto kontonrSchulden;
     private String textSchulden;
 
-    public SaldoAusgleichen(
-            SachKontoProvider sachKontoProvider,
+    public SaldoAusgleichen(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             int buchungstypGuthaben, SachKonto kontonrGuthaben,
             String textGuthaben, int buchungstypSchulden,
             SachKonto kontonrSchulden, String textSchulden) {
-        super(sachKontoProvider,buchungRepository, kontoBewegungRepository);
+        super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
         this.buchungstypGuthaben = buchungstypGuthaben;
         this.kontonrGuthaben = kontonrGuthaben;
         this.textGuthaben = textGuthaben;
@@ -50,8 +49,8 @@ public class SaldoAusgleichen extends EinBucher {
 
     private void buche(Abrechnung abrechnung, int buchungstyp,
             SachKonto kontonr, String text, MonetaryAmount betrag) {
-        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(buchungstyp,
-                kontonr, text, betrag);
+        BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(
+                buchungstyp, kontonr, text, betrag);
         erzeugeBuchung(auftrag, abrechnung);
     }
 

@@ -24,7 +24,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
         return TestSachKonto.AUSBEZAHLT;
     }
 
-    
     @Override
     public SachKonto SCHULDEN() {
         return TestSachKonto.SCHULDEN;
@@ -42,7 +41,7 @@ public class TestSachKontoProvider implements SachKontoProvider {
 
     @Override
     public SachKonto sachKontoFrom(int pos) {
-       return TestSachKonto.values()[pos];
+        return TestSachKonto.values()[pos];
     }
 
 }

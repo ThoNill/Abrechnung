@@ -12,7 +12,7 @@ import boundingContext.daten.GebührRepository;
 public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
 
     private LeistungRepository leistungRepository;
- 
+
     public TestAbrechnungsKonfigurator(LeistungRepository leistungRepository) {
         super();
         this.leistungRepository = leistungRepository;
@@ -33,7 +33,7 @@ public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
     @Override
     public GebührenBerechnung erzeugeGebührenBerechner(
             GebuehrDefinition definition) {
-        return new GebührenBerechnung(new TestSachKontoProvider(),definition,
+        return new GebührenBerechnung(new TestSachKontoProvider(), definition,
                 erzeugeGebührRepository(definition.getDatenArt()),
                 erzeugeGebührFabrik(definition.getGebührArt()));
     }

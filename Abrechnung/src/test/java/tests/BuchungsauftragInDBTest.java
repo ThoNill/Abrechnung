@@ -148,7 +148,8 @@ public class BuchungsauftragInDBTest {
         Buchung buchung = insertBuchung();
         BetragsBündel<SachKonto> beträge = beträgeEinerBuchungsartHolen(
                 buchung.getAbrechnung(), BuchungsArt.TESTBUCHUNG);
-        assertEquals(Geld.createAmount(1.12), beträge.getValue(TestSachKonto.BETRAG));
+        assertEquals(Geld.createAmount(1.12),
+                beträge.getValue(TestSachKonto.BETRAG));
     }
 
     @Test

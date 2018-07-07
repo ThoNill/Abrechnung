@@ -46,7 +46,7 @@ public class ZahlungenEntfernenManager extends EinBucher {
     @Transactional("dbATransactionManager")
     public void entferneZahlungsaufträge(Abrechnung abrechnung, int art) {
         List<ZahlungsAuftrag> aufträge = zahlungsAuftragRepository
-                .getOffeneZahlungen(abrechnung,art);
+                .getOffeneZahlungen(abrechnung, art);
         for (ZahlungsAuftrag a : aufträge) {
             entferneZahlungsauftrag(a);
         }
@@ -54,7 +54,8 @@ public class ZahlungenEntfernenManager extends EinBucher {
 
     private void entferneZahlungsauftrag(ZahlungsAuftrag a) {
         a.setStorniert(new Date());
-        bucheStorno(a.getAbrechnung(), a.getBetrag(), a.getBuchungsart(), kontonrGuthaben);
+        bucheStorno(a.getAbrechnung(), a.getBetrag(), a.getBuchungsart(),
+                kontonrGuthaben);
     }
 
     private void bucheStorno(Abrechnung abrechnung, MonetaryAmount betrag,

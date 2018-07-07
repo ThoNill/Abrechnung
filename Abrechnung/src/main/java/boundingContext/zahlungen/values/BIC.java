@@ -1,8 +1,8 @@
 package boundingContext.zahlungen.values;
 
 public class BIC {
-     private String bic;
-    
+    private String bic;
+
     public BIC(String bic) {
         super();
         this.bic = bic;
@@ -10,7 +10,7 @@ public class BIC {
 
     @Override
     public String toString() {
-        return  bic;
+        return bic;
     }
 
     @Override
@@ -37,5 +37,5 @@ public class BIC {
             return false;
         return true;
     }
-    
+
 }

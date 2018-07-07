@@ -18,18 +18,18 @@ import org.springframework.transaction.PlatformTransactionManager;
 // Eine der Datenbankkonfigurationen muss eine Primary Annotation haben
 @Configuration
 @EnableJpaRepositories(basePackageClasses = boundingContext.abrechnung.repositories.BuchungRepository.class // eine
-                                                                                     // Klasse
-                                                                                     // aus
-                                                                                     // dem
-                                                                                     // Package
-                                                                                     // mit
-                                                                                     // den
-                                                                                     // Repositories
+// Klasse
+// aus
+// dem
+// Package
+// mit
+// den
+// Repositories
 // , entityManagerFactoryRef = "entityManagerFactory" braucht man hier nicht
 , transactionManagerRef = "dbATransactionManager" // Name des
-                                                  // TransactionManagers,
-                                                  // Transactional Annotationen
-                                                  // verweisen dann darauf
+// TransactionManagers,
+// Transactional Annotationen
+// verweisen dann darauf
 )
 public class TestDbConfig {
 

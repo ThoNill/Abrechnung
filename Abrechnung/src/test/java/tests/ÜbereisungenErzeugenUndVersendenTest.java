@@ -85,9 +85,9 @@ public class ÜbereisungenErzeugenUndVersendenTest {
 
         createÜberweisung("DE02500105170137075030", 5, mandant);
         createÜberweisung("DE02200505501015871393", 20, mandant);
-   
-        assertEquals(25,überweisungRepository.count());
-        
+
+        assertEquals(25, überweisungRepository.count());
+
         try {
             ÜberweisungenManager manager = new ÜberweisungenManager(
                     ausgangsDateiRepository, überweisungRepository, ".",
@@ -98,8 +98,8 @@ public class ÜbereisungenErzeugenUndVersendenTest {
             e.printStackTrace();
             fail(e.getMessage());
         }
-        
-        assertEquals(3,ausgangsDateiRepository.count());
+
+        assertEquals(3, ausgangsDateiRepository.count());
 
     }
 
@@ -112,16 +112,14 @@ public class ÜbereisungenErzeugenUndVersendenTest {
                 "CMCIDEDD")));
         ü.setBetrag(Geld.createAmount(betrag));
         ü.setVerwendungszweck("V " + nummer);
-    //    ü.setAusbezahlt(new Date());
+        // ü.setAusbezahlt(new Date());
         ü = überweisungRepository.save(ü);
         ü.setMandant(mandant);
     }
 
-
-    private void createÜberweisung(String von, int anz,
-            Mandant mandant) {
-        for(int i = 0; i < anz;i++) {
-                createÜberweisung(von, 1.2 * i, i, mandant);
+    private void createÜberweisung(String von, int anz, Mandant mandant) {
+        for (int i = 0; i < anz; i++) {
+            createÜberweisung(von, 1.2 * i, i, mandant);
         }
 
     }

@@ -22,7 +22,7 @@ import boundingContext.zahlungen.values.BankVerbindung;
 @Entity
 @Table(name = "ZAHLUNGSAUFTRAG")
 @SequenceGenerator(name = "ZAHLUNGSAUFTRAG_SEQ", sequenceName = "ZAHLUNGSAUFTRAG_SEQ")
-public class ZahlungsAuftrag  {
+public class ZahlungsAuftrag {
 
     public ZahlungsAuftrag() {
         super();
@@ -32,7 +32,7 @@ public class ZahlungsAuftrag  {
     private Abrechnung abrechnung;
     private Long zahlungsAuftragsId;
     private int buchungsart;
-      
+
     private MonetaryAmount betrag;
     private Date zuZahlenAm;
     private BankVerbindung bank;
@@ -40,7 +40,7 @@ public class ZahlungsAuftrag  {
     private Date storniert;
     private Date bestätigt;
     private String verwendungszweck;
-    
+
     @Basic
     @Column(name = "ZAHLUNGSAUFTRAGID")
     @Id
@@ -48,7 +48,7 @@ public class ZahlungsAuftrag  {
     public Long getZahlungsAuftragsId() {
         return zahlungsAuftragsId;
     }
-    
+
     public void setZahlungsAuftragsId(Long zahlungsAuftragsId) {
         this.zahlungsAuftragsId = zahlungsAuftragsId;
     }
@@ -115,7 +115,7 @@ public class ZahlungsAuftrag  {
     }
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "MandantId")  
+    @JoinColumn(name = "MandantId")
     public Mandant getMandant() {
         return mandant;
     }
@@ -123,7 +123,6 @@ public class ZahlungsAuftrag  {
     public void setMandant(Mandant mandant) {
         this.mandant = mandant;
     }
-
 
     @Embedded
     public BankVerbindung getBank() {
@@ -135,7 +134,7 @@ public class ZahlungsAuftrag  {
     }
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "AbrechnungId")  
+    @JoinColumn(name = "AbrechnungId")
     public Abrechnung getAbrechnung() {
         return abrechnung;
     }
@@ -153,5 +152,5 @@ public class ZahlungsAuftrag  {
     public void setStorniert(Date storniert) {
         this.storniert = storniert;
     };
-    
+
 }

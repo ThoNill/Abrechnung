@@ -22,7 +22,7 @@ public class SachKontoDelegate {
     public SachKonto AUSBEZAHLT() {
         return sachKontoProvider.AUSBEZAHLT();
     }
-    
+
     public SachKonto SCHULDEN() {
         return sachKontoProvider.SCHULDEN();
     }

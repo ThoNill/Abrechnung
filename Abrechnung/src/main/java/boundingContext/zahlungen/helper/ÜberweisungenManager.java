@@ -24,7 +24,6 @@ public class ÜberweisungenManager {
     private int fileArt;
     private TypeReference protokoll;
     private int quellTyp;
-    
 
     public ÜberweisungenManager(
             AusgangsDateiRepository ausgangsDateiRepository,
@@ -40,13 +39,13 @@ public class ÜberweisungenManager {
         this.protokoll = protokoll;
         this.quellTyp = quellTyp;
     }
- 
-    
+
     @Transactional("dbATransactionManager")
     public void markiereÜberweisungsDateien(int count) {
         List<IBAN> alle = überweisungsRepository.getOffeneIBAN();
         for (IBAN iban : alle) {
-            markiereÜberweisungMitAusgangsDateien(nichtÜbertrageneÜberweisungen(count, iban));
+            markiereÜberweisungMitAusgangsDateien(nichtÜbertrageneÜberweisungen(
+                    count, iban));
         }
     }
 
@@ -56,7 +55,6 @@ public class ÜberweisungenManager {
                 .getOffeneÜberweisungen(iban);
         return erzeugeAbschnitte(count, alle);
     }
-
 
     private List<List<Überweisung>> erzeugeAbschnitte(int count,
             List<Überweisung> alle) {
@@ -78,13 +76,13 @@ public class ÜberweisungenManager {
         return liste;
     }
 
-    private void markiereÜberweisungMitAusgangsDateien(List<List<Überweisung>> abschnitte) {
+    private void markiereÜberweisungMitAusgangsDateien(
+            List<List<Überweisung>> abschnitte) {
         for (List<Überweisung> abschnitt : abschnitte) {
             markiereÜberweisungMitAusgangsDatei(abschnitt);
         }
     }
 
-    
     private void markiereÜberweisungMitAusgangsDatei(List<Überweisung> abschnitt) {
         AusgangsDatei ausgangsDatei = new AusgangsDatei();
         ausgangsDatei.setFileArt(fileArt);
@@ -96,11 +94,12 @@ public class ÜberweisungenManager {
             ü.setAusbezahlt(new Date());
             überweisungsRepository.save(ü);
         }
-    //    überweisungsRepository.save(abschnitt);
+        // überweisungsRepository.save(abschnitt);
     }
-    
+
     public void dateienMarkierenUndErstellen() throws Exception {
-        List<AusgangsDatei> dateien = ausgangsDateiRepository.getNichVersendeteDateien(1);
+        List<AusgangsDatei> dateien = ausgangsDateiRepository
+                .getNichVersendeteDateien(1);
         for (AusgangsDatei d : dateien) {
             markierenUndErstellen(d);
         }
@@ -114,14 +113,15 @@ public class ÜberweisungenManager {
     }
 
     private String dateiErstellen(AusgangsDatei d) throws Exception {
-        List<Überweisung> überweisungen = überweisungsRepository.getÜberweisungen(d);
-        
-        STModel model = new STModel(d.getAusgangsDateiId(),name, überweisungen);
-        
-        STVorlage<STModel> vorlage = new STVorlage<>("pain.001.003.03",ausgangsVerzeichnis,Charset.defaultCharset(),model);
+        List<Überweisung> überweisungen = überweisungsRepository
+                .getÜberweisungen(d);
+
+        STModel model = new STModel(d.getAusgangsDateiId(), name, überweisungen);
+
+        STVorlage<STModel> vorlage = new STVorlage<>("pain.001.003.03",
+                ausgangsVerzeichnis, Charset.defaultCharset(), model);
         return vorlage.erzeugeAusgabe();
-        
+
     }
-    
 
 }

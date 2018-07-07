@@ -27,12 +27,12 @@ public class ZahlungsDefinition {
     private Mandant mandant;
 
     private int buchungsart;
- 
+
     private double prozentSatz;
     private int zeitArt;
     private int tag;
     private BankVerbindung bank;
-  
+
     @Basic
     @Column(name = "ZAHLUNGDEFINITIONID")
     @Id
@@ -40,24 +40,27 @@ public class ZahlungsDefinition {
     public long getZahlungsDefinitionId() {
         return zahlungsDefinitionId;
     }
+
     public void setZahlungsDefinitionId(long zahlungsDefinitionId) {
         this.zahlungsDefinitionId = zahlungsDefinitionId;
     }
-    
+
     @Basic
     @Column(name = "BUCHUNGSART")
     public int getBuchungsart() {
         return buchungsart;
     }
+
     public void setBuchungsart(int buchungsart) {
         this.buchungsart = buchungsart;
     }
- 
+
     @Basic
     @Column(name = "PROZENTSATZ")
     public double getProzentSatz() {
         return prozentSatz;
     }
+
     public void setProzentSatz(double prozentSatz) {
         this.prozentSatz = prozentSatz;
     }
@@ -67,39 +70,38 @@ public class ZahlungsDefinition {
     public int getZeitArt() {
         return zeitArt;
     }
+
     public void setZeitArt(int zeitArt) {
         this.zeitArt = zeitArt;
     }
-    
+
     @Basic
     @Column(name = "TAG")
     public int getTag() {
         return tag;
     }
+
     public void setTag(int tag) {
         this.tag = tag;
     }
-        
 
-   
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "MandantId")  
+    @JoinColumn(name = "MandantId")
     public Mandant getMandant() {
         return mandant;
     }
 
-
     public void setMandant(Mandant mandant) {
         this.mandant = mandant;
     }
-    
+
     public Date berechneAuszahlungsTernin(Date ausgangsTermin) {
         int tage = getTag();
-        Instant instant =  ausgangsTermin.toInstant();
+        Instant instant = ausgangsTermin.toInstant();
         instant.plusSeconds(Duration.ofDays(tage).getSeconds());
         return new Date(instant.toEpochMilli());
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -108,6 +110,7 @@ public class ZahlungsDefinition {
                 + (int) (zahlungsDefinitionId ^ (zahlungsDefinitionId >>> 32));
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -121,14 +124,14 @@ public class ZahlungsDefinition {
             return false;
         return true;
     }
-    
+
     @Embedded
     public BankVerbindung getBank() {
         return bank;
     }
+
     public void setBank(BankVerbindung bank) {
         this.bank = bank;
     };
 
-    
 }

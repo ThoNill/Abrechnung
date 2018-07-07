@@ -19,8 +19,8 @@ public class STVorlage<VORLAGEN_MODELL> {
     private String zielVerzeichnis;
     private Charset charSet;
     private VORLAGEN_MODELL model;
-    
-    public STVorlage(String dateiName,String zielVerzeichnis, Charset charSet,
+
+    public STVorlage(String dateiName, String zielVerzeichnis, Charset charSet,
             VORLAGEN_MODELL model) {
         super();
         this.zielVerzeichnis = zielVerzeichnis;
@@ -40,8 +40,7 @@ public class STVorlage<VORLAGEN_MODELL> {
         t.add("urmodell", elem);
     }
 
-    public void erzeugeAusgabe(Writer writer)
-            throws IOException {
+    public void erzeugeAusgabe(Writer writer) throws IOException {
         writer.write(apply("dateiInhalt"));
         writer.flush();
 

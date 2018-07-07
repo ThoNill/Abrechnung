@@ -14,7 +14,7 @@ public @Embeddable class BankVerbindung implements Value {
     public BankVerbindung() {
         super();
     }
-    
+
     public BankVerbindung(IBAN iban, BIC bic) {
         super();
         this.iban = iban;
@@ -86,5 +86,5 @@ public @Embeddable class BankVerbindung implements Value {
             return false;
         return true;
     }
-    
+
 }
