@@ -1,5 +1,6 @@
 package boundingContext.abrechnung.entities;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 
@@ -16,8 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import boundingContext.zahlungen.BankVerbindung;
-import ch.qos.logback.core.util.Duration;
+import boundingContext.zahlungen.values.BankVerbindung;
 
 @Entity
 @Table(name = "ZAHLUNGDEFINITION")
@@ -96,7 +96,7 @@ public class ZahlungsDefinition {
     public Date berechneAuszahlungsTernin(Date ausgangsTermin) {
         int tage = getTag();
         Instant instant =  ausgangsTermin.toInstant();
-        instant.plusMillis(Duration.buildByDays(tage).getMilliseconds());
+        instant.plusSeconds(Duration.ofDays(tage).getSeconds());
         return new Date(instant.toEpochMilli());
     }
     

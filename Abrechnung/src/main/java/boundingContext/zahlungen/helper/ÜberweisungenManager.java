@@ -1,4 +1,4 @@
-package boundingContext.zahlungen;
+package boundingContext.zahlungen.helper;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -11,6 +11,10 @@ import boundingContext.abrechnung.entities.AusgangsDatei;
 import boundingContext.abrechnung.entities.Überweisung;
 import boundingContext.abrechnung.repositories.AusgangsDateiRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
+import boundingContext.zahlungen.values.IBAN;
+import boundingContext.zahlungen.values.TypeReference;
+import boundingContext.zahlungen.vorlagen.STModel;
+import boundingContext.zahlungen.vorlagen.STVorlage;
 
 public class ÜberweisungenManager {
     private AusgangsDateiRepository ausgangsDateiRepository;

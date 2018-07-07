@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import tests.flow.TestAbrechnungsKonfigurator;
 import tests.konten.TestSachKontoProvider;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
-import boundingContext.abrechnung.flow.AbrechnungsKonfigurator;
+import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 
 @Configuration

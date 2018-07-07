@@ -8,6 +8,7 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.StandardIntegrationFlow;
 
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
+import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.flow.handler.BerechneBuchungsauftrag;
 import boundingContext.abrechnung.flow.handler.BucheDenBuchungsauftrag;
 import boundingContext.abrechnung.flow.handler.GebührDefinitionAggregator;

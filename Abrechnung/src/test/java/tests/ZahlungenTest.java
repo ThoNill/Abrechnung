@@ -1,12 +1,9 @@
 package tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
-
-import javax.money.MonetaryAmount;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,19 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import tests.konten.TestSachKonto;
 import tests.konten.TestSachKontoProvider;
 import betrag.Geld;
-import boundingContext.abrechnung.aufzählungen.BuchungsArt;
-import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
-import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.entities.ZahlungsAuftrag;
 import boundingContext.abrechnung.entities.ZahlungsDefinition;
-import boundingContext.abrechnung.helper.AbrechnungAbschließen;
-import boundingContext.abrechnung.helper.AbrechnungHelper;
-import boundingContext.abrechnung.helper.EinBucher;
-import boundingContext.abrechnung.helper.SaldoAusgleichen;
-import boundingContext.abrechnung.helper.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
@@ -39,13 +28,10 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
-import boundingContext.buchhaltung.eingang.Beschreibung;
-import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
-import boundingContext.gemeinsam.BetragsBündelMap;
-import boundingContext.zahlungen.BIC;
-import boundingContext.zahlungen.BankVerbindung;
-import boundingContext.zahlungen.IBAN;
-import boundingContext.zahlungen.ZahlungsAuftragsManager;
+import boundingContext.zahlungen.helper.ZahlungsAuftragsManager;
+import boundingContext.zahlungen.values.BIC;
+import boundingContext.zahlungen.values.BankVerbindung;
+import boundingContext.zahlungen.values.IBAN;
 
 @RunWith(SpringRunner.class)
 // Class that run the tests

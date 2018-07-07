@@ -1,6 +1,5 @@
-package boundingContext.zahlungen;
+package boundingContext.zahlungen.helper;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,21 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
-import boundingContext.abrechnung.entities.Buchung;
-import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.entities.ZahlungsAuftrag;
-import boundingContext.abrechnung.entities.ZahlungsDefinition;
-import boundingContext.abrechnung.entities.Überweisung;
-import boundingContext.abrechnung.helper.EinBucher;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
-import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
-import boundingContext.gemeinsam.BetragsBündel;
+import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündelMap;
-import boundingContext.gemeinsam.ProzentBündelMap;
 
 public class ZahlungenEntfernenManager extends EinBucher {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;

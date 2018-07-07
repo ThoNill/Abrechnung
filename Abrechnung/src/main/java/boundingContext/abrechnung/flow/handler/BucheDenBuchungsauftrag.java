@@ -4,9 +4,9 @@ import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.flow.payloads.BuchungAuftragPayload;
-import boundingContext.abrechnung.helper.EinBucher;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
+import boundingContext.buchhaltung.eingang.EinBucher;
 
 public class BucheDenBuchungsauftrag
         extends

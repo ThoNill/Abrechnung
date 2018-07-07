@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import boundingContext.zahlungen.TypeReference;
+import boundingContext.zahlungen.values.TypeReference;
 
 @Entity
 @Table(name = "AUSGANGSDATEI")

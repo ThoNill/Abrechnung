@@ -1,4 +1,4 @@
-package boundingContext.zahlungen;
+package boundingContext.zahlungen.values;
 
 import javax.persistence.AttributeConverter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;

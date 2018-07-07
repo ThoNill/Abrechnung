@@ -1,4 +1,4 @@
-package boundingContext.zahlungen;
+package boundingContext.zahlungen.values;
 
 public class IBAN {
         private String iban;

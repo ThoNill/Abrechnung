@@ -1,4 +1,4 @@
-package boundingContext.abrechnung.flow;
+package boundingContext.abrechnung.flow.handler;
 
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.GebuehrDefinition;

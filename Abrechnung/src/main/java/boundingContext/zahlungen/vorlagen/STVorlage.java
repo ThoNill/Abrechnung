@@ -1,4 +1,4 @@
-package boundingContext.zahlungen;
+package boundingContext.zahlungen.vorlagen;
 
 import java.io.BufferedWriter;
 import java.io.File;

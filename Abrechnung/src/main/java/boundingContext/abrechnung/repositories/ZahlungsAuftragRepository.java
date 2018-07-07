@@ -8,8 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.ZahlungsAuftrag;
-import boundingContext.abrechnung.entities.Überweisung;
-import boundingContext.zahlungen.IBAN;
 
 public interface ZahlungsAuftragRepository extends CrudRepository<ZahlungsAuftrag, Long> {
 

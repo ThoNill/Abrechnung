@@ -26,7 +26,6 @@ import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.helper.AbrechnungAbschließen;
 import boundingContext.abrechnung.helper.AbrechnungHelper;
-import boundingContext.abrechnung.helper.EinBucher;
 import boundingContext.abrechnung.helper.SaldoAusgleichen;
 import boundingContext.abrechnung.helper.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
@@ -36,6 +35,7 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
+import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündelMap;
 
 @RunWith(SpringRunner.class)

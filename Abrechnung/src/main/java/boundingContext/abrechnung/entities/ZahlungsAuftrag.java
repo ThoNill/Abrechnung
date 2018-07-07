@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import boundingContext.zahlungen.BankVerbindung;
+import boundingContext.zahlungen.values.BankVerbindung;
 
 @Entity
 @Table(name = "ZAHLUNGSAUFTRAG")

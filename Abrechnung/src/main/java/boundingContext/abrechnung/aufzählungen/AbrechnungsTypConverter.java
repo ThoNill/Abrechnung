@@ -1,6 +1,6 @@
-package ordinal;
+package boundingContext.abrechnung.aufzählungen;
 
-import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
+import ordinal.OrdinalConverter;
 
 public class AbrechnungsTypConverter extends OrdinalConverter<AbrechnungsTyp> {
     public AbrechnungsTypConverter() {

@@ -1,4 +1,4 @@
-package boundingContext.abrechnung.helper;
+package boundingContext.buchhaltung.eingang;
 
 import javax.money.MonetaryAmount;
 
@@ -9,7 +9,6 @@ import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.KontoBewegung;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
-import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.gemeinsam.BetragsBündel;
 import boundingContext.gemeinsam.BetragsBündelMap;
 

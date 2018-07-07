@@ -28,8 +28,7 @@ import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Leistung;
 import boundingContext.abrechnung.entities.Mandant;
-import boundingContext.abrechnung.flow.AbrechnungsKonfigurator;
-import boundingContext.abrechnung.helper.EinBucher;
+import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.helper.GebührenBerechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
@@ -38,6 +37,7 @@ import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
+import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündel;
 
 @RunWith(SpringRunner.class)

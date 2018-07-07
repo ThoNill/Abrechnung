@@ -1,4 +1,4 @@
-package boundingContext.zahlungen;
+package boundingContext.zahlungen.values;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -22,7 +22,7 @@ public @Embeddable class BankVerbindung implements Value {
         this.name = "NN";
     }
 
-    @Convert(converter = boundingContext.zahlungen.JaxbIBANAdapter.class)
+    @Convert(converter = boundingContext.zahlungen.values.JaxbIBANAdapter.class)
     @Column(name = "iban")
     public IBAN getIban() {
         return iban;
@@ -32,7 +32,7 @@ public @Embeddable class BankVerbindung implements Value {
         this.iban = iban;
     }
 
-    @Convert(converter = boundingContext.zahlungen.JaxbBICAdapter.class)
+    @Convert(converter = boundingContext.zahlungen.values.JaxbBICAdapter.class)
     @Column(name = "bic")
     public BIC getBic() {
         return bic;

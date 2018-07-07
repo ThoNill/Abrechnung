@@ -11,6 +11,7 @@ import boundingContext.abrechnung.gebühren.Gebühr;
 import boundingContext.abrechnung.gebühren.GebührFabrik;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
+import boundingContext.buchhaltung.eingang.SachKontoDelegate;
 import boundingContext.daten.GebührRepository;
 import boundingContext.gemeinsam.BetragsBündel;
 

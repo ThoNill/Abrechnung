@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import boundingContext.abrechnung.entities.AusgangsDatei;
 import boundingContext.abrechnung.entities.Überweisung;
-import boundingContext.zahlungen.IBAN;
+import boundingContext.zahlungen.values.IBAN;
 
 public interface ÜberweisungRepository extends CrudRepository<Überweisung, Long> {
 

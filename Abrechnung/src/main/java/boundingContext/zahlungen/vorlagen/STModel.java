@@ -1,4 +1,4 @@
-package boundingContext.zahlungen;
+package boundingContext.zahlungen.vorlagen;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,6 +8,7 @@ import javax.money.MonetaryAmount;
 
 import betrag.Geld;
 import boundingContext.abrechnung.entities.Überweisung;
+import boundingContext.zahlungen.values.BankVerbindung;
 
 public class STModel {
     private int anzahl;

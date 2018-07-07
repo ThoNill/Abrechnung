@@ -1,4 +1,4 @@
-package boundingContext.zahlungen;
+package boundingContext.zahlungen.values;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

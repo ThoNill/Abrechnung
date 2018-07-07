@@ -1,6 +1,7 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -8,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.money.MonetaryAmount;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
@@ -25,23 +25,13 @@ import org.springframework.xml.validation.XmlValidator;
 import org.springframework.xml.validation.XmlValidatorFactory;
 import org.xml.sax.SAXParseException;
 
-import tests.konten.TestSachKonto;
 import tests.konten.TestSachKontoProvider;
 import betrag.Geld;
-import boundingContext.abrechnung.aufzählungen.BuchungsArt;
-import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
-import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
-import boundingContext.abrechnung.entities.ZahlungsAuftrag;
 import boundingContext.abrechnung.entities.ZahlungsDefinition;
 import boundingContext.abrechnung.entities.Überweisung;
-import boundingContext.abrechnung.helper.AbrechnungAbschließen;
-import boundingContext.abrechnung.helper.AbrechnungHelper;
-import boundingContext.abrechnung.helper.EinBucher;
-import boundingContext.abrechnung.helper.SaldoAusgleichen;
-import boundingContext.abrechnung.helper.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
@@ -49,15 +39,11 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
-import boundingContext.buchhaltung.eingang.Beschreibung;
-import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
-import boundingContext.gemeinsam.BetragsBündelMap;
-import boundingContext.zahlungen.BIC;
-import boundingContext.zahlungen.BankVerbindung;
-import boundingContext.zahlungen.IBAN;
-import boundingContext.zahlungen.STModel;
-import boundingContext.zahlungen.STVorlage;
-import boundingContext.zahlungen.ZahlungsAuftragsManager;
+import boundingContext.zahlungen.values.BIC;
+import boundingContext.zahlungen.values.BankVerbindung;
+import boundingContext.zahlungen.values.IBAN;
+import boundingContext.zahlungen.vorlagen.STModel;
+import boundingContext.zahlungen.vorlagen.STVorlage;
 
 
 @RunWith(SpringRunner.class)

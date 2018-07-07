@@ -1,8 +1,7 @@
 package tests;
 
-import static org.junit.Assert.*;
-
-import java.util.Date;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +24,11 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
-import boundingContext.zahlungen.BIC;
-import boundingContext.zahlungen.BankVerbindung;
-import boundingContext.zahlungen.IBAN;
-import boundingContext.zahlungen.TypeReference;
-import boundingContext.zahlungen.ÜberweisungenManager;
+import boundingContext.zahlungen.helper.ÜberweisungenManager;
+import boundingContext.zahlungen.values.BIC;
+import boundingContext.zahlungen.values.BankVerbindung;
+import boundingContext.zahlungen.values.IBAN;
+import boundingContext.zahlungen.values.TypeReference;
 
 @RunWith(SpringRunner.class)
 // Class that run the tests

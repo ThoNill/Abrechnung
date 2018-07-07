@@ -7,7 +7,8 @@ import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
-import boundingContext.zahlungen.ZahlungenEntfernenManager;
+import boundingContext.buchhaltung.eingang.EinBucher;
+import boundingContext.zahlungen.helper.ZahlungenEntfernenManager;
 
 public class AbrechnungAbschlieﬂen extends EinBucher {
 

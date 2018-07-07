@@ -1,4 +1,4 @@
-package boundingContext.abrechnung.helper;
+package boundingContext.buchhaltung.eingang;
 
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
