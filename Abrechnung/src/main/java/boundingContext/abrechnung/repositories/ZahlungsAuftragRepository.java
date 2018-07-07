@@ -2,18 +2,20 @@ package boundingContext.abrechnung.repositories;
 
 import java.util.List;
 
-import javax.money.MonetaryAmount;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import boundingContext.abrechnung.entities.Buchung;
-import boundingContext.abrechnung.entities.KontoBewegung;
+import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.ZahlungsAuftrag;
 import boundingContext.abrechnung.entities.Überweisung;
+import boundingContext.zahlungen.IBAN;
 
 public interface ZahlungsAuftragRepository extends CrudRepository<ZahlungsAuftrag, Long> {
 
 
+    @Query("select z from boundingContext.abrechnung.entities.ZahlungsAuftrag z where z.abrechnung = :abr and z.buchungsart = :art and z.ausbezahlt is null")
+    public List<ZahlungsAuftrag> getOffeneZahlungen(@Param("abr") Abrechnung abrechnung,@Param("art") int art);
+   
+    
 }

@@ -1,29 +1,19 @@
 package boundingContext.abrechnung.entities;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import boundingContext.zahlungen.BIC;
-import boundingContext.zahlungen.IBAN;
 import boundingContext.zahlungen.TypeReference;
 
 @Entity

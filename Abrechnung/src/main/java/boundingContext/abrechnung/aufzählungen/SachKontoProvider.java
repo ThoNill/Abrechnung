@@ -1,10 +1,10 @@
 package boundingContext.abrechnung.aufzählungen;
 
-import ordinal.OrdinalTyp;
 
 public interface SachKontoProvider {
         SachKonto GEBÜHR();
         SachKonto GUTHABEN();
+        SachKonto AUSBEZAHLT();
         SachKonto SCHULDEN();
         SachKonto ZINS();
         SachKonto MWST();

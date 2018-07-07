@@ -9,6 +9,7 @@ import boundingContext.abrechnung.helper.AbrechnungAbschlieﬂen;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
+import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 
 public class SchlieﬂeDieAbrechnungAb extends
         AbstractPayloadTransformer<AbrechnungPayload, AbrechnungPayload> {
@@ -16,16 +17,20 @@ public class SchlieﬂeDieAbrechnungAb extends
     private AbrechnungRepository abrechnungRepository;
     private BuchungRepository buchungRepository;
     private KontoBewegungRepository kontoBewegungRepository;
+    private ZahlungsAuftragRepository zahlungsAuftragRepository;
     private SachKontoProvider sachKontoProvider;
 
     public SchlieﬂeDieAbrechnungAb(SachKontoProvider sachKontoProvider,AbrechnungRepository abrechnungRepository,
             BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository) {
+            KontoBewegungRepository kontoBewegungRepository,
+            ZahlungsAuftragRepository zahlungsAuftragRepository
+    ) {
         super();
         this.sachKontoProvider = sachKontoProvider;
         this.abrechnungRepository = abrechnungRepository;
         this.buchungRepository = buchungRepository;
         this.kontoBewegungRepository = kontoBewegungRepository;
+        this.zahlungsAuftragRepository = zahlungsAuftragRepository;
     }
 
     @Override
@@ -33,7 +38,7 @@ public class SchlieﬂeDieAbrechnungAb extends
             throws Exception {
         AbrechnungAbschlieﬂen abchluss = new AbrechnungAbschlieﬂen(sachKontoProvider,
                 buchungRepository, kontoBewegungRepository,
-                abrechnungRepository, 0.06);
+                abrechnungRepository,zahlungsAuftragRepository, 0.06);
         Abrechnung n‰chsteAbrechnung = abchluss.abschleiﬂen(
                 payload.getAbrechnung(), 30);
         return payload;

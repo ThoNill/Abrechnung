@@ -20,6 +20,12 @@ public class TestSachKontoProvider implements SachKontoProvider {
     }
 
     @Override
+    public SachKonto AUSBEZAHLT() {
+        return TestSachKonto.AUSBEZAHLT;
+    }
+
+    
+    @Override
     public SachKonto SCHULDEN() {
         return TestSachKonto.SCHULDEN;
     }

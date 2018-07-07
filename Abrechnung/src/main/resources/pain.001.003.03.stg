@@ -1,0 +1,97 @@
+group pain001 ;
+
+mypfad() ::= "package"
+
+
+dateiName(urmodell,model) ::= "$mypfad()$/$urmodell.Referenz$.xml"
+
+dateiInhalt(urmodell,model) ::= <<
+
+$CstmrCdtTrfInitn_start(urmodell,model)$
+
+  $urmodell.Ueberweisungen:CdtTrfTxInf(urmodell,model)$
+
+$CstmrCdtTrfInitn_end(urmodell,model)$
+
+>>
+
+CdtTrfTxInf(u,urmodell,model) ::= <<
+
+		<CdtTrfTxInf>
+				<PmtId>
+					<EndToEndId>ID-$u.UeberweisungsId$</EndToEndId>
+				</PmtId>
+				<Amt>
+					<InstdAmt Ccy="EUR">$u.Betrag.Number$</InstdAmt>
+				</Amt>
+				<CdtrAgt>
+					<FinInstnId>
+						<BIC>$u.An.Bic$</BIC>
+					</FinInstnId>
+				</CdtrAgt>
+				<Cdtr>
+					<Nm>$u.An.Name$</Nm>
+				</Cdtr>
+				<CdtrAcct>
+					<Id>
+						<IBAN>$u.An.Iban$</IBAN>
+					</Id>
+				</CdtrAcct>
+				<RmtInf>
+					<Ustrd>$u.Verwendungszweck$</Ustrd>
+				</RmtInf>
+			</CdtTrfTxInf>
+
+>>	
+
+
+CstmrCdtTrfInitn_start(urmodell,model) ::= <<
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) von benutzerservice benutzerservice (SIZ GmbH) bearbeitet -->
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.003.03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:pain.001.003.03 pain.001.003.03.xsd">
+	<CstmrCdtTrfInitn>
+		<GrpHdr>
+			<MsgId>Message-ID-$urmodell.Referenz$</MsgId>
+			<CreDtTm>$urmodell.AktuelleZeit$</CreDtTm>
+			<NbOfTxs>$urmodell.Anzahl$</NbOfTxs>
+			<InitgPty>
+				<Nm>$urmodell.Name$</Nm>
+			</InitgPty>
+		</GrpHdr>
+		<PmtInf>
+			<PmtInfId>Payment-Information-ID-$urmodell.Referenz$</PmtInfId>
+			<PmtMtd>TRF</PmtMtd>
+			<BtchBookg>true</BtchBookg>
+			<NbOfTxs>$urmodell.Anzahl$</NbOfTxs>
+			<CtrlSum>$urmodell.Summe.Number$</CtrlSum>
+			<PmtTpInf>
+				<SvcLvl>
+					<Cd>SEPA</Cd>
+				</SvcLvl>
+			</PmtTpInf>
+			<ReqdExctnDt>$urmodell.AuszahlungsDatum$</ReqdExctnDt>
+			<Dbtr>
+				<Nm>$urmodell.Von.Name$</Nm>
+			</Dbtr>
+			<DbtrAcct>
+				<Id>
+					<IBAN>$urmodell.Von.Iban$</IBAN>
+				</Id>
+			</DbtrAcct>
+			<DbtrAgt>
+				<FinInstnId>
+					<BIC>$urmodell.Von.Bic$</BIC>
+				</FinInstnId>
+			</DbtrAgt>
+			<ChrgBr>SLEV</ChrgBr>
+>>
+
+
+CstmrCdtTrfInitn_end(urmodell,model) ::= <<
+		</PmtInf>
+	</CstmrCdtTrfInitn>
+</Document>
+
+>>
+

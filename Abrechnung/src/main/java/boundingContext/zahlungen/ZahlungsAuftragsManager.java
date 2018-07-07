@@ -13,8 +13,8 @@ import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
-import boundingContext.abrechnung.entities.ZahlungsDefinition;
 import boundingContext.abrechnung.entities.ZahlungsAuftrag;
+import boundingContext.abrechnung.entities.ZahlungsDefinition;
 import boundingContext.abrechnung.entities.Überweisung;
 import boundingContext.abrechnung.helper.EinBucher;
 import boundingContext.abrechnung.repositories.BuchungRepository;
@@ -37,7 +37,9 @@ public class ZahlungsAuftragsManager extends EinBucher {
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
-            ÜberweisungRepository überweisungsRepository,SachKonto offen,SachKonto überwiesen) {
+            ÜberweisungRepository überweisungsRepository,
+            SachKonto offen,
+            SachKonto überwiesen) {
         super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
         this.überweisungsRepository = überweisungsRepository;
@@ -82,6 +84,7 @@ public class ZahlungsAuftragsManager extends EinBucher {
             überweisung.setBetrag(auftrag.getBetrag());
             überweisung.setAn(auftrag.getBank());
             überweisung.setVon(vonBank);
+            überweisung.setBuchungsart(auftrag.getBuchungsart());
             überweisung.setErstellt(new Date());
             überweisung = überweisungsRepository.save(überweisung);
             überweisung.setAuftrag(auftrag);
@@ -109,4 +112,8 @@ public class ZahlungsAuftragsManager extends EinBucher {
                 erzeugeBuchungsAuftrag(betrag, buchungsart, von, nach,
                         buchungstext), abrechnung);
     }
+    
+  
+
+   
 }

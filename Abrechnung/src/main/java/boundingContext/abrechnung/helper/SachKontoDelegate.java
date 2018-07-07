@@ -19,6 +19,10 @@ public class SachKontoDelegate {
         return sachKontoProvider.GUTHABEN();
     }
 
+    public SachKonto AUSBEZAHLT() {
+        return sachKontoProvider.AUSBEZAHLT();
+    }
+    
     public SachKonto SCHULDEN() {
         return sachKontoProvider.SCHULDEN();
     }

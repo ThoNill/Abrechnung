@@ -8,6 +8,12 @@ public @Embeddable class TypeReference implements Value {
     private int art;
     private long id;
     
+    public TypeReference(int art, long id) {
+        super();
+        this.art = art;
+        this.id = id;
+    }
+
     public TypeReference() {
         super();
     }

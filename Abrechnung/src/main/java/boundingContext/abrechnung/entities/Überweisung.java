@@ -1,7 +1,6 @@
 package boundingContext.abrechnung.entities;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
@@ -12,19 +11,15 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import boundingContext.zahlungen.BIC;
 import boundingContext.zahlungen.BankVerbindung;
-import boundingContext.zahlungen.IBAN;
 
 @Entity
 @Table(name = "UEBERWEISUNG")
@@ -47,6 +42,7 @@ public class Überweisung  {
     private Date ausbezahlt;
     private Date bestätigt;
     private String verwendungszweck;
+    private AusgangsDatei ausgangsDatei;
 
     
     @Basic
@@ -127,7 +123,8 @@ public class Überweisung  {
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name="iban", column=@Column(name="von_iban")),
-        @AttributeOverride(name="bic", column=@Column(name="von_bic"))
+        @AttributeOverride(name="bic", column=@Column(name="von_bic")),
+        @AttributeOverride(name="name", column=@Column(name="von_name"))
     })
     public BankVerbindung getVon() {
         return von;
@@ -139,7 +136,8 @@ public class Überweisung  {
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name="iban", column=@Column(name="an_iban")),
-        @AttributeOverride(name="bic", column=@Column(name="an_bic"))
+        @AttributeOverride(name="bic", column=@Column(name="an_bic")),
+        @AttributeOverride(name="name", column=@Column(name="an_name"))
     })
     public BankVerbindung getAn() {
         return an;
@@ -156,6 +154,16 @@ public class Überweisung  {
     }
     public void setAuftrag(ZahlungsAuftrag auftrag) {
         this.auftrag = auftrag;
+    }
+    
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "AusgangsDateiId")  
+    public AusgangsDatei getAusgangsDatei() {
+        return ausgangsDatei;
+    }
+    
+    public void setAusgangsDatei(AusgangsDatei ausgangsDatei) {
+        this.ausgangsDatei = ausgangsDatei;
     }
    
 }

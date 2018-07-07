@@ -33,6 +33,7 @@ import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
+import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.gemeinsam.BetragsB¸ndelMap;
@@ -54,6 +55,10 @@ public class AbrechnungAbschlieﬂenTest {
     @Autowired
     private KontoBewegungRepository kontoBewegungRepository;
 
+    @Autowired
+    private ZahlungsAuftragRepository zahlungsAuftragRepository;
+
+    
     @Before
     @Transactional("dbATransactionManager")
     public void clear() {
@@ -137,7 +142,7 @@ public class AbrechnungAbschlieﬂenTest {
 
         AbrechnungAbschlieﬂen abchluss = new AbrechnungAbschlieﬂen(sachKontoProvider(),
                 buchungRepository, kontoBewegungRepository,
-                abrechnungRepository, 0.06);
+                abrechnungRepository,zahlungsAuftragRepository, 0.06);
         Abrechnung n‰chsteAbrechnung = abchluss.abschleiﬂen(abrechnung, 180);
         check‹bernahme(n‰chsteAbrechnung, -100, -3);
     }
@@ -153,7 +158,7 @@ public class AbrechnungAbschlieﬂenTest {
 
         AbrechnungAbschlieﬂen abchluss = new AbrechnungAbschlieﬂen(sachKontoProvider(),
                 buchungRepository, kontoBewegungRepository,
-                abrechnungRepository, 0.06);
+                abrechnungRepository,zahlungsAuftragRepository, 0.06);
         Abrechnung n‰chsteAbrechnung = abchluss.abschleiﬂen(abrechnung, 180);
         check‹bernahmeOhneWirkung(n‰chsteAbrechnung);
     }

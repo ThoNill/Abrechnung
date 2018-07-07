@@ -1,15 +1,17 @@
 package boundingContext.abrechnung.helper;
 
 import boundingContext.abrechnung.aufz‰hlungen.BuchungsArt;
-import boundingContext.abrechnung.aufz‰hlungen.SachKonto;
 import boundingContext.abrechnung.aufz‰hlungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
+import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
+import boundingContext.zahlungen.ZahlungenEntfernenManager;
 
 public class AbrechnungAbschlieﬂen extends EinBucher {
 
+    private ZahlungenEntfernenManager zahlungenEntfernen;
     private SchuldenInDieAbrechnung schulden‹bertragen;
     private SaldoAusgleichen ausgleichen;
     private AbrechnungRepository abrechnungRepository;
@@ -17,9 +19,15 @@ public class AbrechnungAbschlieﬂen extends EinBucher {
     public AbrechnungAbschlieﬂen(SachKontoProvider sachKontoProvider,BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
+            ZahlungsAuftragRepository zahlungsAuftragRepository,
             double zinssatz) {
         super(sachKontoProvider,buchungRepository, kontoBewegungRepository);
         this.abrechnungRepository = abrechnungRepository;
+        
+        zahlungenEntfernen = new ZahlungenEntfernenManager(sachKontoProvider, buchungRepository, kontoBewegungRepository, 
+                zahlungsAuftragRepository, 
+                BuchungsArt.ABGLEICH_GUTHABEN, 
+                GUTHABEN());
  
         ausgleichen = new SaldoAusgleichen(sachKontoProvider,buchungRepository,
                 kontoBewegungRepository, BuchungsArt.ABGLEICH_GUTHABEN,
@@ -35,6 +43,7 @@ public class AbrechnungAbschlieﬂen extends EinBucher {
     }
 
     public Abrechnung abschleiﬂen(Abrechnung abrechnung, int zinsDauer) {
+        zahlungenEntfernen.entferneZahlungsauftr‰geFallsRestguthaben(abrechnung);
         ausgleichen.saldoAusgleichen(abrechnung);
         AbrechnungHelper h = new AbrechnungHelper(abrechnungRepository);
         Abrechnung n‰chsteAbrechnung = h

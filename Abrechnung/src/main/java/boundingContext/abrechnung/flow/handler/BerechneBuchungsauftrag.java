@@ -1,6 +1,7 @@
 package boundingContext.abrechnung.flow.handler;
 
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
+
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.flow.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.flow.payloads.BuchungAuftragPayload;
