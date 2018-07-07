@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 import java.util.Optional;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +34,7 @@ public class AbrechnungsTest {
     private AbrechnungRepository abrechnungRepository;
 
     @Before
+    @After
     @Transactional("dbATransactionManager")
     public void clear() {
         abrechnungRepository.deleteAll();

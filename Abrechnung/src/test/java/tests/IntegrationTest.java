@@ -1,5 +1,6 @@
 package tests;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,14 +64,15 @@ public class IntegrationTest {
     private SachKontoProvider sachKontoProvider;
 
     @Before
+    @After
     @Transactional("dbATransactionManager")
     public void clear() {
         leistungRepository.deleteAll();
         kontoBewegungRepository.deleteAll();
         buchungRepository.deleteAll();
         abrechnungRepository.deleteAll();
-        gebührenDefinitinRepository.deleteAll();
         mandantRepository.deleteAll();
+        gebührenDefinitinRepository.deleteAll();
     }
 
     public Mandant erzeugeMandant() {

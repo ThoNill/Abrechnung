@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.money.MonetaryAmount;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,6 +65,7 @@ public class GebührenKonfigurationsTest {
     private KontoBewegungRepository kontoBewegungRepository;
 
     @Before
+    @After
     @Transactional("dbATransactionManager")
     public void clear() {
         leistungRepository.deleteAll();

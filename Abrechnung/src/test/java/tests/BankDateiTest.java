@@ -12,6 +12,7 @@ import java.util.List;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,6 +76,7 @@ public class BankDateiTest {
     Resource überweisungsXmlSchema;
 
     @Before
+    @After
     @Transactional("dbATransactionManager")
     public void clear() {
         kontoBewegungRepository.deleteAll();

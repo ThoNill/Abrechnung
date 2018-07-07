@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,6 +64,7 @@ public class ÜbereisungenErzeugenUndVersendenTest {
     Resource überweisungsXmlSchema;
 
     @Before
+    @After
     @Transactional("dbATransactionManager")
     public void clear() {
         kontoBewegungRepository.deleteAll();

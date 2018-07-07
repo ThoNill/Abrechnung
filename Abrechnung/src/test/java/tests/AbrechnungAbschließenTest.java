@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.money.MonetaryAmount;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,6 +60,7 @@ public class AbrechnungAbschlieﬂenTest {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
 
     @Before
+    @After
     @Transactional("dbATransactionManager")
     public void clear() {
         kontoBewegungRepository.deleteAll();
