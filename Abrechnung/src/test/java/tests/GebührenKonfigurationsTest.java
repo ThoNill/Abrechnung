@@ -188,8 +188,7 @@ public class GebührenKonfigurationsTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         TestLeistungsRepository leistungsRepository = new TestLeistungsRepository();
         leistungsRepository.setLeistungsRepository(leistungRepository);
-        TestGebührFabrik gebührFabrik = new TestGebührFabrik();
-
+     
         GebuehrDefinition gebührDefinition = new GebuehrDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setKontoNr(TestSachKonto.GEBÜHR.ordinal());
