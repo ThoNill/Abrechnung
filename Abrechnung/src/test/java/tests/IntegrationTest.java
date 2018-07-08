@@ -37,8 +37,6 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 @SpringBootTest(classes = { tests.config.TestConfig.class,
         tests.config.TestDbConfig.class,
         boundingContext.abrechnung.flow.AbrechnungFlow.class })
-// @SpringBootTest(classes = {
-// boundingContext.abrechnung.flow.AbrechnungFlow.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class IntegrationTest {
 
@@ -106,7 +104,7 @@ public class IntegrationTest {
     StandardIntegrationFlow flow;
 
     @Test
-    public void normalerAblauf() throws Exception {
+    public void normalerAblauf()  {
 
         mandantChannel.addInterceptor(new ChannelInterceptorAdapter() {
             @Override
@@ -119,8 +117,7 @@ public class IntegrationTest {
         flow.start();
 
         Mandant mandant = erzeugeMandant();
-        // mandant.setMandantId(1l);
-
+     
         AufrufPayload aufruf = new AufrufPayload(AbrechnungsArt.NEU,
                 mandant.getMandantId(), 0, 2, 2018,
                 AbrechnungsTyp.TEILABRECHNUNG);
@@ -129,9 +126,4 @@ public class IntegrationTest {
                 .setHeader("foo", "foo").setHeader("bar", "bar").build();
         parameterChannel.send(message);
     }
-    /*
-     * 
-     * val message = MessageBuilder.withPayload("Hello").setHeader("foo",
-     * "foo").setHeader("bar", "bar").build messageFlow.send(message)
-     */
 }

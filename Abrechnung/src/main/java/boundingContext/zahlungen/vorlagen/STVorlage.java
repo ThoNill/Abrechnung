@@ -50,7 +50,7 @@ public class STVorlage<VORLAGEN_MODELL> {
         return apply("dateiName");
     }
 
-    public String erzeugeAusgabe() throws Exception {
+    public String erzeugeAusgabe() throws IOException  {
         String dateiName = getZielVerzeichnis() + File.separatorChar
                 + getPfadMitDateiName();
         erzeugeEventuellFehlendeVerzeichnisse(dateiName);

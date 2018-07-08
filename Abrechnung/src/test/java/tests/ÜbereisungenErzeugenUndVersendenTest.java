@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +37,8 @@ import boundingContext.zahlungen.values.TypeReference;
 // Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class ÜbereisungenErzeugenUndVersendenTest {
+    protected static final Logger log = LoggerFactory.getLogger(ÜbereisungenErzeugenUndVersendenTest.class);
+    
 
     @Autowired
     private MandantRepository mandantRepository;
@@ -93,11 +97,11 @@ public class ÜbereisungenErzeugenUndVersendenTest {
         try {
             ÜberweisungenManager manager = new ÜberweisungenManager(
                     ausgangsDateiRepository, überweisungRepository, ".",
-                    "Test", 1, new TypeReference(1, 1L), 2);
+                    "Test", 1, new TypeReference(1, 1L));
             manager.markiereÜberweisungsDateien(10);
             manager.dateienMarkierenUndErstellen();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unerwarteter Fehler ",e);
             fail(e.getMessage());
         }
 

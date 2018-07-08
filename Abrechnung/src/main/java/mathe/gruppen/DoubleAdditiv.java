@@ -3,6 +3,7 @@ package mathe.gruppen;
 import java.util.Objects;
 
 public class DoubleAdditiv implements Gruppe<Double> {
+    private static final double SMALL = 1e-10;
     public static final DoubleAdditiv GRUPPE = new DoubleAdditiv();
 
     @Override
@@ -29,7 +30,7 @@ public class DoubleAdditiv implements Gruppe<Double> {
     @Override
     public boolean isUnit(Double x) {
         Objects.requireNonNull(x);
-        return x == 0.0;
+        return Math.abs(x) <= SMALL;
     }
 
 }

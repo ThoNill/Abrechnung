@@ -66,12 +66,11 @@ public interface ProzentBündel<KEY> extends Bündel<KEY, Double> {
         Objects.requireNonNull(ergebnis);
         Objects.requireNonNull(maxKey);
 
-        if (maxKey != null) {
-            MonetaryAmount korrektur = berechneKorrektur(betrag, ergebnis);
-            if (!korrektur.isZero()) {
-                korrigiereErgebnis(ergebnis, maxKey, korrektur);
-            }
+        MonetaryAmount korrektur = berechneKorrektur(betrag, ergebnis);
+        if (!korrektur.isZero()) {
+            korrigiereErgebnis(ergebnis, maxKey, korrektur);
         }
+
     }
 
     default void korrigiereErgebnis(BetragsBündelMap<KEY> ergebnis,

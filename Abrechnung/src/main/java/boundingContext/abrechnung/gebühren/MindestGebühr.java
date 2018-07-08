@@ -21,8 +21,8 @@ public class MindestGebühr implements Gebühr {
         if (gebühr.isPositive()) {
             return (gebühr.isLessThan(minimum)) ? minimum : Geld.getNull();
         } else {
-            gebühr = gebühr.negate();
-            return (gebühr.isLessThan(minimum)) ? minimum.negate() : Geld
+            MonetaryAmount negGebühr = gebühr.negate();
+            return (negGebühr.isLessThan(minimum)) ? minimum.negate() : Geld
                     .getNull();
         }
     }

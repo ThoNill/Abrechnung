@@ -109,8 +109,8 @@ public class GebührenKonfigurationsTest {
 
     private Mandant verbindeMitMandanten(Mandant mandant, GebuehrDefinition d) {
         d.addMandant(mandant);
-        d = gebührenDefinitinRepository.save(d);
-        mandant.addGebuehrDefinitionen(d);
+        GebuehrDefinition nd = gebührenDefinitinRepository.save(d);
+        mandant.addGebuehrDefinitionen(nd);
         return mandantRepository.save(mandant);
     }
 
@@ -121,8 +121,7 @@ public class GebührenKonfigurationsTest {
         d.setGebührArt(1);
         d.setDatenArt(1);
         d.setParameter(0.05);
-        d = gebührenDefinitinRepository.save(d);
-        return d;
+        return gebührenDefinitinRepository.save(d);
     }
 
     public Leistung erzeugeEineLeistung(Mandant mandant, int art, double betrag) {

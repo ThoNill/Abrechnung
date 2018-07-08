@@ -1,5 +1,6 @@
 package boundingContext.zahlungen.helper;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,13 +24,12 @@ public class ÜberweisungenManager {
     private String name;
     private int fileArt;
     private TypeReference protokoll;
-    private int quellTyp;
 
     public ÜberweisungenManager(
             AusgangsDateiRepository ausgangsDateiRepository,
             ÜberweisungRepository überweisungsRepository,
             String ausgangsVerzeichnis, String name, int fileArt,
-            TypeReference protokoll, int quellTyp) {
+            TypeReference protokoll) {
         super();
         this.ausgangsDateiRepository = ausgangsDateiRepository;
         this.überweisungsRepository = überweisungsRepository;
@@ -37,7 +37,6 @@ public class ÜberweisungenManager {
         this.name = name;
         this.fileArt = fileArt;
         this.protokoll = protokoll;
-        this.quellTyp = quellTyp;
     }
 
     @Transactional("dbATransactionManager")
@@ -97,7 +96,7 @@ public class ÜberweisungenManager {
         // überweisungsRepository.save(abschnitt);
     }
 
-    public void dateienMarkierenUndErstellen() throws Exception {
+    public void dateienMarkierenUndErstellen() throws IOException  {
         List<AusgangsDatei> dateien = ausgangsDateiRepository
                 .getNichVersendeteDateien(1);
         for (AusgangsDatei d : dateien) {
@@ -106,13 +105,13 @@ public class ÜberweisungenManager {
     }
 
     @Transactional("dbATransactionManager")
-    private void markierenUndErstellen(AusgangsDatei d) throws Exception {
+    private void markierenUndErstellen(AusgangsDatei d) throws IOException  {
         d.setGesendet(new Date());
         ausgangsDateiRepository.save(d);
         dateiErstellen(d);
     }
 
-    private String dateiErstellen(AusgangsDatei d) throws Exception {
+    private String dateiErstellen(AusgangsDatei d) throws IOException{
         List<Überweisung> überweisungen = überweisungsRepository
                 .getÜberweisungen(d);
 

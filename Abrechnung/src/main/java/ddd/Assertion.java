@@ -10,7 +10,7 @@ public interface Assertion<T> extends Predicate<T> {
                 throw new AssertionException(message);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(message,e);
         }
     }
 

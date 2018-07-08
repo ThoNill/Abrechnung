@@ -16,6 +16,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,9 +28,7 @@ import org.springframework.xml.validation.XmlValidator;
 import org.springframework.xml.validation.XmlValidatorFactory;
 import org.xml.sax.SAXParseException;
 
-import tests.konten.TestSachKontoProvider;
 import betrag.Geld;
-import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.entities.ZahlungsDefinition;
@@ -50,7 +50,8 @@ import boundingContext.zahlungen.vorlagen.STVorlage;
 // Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class BankDateiTest {
-
+    protected static final Logger log = LoggerFactory.getLogger(BankDateiTest.class);
+    
     @Autowired
     private MandantRepository mandantRepository;
 
@@ -122,10 +123,6 @@ public class BankDateiTest {
         return abrechnungRepository.save(abrechnung);
     }
 
-    private SachKontoProvider sachKontoProvider() {
-        return new TestSachKontoProvider();
-    }
-
     @Test
     public void aufträgeErzeugen() {
         List<Überweisung> überweisungen = new ArrayList<>();
@@ -144,6 +141,7 @@ public class BankDateiTest {
             SAXParseException[] r = validator.validate(source);
             assertTrue(r == null || r.length == 0);
         } catch (Exception e) {
+            log.error("Unerwartete Ausnahme",e);
             fail(e.getMessage());
         }
 

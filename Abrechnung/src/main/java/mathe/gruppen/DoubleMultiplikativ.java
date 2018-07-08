@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class DoubleMultiplikativ implements Gruppe<Double> {
 
-    private static final double SEHR_KLEIN = 0.00000001d;
+    private static final double SEHR_KLEIN = 1e-10;
 
     @Override
     public Double add(Double a, Double b) {
@@ -24,13 +24,13 @@ public class DoubleMultiplikativ implements Gruppe<Double> {
     @Override
     public boolean isElement(Double x) {
         Objects.requireNonNull(x);
-        return x >= SEHR_KLEIN || x <= -SEHR_KLEIN;
+        return Math.abs(x) >= SEHR_KLEIN;
     }
 
     @Override
     public boolean isUnit(Double x) {
         Objects.requireNonNull(x);
-        return x == 1.0d;
+        return Math.abs(x - 1.0d) < SEHR_KLEIN;
     }
 
 }

@@ -11,7 +11,7 @@ public interface StaticPredicate<T> extends Predicate<T> {
                     Object.class);
             return (Boolean) m.invoke(null, t);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }
