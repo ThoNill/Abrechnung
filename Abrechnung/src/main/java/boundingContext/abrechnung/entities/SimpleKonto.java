@@ -1,9 +1,20 @@
 package boundingContext.abrechnung.entities;
 
+import java.util.Date;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import boundingContext.zahlungen.values.TypeReference;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+
 public class SimpleKonto {
-    int art;
-    int nummer;
-    String bezeichnung;
+    private int art;
+    private int nummer;
+    private String bezeichnung;
 
     public SimpleKonto(int art, int nummer, String bezeichnung) {
         super();
@@ -12,20 +23,5 @@ public class SimpleKonto {
         this.bezeichnung = bezeichnung;
     }
 
-    public int getArt() {
-        return art;
-    }
-
-    public int getNummer() {
-        return nummer;
-    }
-
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
-
-    public Long getId() {
-        return 1000 * (long) art + nummer;
-    }
 
 }

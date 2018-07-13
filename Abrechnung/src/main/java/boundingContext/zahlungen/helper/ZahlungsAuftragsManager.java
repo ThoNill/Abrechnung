@@ -3,6 +3,7 @@ package boundingContext.zahlungen.helper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.money.MonetaryAmount;
 
@@ -51,7 +52,7 @@ public class ZahlungsAuftragsManager extends EinBucher {
     public List<ZahlungsAuftrag> erzeugeAufträge(Abrechnung abrechnung,
             MonetaryAmount betrag, String verwendungszweck) {
         Mandant mandant = abrechnung.getMandant();
-        List<ZahlungsDefinition> definitionen = mandant
+        Set<ZahlungsDefinition> definitionen = mandant
                 .getZahlungsDefinitionen();
         ProzentBündelMap<ZahlungsDefinition> prozentMap = new ProzentBündelMap<>();
         for (ZahlungsDefinition d : definitionen) {

@@ -1,5 +1,8 @@
 package boundingContext.abrechnung.entities;
 
+import java.util.Date;
+import java.util.Set;
+
 import javax.money.MonetaryAmount;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,71 +16,45 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
+import boundingContext.abrechnung.aufzählungen.RunStatus;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+
 @Entity
 @Table(name = "LEISTUNG")
 @SequenceGenerator(name = "LEISTUNG_SEQ", sequenceName = "LEISTUNG_SEQ")
 public class Leistung {
-    private long leistungId;
-    private MonetaryAmount betrag;
-    private int art;
-    private Abrechnung abrechnung;
-    private Mandant mandant;
-
-    public Leistung() {
-        super();
-    }
-
+    @EqualsAndHashCode.Include
+    @ToString.Include
+  
     @Basic
     @Column(name = "LEISTUNGID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LEISTUNG_SEQ")
-    public java.lang.Long getLeistungId() {
-        return leistungId;
-    };
-
-    @Basic
-    @Column(name = "ART")
-    public int getArt() {
-        return art;
-    };
-
+    private long leistungId;
+   
     @Basic
     @Column(name = "BETRAG")
     @Convert(converter = betrag.GeldKonverter.class)
-    public javax.money.MonetaryAmount getBetrag() {
-        return betrag;
-    }
-
+    private MonetaryAmount betrag;
+    
+    @Basic
+    @Column(name = "ART")
+    private int art;
+    
     @ManyToOne()
     @JoinColumn(name = "AbrechnungId")
-    public Abrechnung getAbrechnung() {
-        return abrechnung;
-    };
-
-    public void setLeistungId(long leistungId) {
-        this.leistungId = leistungId;
-    }
-
-    public void setBetrag(MonetaryAmount betrag) {
-        this.betrag = betrag;
-    }
-
-    public void setArt(int art) {
-        this.art = art;
-    }
-
-    public void setAbrechnung(Abrechnung abrechnung) {
-        this.abrechnung = abrechnung;
-    }
-
+    private Abrechnung abrechnung;
+    
     @ManyToOne()
     @JoinColumn(name = "MandantId")
-    public Mandant getMandant() {
-        return mandant;
-    }
-
-    public void setMandant(Mandant mandant) {
-        this.mandant = mandant;
-    };
+    private Mandant mandant;
 
 }

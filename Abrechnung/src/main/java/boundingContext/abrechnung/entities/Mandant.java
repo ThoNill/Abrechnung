@@ -1,6 +1,9 @@
 package boundingContext.abrechnung.entities;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -16,54 +19,58 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "MANDANT")
 @SequenceGenerator(name = "MANDANT_SEQ", sequenceName = "MANDANT_SEQ")
-public class Mandant extends MandantUser {
-
-    public Mandant() {
-        super();
-    }
-
-    @Override
+public class Mandant { // extends MandantUser {
+    @EqualsAndHashCode.Include
+    @ToString.Include
     @Basic
     @Column(name = "MANDANTID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MANDANT_SEQ")
-    public java.lang.Long getMandantId() {
-        return super.getMandantId();
-    };
+    private java.lang.Long MandantId;
 
-    @Override
+    @EqualsAndHashCode.Include
+    @ToString.Include
     @Basic
     @Column(name = "NAME")
-    public String getName() {
-        return super.getName();
-    };
+    private String name;
 
-    @Override
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant")
     @LazyCollection(LazyCollectionOption.FALSE)
-    public List<Abrechnung> getAbrechnung() {
-        return super.getAbrechnung();
-    };
+    private Set<Abrechnung> abrechnung = new HashSet<>();
 
-    @Override
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "mandant_gebuehrdefinition", joinColumns = { @JoinColumn(name = "mandantId") }, inverseJoinColumns = { @JoinColumn(name = "gebuehrDefinitionId") })
     @LazyCollection(LazyCollectionOption.FALSE)
-    public List<GebuehrDefinition> getGebuehrDefinitionen() {
-        return super.getGebuehrDefinitionen();
-    };
+    private Set<GebuehrDefinition> gebuehrDefinitionen = new HashSet<>();
 
-    @Override
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant")
     @LazyCollection(LazyCollectionOption.FALSE)
-    public List<ZahlungsDefinition> getZahlungsDefinitionen() {
-        return super.getZahlungsDefinitionen();
-    };
+    private Set<ZahlungsDefinition> zahlungsDefinitionen = new HashSet<>();
+
+    public void addAbrechnung(Abrechnung a) {
+        abrechnung.add(a);
+    }
+
+    public void addZahlungsDefinitionen(ZahlungsDefinition d) {
+        zahlungsDefinitionen.add(d);
+    }
+
+    public void addGebuehrDefinitionen(GebuehrDefinition d) {
+        gebuehrDefinitionen.add(d);
+
+    }
 
 }

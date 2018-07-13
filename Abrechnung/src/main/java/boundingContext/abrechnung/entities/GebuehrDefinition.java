@@ -1,7 +1,10 @@
 package boundingContext.abrechnung.entities;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -15,163 +18,80 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
+import boundingContext.abrechnung.aufzählungen.RunStatus;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+
 @Entity
 @Table(name = "GEBUEHRDEFINITION")
 @SequenceGenerator(name = "GEBUEHRDEFINITION_SEQ", sequenceName = "GEBUEHRDEFINITION_SEQ")
 public class GebuehrDefinition {
-    private long gebuehrDefinitionId;
-    private double parameter;
-    private int art;
-    private int kontoNr;
-    private List<Mandant> mandanten = new ArrayList<Mandant>();
-
-    private int datenArt;
-    private int gebührArt;
-    private int buchungsArt;
-    private String name;
-    private String beschreibung;
-    private double mwstSatz;
-    private int mwstKonto;
-    private String buchungstext;
-
-    public GebuehrDefinition() {
-        super();
-    }
-
-    @Basic
+    
+    @EqualsAndHashCode.Include
+    @ToString.Include
+  
     @Column(name = "GEBUEHRDEFINITIONID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEBUEHRDEFINITION_SEQ")
-    public java.lang.Long getGebuehrDefinitionId() {
-        return gebuehrDefinitionId;
-    };
-
-    public void setGebuehrDefinitionId(long gebuehrDefinitionId) {
-        this.gebuehrDefinitionId = gebuehrDefinitionId;
-    }
-
-    @Basic
-    @Column(name = "ART")
-    public int getArt() {
-        return art;
-    };
-
-    public void setArt(int art) {
-        this.art = art;
-    }
+    private long gebuehrDefinitionId;
 
     @Basic
     @Column(name = "PARAMETER")
-    public double getParameter() {
-        return parameter;
-    }
+    private double parameter;
 
-    public void setParameter(double parameter) {
-        this.parameter = parameter;
-    }
+    @Basic
+    @Column(name = "ART")
+    private int art;
 
     @Basic
     @Column(name = "KONTONR")
-    public int getKontoNr() {
-        return kontoNr;
-    }
-
-    public void setKontoNr(int kontoNr) {
-        this.kontoNr = kontoNr;
-    }
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
-            CascadeType.MERGE }, mappedBy = "gebuehrDefinitionen")
-    public List<Mandant> getMandanten() {
-        return mandanten;
-    }
-
-    public void setMandanten(List<Mandant> mandanten) {
-        this.mandanten = mandanten;
-    };
-
-    public void addMandant(Mandant mandant) {
-        this.mandanten.add(mandant);
-    }
-
-    @Basic
-    @Column(name = "BUCHUNGSART")
-    public int getBuchungsArt() {
-        return buchungsArt;
-    }
-
-    public void setBuchungsArt(int buchungsArt) {
-        this.buchungsArt = buchungsArt;
-    }
-
-    @Basic
-    @Column(name = "NAME")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Basic
-    @Column(name = "BESCHREIBUNG")
-    public String getBeschreibung() {
-        return beschreibung;
-    }
-
-    public void setBeschreibung(String beschreibung) {
-        this.beschreibung = beschreibung;
-    }
-
-    @Basic
-    @Column(name = "MWSTSATZ")
-    public double getMwstSatz() {
-        return mwstSatz;
-    }
-
-    public void setMwstSatz(double mwstSatz) {
-        this.mwstSatz = mwstSatz;
-    }
-
-    @Basic
-    @Column(name = "MWSTKONTO")
-    public int getMwstKonto() {
-        return mwstKonto;
-    }
-
-    public void setMwstKonto(int mwstKonto) {
-        this.mwstKonto = mwstKonto;
-    }
-
-    @Basic
-    @Column(name = "BUCHUNGSTEXT")
-    public String getBuchungstext() {
-        return buchungstext;
-    }
-
-    public void setBuchungstext(String buchungstext) {
-        this.buchungstext = buchungstext;
-    }
+    private int kontoNr;
 
     @Basic
     @Column(name = "DATENART")
-    public int getDatenArt() {
-        return datenArt;
-    }
-
-    public void setDatenArt(int datenArt) {
-        this.datenArt = datenArt;
-    }
+    private int datenArt;
 
     @Basic
     @Column(name = "GEBUEHRART")
-    public int getGebührArt() {
-        return gebührArt;
-    }
+    private int gebührArt;
 
-    public void setGebührArt(int gebührArt) {
-        this.gebührArt = gebührArt;
+    @Basic
+    @Column(name = "BUCHUNGSART")
+    private int buchungsArt;
+
+    @Basic
+    @Column(name = "NAME")
+    private String name;
+
+    @Basic
+    @Column(name = "BESCHREIBUNG")
+    private String beschreibung;
+
+    @Basic
+    @Column(name = "MWSTSATZ")
+    private double mwstSatz;
+
+    @Basic
+    @Column(name = "MWSTKONTO")
+    private int mwstKonto;
+ 
+    @Basic
+    @Column(name = "BUCHUNGSTEXT")
+    private String buchungstext;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
+            CascadeType.MERGE }, mappedBy = "gebuehrDefinitionen")
+    private Set<Mandant> mandanten = new HashSet<Mandant>();
+
+    public void addMandant(Mandant mandant) {
+        this.mandanten.add(mandant);
     }
 
 }

@@ -86,8 +86,8 @@ public class IntegrationTest {
         gebührDefinition.setMwstSatz(0.19);
         gebührDefinition.setBuchungsArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setBuchungstext("Testbuchung");
-        gebührDefinition.addMandant(mandant);
         gebührenDefinitinRepository.save(gebührDefinition);
+        gebührDefinition.addMandant(mandant);
         mandant.addGebuehrDefinitionen(gebührDefinition);
         return mandantRepository.save(mandant);
     }

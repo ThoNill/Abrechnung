@@ -2,6 +2,7 @@ package boundingContext.abrechnung.flow.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.integration.splitter.AbstractMessageSplitter;
@@ -22,7 +23,7 @@ public class GebührDefinitionSplitter extends AbstractMessageSplitter {
         Mandant mandant = param.getMandant();
         int id = correlationId.addAndGet(1);
         List<Message> messages = new ArrayList<>();
-        List<GebuehrDefinition> liste = mandant.getGebuehrDefinitionen();
+        Set<GebuehrDefinition> liste = mandant.getGebuehrDefinitionen();
         int nr = 1;
         for (GebuehrDefinition gdef : liste) {
 

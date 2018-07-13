@@ -1,7 +1,10 @@
 package boundingContext.abrechnung.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,101 +20,89 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.RunStatus;
+import boundingContext.abrechnung.aufzählungen.Zeitraum;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 
 @Entity
 @Table(name = "ABRECHNUNG")
 @SequenceGenerator(name = "ABRECHNUNG_SEQ", sequenceName = "ABRECHNUNG_SEQ")
-public class Abrechnung extends AbrechnungUser {
+public class Abrechnung  {
 
-    public Abrechnung() {
-        super();
-    }
-
-    @Override
+    @EqualsAndHashCode.Include
+    @ToString.Include
     @Basic
     @Column(name = "ABRECHNUNGID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ABRECHNUNG_SEQ")
-    public java.lang.Long getAbrechnungId() {
-        return super.getAbrechnungId();
-    };
+    private java.lang.Long AbrechnungId;
 
-    @Override
+    @EqualsAndHashCode.Include
+    @ToString.Include
+ 
     @Basic
     @Column(name = "MONAT")
-    public int getMonat() {
-        return super.getMonat();
-    };
-
-    @Override
+    private int monat;
+ 
+    @EqualsAndHashCode.Include
+    @ToString.Include
+    
     @Basic
     @Column(name = "JAHR")
-    public int getJahr() {
-        return super.getJahr();
-    };
+    private int jahr;
 
-    @Override
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "TYP")
-    public AbrechnungsTyp getTyp() {
-        return super.getTyp();
-    }
-
-    @Override
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "STATUS")
-    public AbrechnungsStatus getStatus() {
-        return super.getStatus();
-    }
+    private AbrechnungsStatus status;
 
-    @Override
-    @Basic
-    @Column(name = "BEZEICHNUNG")
-    public String getBezeichnung() {
-        return super.getBezeichnung();
-    }
-
-    @Override
-    @Basic
-    @Column(name = "NUMMER")
-    public int getNummer() {
-        ;
-        return super.getNummer();
-    }
-
-    @Override
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "RUN_STATUS")
-    public RunStatus getRunStatus() {
-        return super.getRunStatus();
-    }
-
-    @Override
-    @Basic
-    @Column(name = "ANGELEGT")
-    public Date getAngelegt() {
-        return super.getAngelegt();
-    }
-
-    /*
-     * @Override // @Basic // @Column(name = "ZEITRAUM") public Zeitraum
-     * getZeitraum() {; return super.getZeitraum(); }
-     */
-
-    @Override
     @ManyToOne
     @JoinColumn(name = "MandantId")
-    public Mandant getMandant() {
-        return super.getMandant();
+    private Mandant mandant;
+    
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "TYP")
+    private AbrechnungsTyp typ = AbrechnungsTyp.INITIAL;
+    
+    @Basic
+    @Column(name = "BEZEICHNUNG")
+    private String bezeichnung;
+ 
+    @EqualsAndHashCode.Include
+    @ToString.Include
+ 
+    @Basic
+    @Column(name = "NUMMER")
+    private int nummer;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "RUN_STATUS")
+    private RunStatus runStatus = RunStatus.CREATED;
+
+    @Basic
+    @Column(name = "ANGELEGT")
+    private Date angelegt = new Date();
+    
+    // private Zeitraum zeitraum;
+
+    @OneToMany(mappedBy = "abrechnung")
+    private Set<Buchung> buchung = new HashSet<>();
+    
+
+    public void addBuchung(Buchung buchung) {
+        this.buchung.add(buchung);
     };
 
-    @Override
-    @OneToMany(mappedBy = "abrechnung")
-    public List<Buchung> getBuchung() {
-        return super.getBuchung();
+    public void removeBuchung(Buchung buchung) {
+        this.buchung.remove(buchung);
     };
+
 
 }

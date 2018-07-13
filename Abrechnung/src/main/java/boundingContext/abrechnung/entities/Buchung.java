@@ -1,7 +1,10 @@
 package boundingContext.abrechnung.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,56 +20,65 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
+import boundingContext.abrechnung.aufzählungen.RunStatus;
+import boundingContext.abrechnung.aufzählungen.Zeitraum;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+
 @Entity
 @Table(name = "BUCHUNG")
 @SequenceGenerator(name = "BUCHUNG_SEQ", sequenceName = "BUCHUNG_SEQ")
-public class Buchung extends BuchungUser {
+public class Buchung  {
 
-    public Buchung() {
-        super();
-    }
-
-    @Override
+    @EqualsAndHashCode.Include
+    @ToString.Include
+  
     @Basic
     @Column(name = "BUCHUNGID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BUCHUNG_SEQ")
-    public java.lang.Long getBuchungId() {
-        return super.getBuchungId();
-    };
+    private java.lang.Long BuchungId;
 
-    @Override
-    @Basic
-    @Column(name = "TEXT")
-    public String getText() {
-        return super.getText();
-    };
-
-    @Override
-    @Basic
-    @Column(name = "ART")
-    public int getArt() {
-        return super.getArt();
-    };
-
-    @Override
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "buchung")
-    public List<KontoBewegung> getBewegungen() {
-        return super.getBewegungen();
-    };
-
-    @Override
-    @ManyToOne()
-    @JoinColumn(name = "AbrechnungId")
-    public Abrechnung getAbrechnung() {
-        return super.getAbrechnung();
-    };
-
-    @Override
     @Basic
     @Column(name = "BUCHUNGSDATUM")
-    public Date getBuchungsDatum() {
-        return super.getBuchungsDatum();
+
+    private Date buchungsDatum;
+
+    @ToString.Include
+    @Basic
+    @Column(name = "TEXT")
+
+    private String text;
+
+    @EqualsAndHashCode.Include
+    @ToString.Include
+  
+    @Basic
+    @Column(name = "ART")
+
+    private int art;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "buchung")
+    private Set<KontoBewegung> bewegungen = new HashSet<>();
+
+    @ManyToOne()
+    @JoinColumn(name = "AbrechnungId")
+    private Abrechnung abrechnung;
+
+    public void addBewegungen(KontoBewegung bewegungen) {
+        this.bewegungen.add(bewegungen);
     };
+
+    public void removeBewegungen(KontoBewegung bewegungen) {
+        this.bewegungen.remove(bewegungen);
+    };
+
 
 }

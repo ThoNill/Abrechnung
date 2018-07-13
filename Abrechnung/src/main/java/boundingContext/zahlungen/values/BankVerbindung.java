@@ -4,17 +4,25 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 
+import lombok.Data;
 import ddd.Value;
 
+@Data
 public @Embeddable class BankVerbindung implements Value {
+    @Convert(converter = boundingContext.zahlungen.values.JaxbIBANAdapter.class)
+    @Column(name = "iban")
     private IBAN iban;
+
+    @Convert(converter = boundingContext.zahlungen.values.JaxbBICAdapter.class)
+    @Column(name = "bic")
     private BIC bic;
+    
     private String name;
 
     public BankVerbindung() {
-        super();
+        this(new IBAN(),new BIC());
     }
-
+    
     public BankVerbindung(IBAN iban, BIC bic) {
         super();
         this.iban = iban;
@@ -22,69 +30,5 @@ public @Embeddable class BankVerbindung implements Value {
         this.name = "NN";
     }
 
-    @Convert(converter = boundingContext.zahlungen.values.JaxbIBANAdapter.class)
-    @Column(name = "iban")
-    public IBAN getIban() {
-        return iban;
-    }
-
-    public void setIban(IBAN iban) {
-        this.iban = iban;
-    }
-
-    @Convert(converter = boundingContext.zahlungen.values.JaxbBICAdapter.class)
-    @Column(name = "bic")
-    public BIC getBic() {
-        return bic;
-    }
-
-    public void setBic(BIC bic) {
-        this.bic = bic;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((bic == null) ? 0 : bic.hashCode());
-        result = prime * result + ((iban == null) ? 0 : iban.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BankVerbindung other = (BankVerbindung) obj;
-        if (bic == null) {
-            if (other.bic != null)
-                return false;
-        } else if (!bic.equals(other.bic))
-            return false;
-        if (iban == null) {
-            if (other.iban != null)
-                return false;
-        } else if (!iban.equals(other.iban))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
-    }
 
 }

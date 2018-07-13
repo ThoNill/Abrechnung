@@ -1,5 +1,8 @@
 package boundingContext.abrechnung.entities;
 
+import java.util.Date;
+import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,51 +16,59 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
+import boundingContext.abrechnung.aufzählungen.RunStatus;
+import boundingContext.abrechnung.aufzählungen.Zeitraum;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+
 @Entity
 @Table(name = "KONTOBEWEGUNG")
 @SequenceGenerator(name = "KONTOBEWEGUNG_SEQ", sequenceName = "KONTOBEWEGUNG_SEQ")
-public class KontoBewegung extends KontoBewegungUser {
+public class KontoBewegung  {
 
-    public KontoBewegung() {
-        super();
-    }
 
-    @Override
+    @EqualsAndHashCode.Include
+    @ToString.Include
+
     @Basic
     @Column(name = "KONTOBEWEGUNGID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "KONTOBEWEGUNG_SEQ")
-    public java.lang.Long getKontoBewegungId() {
-        return super.getKontoBewegungId();
-    };
+    private java.lang.Long KontoBewegungId;
 
-    @Override
     @Basic
     @Column(name = "ART")
-    public int getArt() {
-        return super.getArt();
-    };
 
-    @Override
+
+    @EqualsAndHashCode.Include
+    @ToString.Include
+
+    private int art;
     @Basic
     @Column(name = "KONTONR")
-    public int getKontoNr() {
-        return super.getKontoNr();
-    };
 
-    @Override
+
+    @EqualsAndHashCode.Include
+    @ToString.Include
+
+    private int kontoNr;
+    
     @Basic
     @Column(name = "BETRAG")
     @Convert(converter = betrag.GeldKonverter.class)
-    public javax.money.MonetaryAmount getBetrag() {
-        return super.getBetrag();
-    };
-
-    @Override
+    
+    private javax.money.MonetaryAmount betrag;
+    
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "BuchungId")
-    public Buchung getBuchung() {
-        return super.getBuchung();
-    };
+    
+    private Buchung buchung;
 
 }
