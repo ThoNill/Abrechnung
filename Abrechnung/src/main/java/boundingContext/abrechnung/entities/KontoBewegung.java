@@ -1,8 +1,5 @@
 package boundingContext.abrechnung.entities;
 
-import java.util.Date;
-import java.util.Set;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,10 +16,6 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
-import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
-import boundingContext.abrechnung.aufzählungen.RunStatus;
-import boundingContext.abrechnung.aufzählungen.Zeitraum;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

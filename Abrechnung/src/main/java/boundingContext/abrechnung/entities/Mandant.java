@@ -1,8 +1,6 @@
 package boundingContext.abrechnung.entities;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -32,7 +30,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Entity
 @Table(name = "MANDANT")
 @SequenceGenerator(name = "MANDANT_SEQ", sequenceName = "MANDANT_SEQ")
-public class Mandant { // extends MandantUser {
+public class Mandant { 
     @EqualsAndHashCode.Include
     @ToString.Include
     @Basic

@@ -1,7 +1,6 @@
 package boundingContext.abrechnung.entities;
 
 import java.util.Date;
-import java.util.Set;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
@@ -23,9 +22,6 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
-import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
-import boundingContext.abrechnung.aufzählungen.RunStatus;
 import boundingContext.zahlungen.values.BankVerbindung;
 
 @Data

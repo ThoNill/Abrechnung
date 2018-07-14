@@ -1,11 +1,8 @@
 package boundingContext.abrechnung.entities;
 
-import java.util.Date;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import boundingContext.zahlungen.values.TypeReference;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

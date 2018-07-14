@@ -101,6 +101,7 @@ public class IntegrationTest {
     public DirectChannel mandantChannel;
 
     @Autowired
+    @Qualifier("abrechnungFlow")
     StandardIntegrationFlow flow;
 
     @Test

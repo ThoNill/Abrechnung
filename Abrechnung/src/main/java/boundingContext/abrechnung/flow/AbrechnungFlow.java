@@ -37,6 +37,7 @@ public class AbrechnungFlow {
     };
 
     @Bean
+    @Qualifier("abrechnungFlow")
     public StandardIntegrationFlow processFileFlowBuilder(
             SachKontoProvider sachKontoProvider,
             MandantRepository mandantRepository,
