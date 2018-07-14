@@ -82,7 +82,7 @@ public class GebuehrDefinition {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
             CascadeType.MERGE }, mappedBy = "gebuehrDefinitionen")
-    private Set<Mandant> mandanten = new HashSet<Mandant>();
+    private Set<Mandant> mandanten = new HashSet<>();
 
     public void addMandant(Mandant mandant) {
         this.mandanten.add(mandant);

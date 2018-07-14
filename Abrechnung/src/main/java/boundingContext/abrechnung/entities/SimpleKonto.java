@@ -5,9 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(onlyExplicitlyIncluded = true)
-
 public class SimpleKonto {
     private int art;
     private int nummer;

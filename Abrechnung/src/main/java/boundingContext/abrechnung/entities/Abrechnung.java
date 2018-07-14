@@ -87,7 +87,7 @@ public class Abrechnung  {
     @Column(name = "ANGELEGT")
     private Date angelegt = new Date();
     
-    // private Zeitraum zeitraum;
+    // TODO Zeitraum zeitraum;
 
     @OneToMany(mappedBy = "abrechnung")
     private Set<Buchung> buchung = new HashSet<>();
