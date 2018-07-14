@@ -2,13 +2,15 @@ package boundingContext.abrechnung.flow.payloads;
 
 import javax.validation.constraints.NotNull;
 
+import lombok.Getter;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
 
+@Getter
 public class AbrechnungPayload {
+    private Abrechnung abrechnung;
     private Mandant mandant;
     private AbrechnungsArt art;
-    private Abrechnung abrechnung;
 
     public AbrechnungPayload(@NotNull Abrechnung abrechnung,
             @NotNull Mandant mandant, AbrechnungsArt art) {
@@ -16,17 +18,5 @@ public class AbrechnungPayload {
         this.abrechnung = abrechnung;
         this.mandant = mandant;
         this.art = art;
-    }
-
-    public Abrechnung getAbrechnung() {
-        return abrechnung;
-    }
-
-    public Mandant getMandant() {
-        return mandant;
-    }
-
-    public AbrechnungsArt getArt() {
-        return art;
     }
 }

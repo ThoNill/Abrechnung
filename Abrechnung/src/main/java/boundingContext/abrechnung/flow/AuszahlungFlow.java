@@ -1,5 +1,7 @@
 package boundingContext.abrechnung.flow;
 
+import lombok.extern.java.Log;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -15,6 +17,7 @@ import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 import boundingContext.zahlungen.helper.ÜberweisungenManager;
 import boundingContext.zahlungen.values.TypeReference;
 
+@Log
 public class AuszahlungFlow {
 
     @Bean
@@ -40,7 +43,7 @@ public class AuszahlungFlow {
                 .transform(
                         createMarkierenUndDateiErstellen(
                                 ausgangsDateiRepository, überweisungRepository))
-                .handle(x -> System.out.println("im Handler: " + x.toString()))
+                .handle(x -> log.info("im Handler: " + x.toString()))
                 .get();
     }
 

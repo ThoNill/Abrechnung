@@ -1,5 +1,7 @@
 package boundingContext.abrechnung.flow;
 
+import lombok.extern.java.Log;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,7 @@ import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 
+@Log
 public class AbrechnungFlow {
 
     @Bean
@@ -64,7 +67,7 @@ public class AbrechnungFlow {
                                 abrechnungRepository, buchungRepository,
                                 kontoBewegungRepository,
                                 zahlungsAuftragRepository))
-                .handle(x -> System.out.println("im Handler: " + x.toString()))
+                .handle(x -> log.info("im Handler: " + x.toString()))
                 .get();
 
     }

@@ -10,9 +10,7 @@ import javax.persistence.Converter;
 public class GeldKonverter implements
         AttributeConverter<MonetaryAmount, BigDecimal> {
 
-    public GeldKonverter() {
-    }
-
+   
     @Override
     public BigDecimal convertToDatabaseColumn(MonetaryAmount betrag) {
         if (betrag == null) {

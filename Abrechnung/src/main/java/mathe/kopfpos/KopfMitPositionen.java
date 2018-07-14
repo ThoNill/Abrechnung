@@ -21,12 +21,10 @@ public class KopfMitPositionen<K, KEY, VALUE, BÜNDELTYP extends Bündel<KEY, VALU
 
     public Bündel<Paar<K, KEY>, VALUE> einKopfMitPositionenInEinPaarBündelumwandeln(
             KopfMitPositionen<K, KEY, VALUE, BÜNDELTYP> kp) {
-        Bündel<KEY, VALUE> positionen = kp.positionen;
-        K kopf = kp.kopf;
         BündelMap<Paar<K, KEY>, VALUE> bündel = new BündelMap<>();
-        for (KEY k : positionen.getKeys()) {
-            Paar<K, KEY> p = new Paar(kopf, k);
-            bündel.put(p, positionen.getValue(k));
+        for (KEY k : kp.positionen.getKeys()) {
+            Paar<K, KEY> p = new Paar(kp.kopf, k);
+            bündel.put(p, kp.positionen.getValue(k));
         }
         return bündel;
     }
@@ -55,7 +53,7 @@ public class KopfMitPositionen<K, KEY, VALUE, BÜNDELTYP extends Bündel<KEY, VALU
                 kBündel.put(k, pBündel.getValue(p));
             }
         }
-        return new KopfMitPositionen<K, KEY, VALUE, BündelMap<KEY, VALUE>>(
+        return new KopfMitPositionen<>(
                 kopf, kBündel);
     }
 
@@ -72,9 +70,9 @@ public class KopfMitPositionen<K, KEY, VALUE, BÜNDELTYP extends Bündel<KEY, VALU
     public List<KopfMitPositionen<K, KEY, VALUE, BündelMap<KEY, VALUE>>> einPaarBündelInEineListeVonKöpfenMitPositionenUmwandeln(
             Bündel<Paar<K, KEY>, VALUE> pBündel) {
         Set<K> köpfe = ausEinemPaarBündelDieKöpfeExtrahieren(pBündel);
-        List<KopfMitPositionen<K, KEY, VALUE, BündelMap<KEY, VALUE>>> liste = new ArrayList<KopfMitPositionen<K, KEY, VALUE, BündelMap<KEY, VALUE>>>();
-        for (K kopf : köpfe) {
-            liste.add(ausEinemPaarBündelEinBündelExtrahieren(pBündel, kopf));
+        List<KopfMitPositionen<K, KEY, VALUE, BündelMap<KEY, VALUE>>> liste = new ArrayList<>();
+        for (K k : köpfe) {
+            liste.add(ausEinemPaarBündelEinBündelExtrahieren(pBündel, k));
         }
         return liste;
     }
