@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.persistence.FetchType;
+
 import org.springframework.integration.splitter.AbstractMessageSplitter;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
+import org.springframework.transaction.annotation.Transactional;
 
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Mandant;

@@ -118,12 +118,12 @@ public class BuchungsauftragInDBTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void insertBuchungTest() {
         insertBuchung();
         check();
     }
 
-    @Transactional("dbATransactionManager")
     public Buchung insertBuchung() {
         Mandant mandant = erzeugeMandant();
 

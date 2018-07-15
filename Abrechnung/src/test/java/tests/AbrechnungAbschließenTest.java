@@ -105,6 +105,7 @@ public class AbrechnungAbschlieﬂenTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void ausgleichGuthaben() {
         checkAbgleich(saldoAbgleichen(1.24), BuchungsArt.ABGLEICH_GUTHABEN,
                 TestSachKonto.GUTHABEN, -1.24);
@@ -167,7 +168,6 @@ public class AbrechnungAbschlieﬂenTest {
         check‹bernahmeOhneWirkung(n‰chsteAbrechnung);
     }
 
-    @Transactional("dbATransactionManager")
     public Abrechnung saldoAbgleichen(double betrag) {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
@@ -184,7 +184,6 @@ public class AbrechnungAbschlieﬂenTest {
         return abrechnung;
     }
 
-    @Transactional("dbATransactionManager")
     public void checkAbgleich(Abrechnung abrechnung, int art,
             SachKonto kontonr, double betrag) {
         assertEquals(1, mandantRepository.count());
@@ -203,7 +202,6 @@ public class AbrechnungAbschlieﬂenTest {
 
     }
 
-    @Transactional("dbATransactionManager")
     public Abrechnung schulden‹bernahme(Abrechnung abrechnung, double zinssatz,
             int tage) {
         AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
@@ -220,7 +218,6 @@ public class AbrechnungAbschlieﬂenTest {
         return n‰chsteAbrechnung;
     }
 
-    @Transactional("dbATransactionManager")
     public void check‹bernahme(Abrechnung abrechnung, double betrag, double zins) {
         assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());
@@ -238,7 +235,6 @@ public class AbrechnungAbschlieﬂenTest {
 
     }
 
-    @Transactional("dbATransactionManager")
     public void check‹bernahmeOhneWirkung(Abrechnung abrechnung) {
         assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());

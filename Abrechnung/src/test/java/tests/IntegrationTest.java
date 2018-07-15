@@ -105,6 +105,7 @@ public class IntegrationTest {
     StandardIntegrationFlow flow;
 
     @Test
+    @Transactional("dbATransactionManager")
     public void normalerAblauf()  {
 
         mandantChannel.addInterceptor(new ChannelInterceptorAdapter() {

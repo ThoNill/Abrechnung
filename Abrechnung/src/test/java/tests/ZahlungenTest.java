@@ -91,6 +91,7 @@ public class ZahlungenTest {
         return mandantRepository.save(mandant);
     }
 
+    
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setNummer(3);
@@ -111,6 +112,7 @@ public class ZahlungenTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void aufträgeErzeugen() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
@@ -130,6 +132,7 @@ public class ZahlungenTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void überweisungenErzeugen() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);

@@ -59,7 +59,7 @@ public class Buchung  {
 
     private int art;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "buchung")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "buchung")
     private Set<KontoBewegung> bewegungen = new HashSet<>();
 
     @ManyToOne()

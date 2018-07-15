@@ -85,12 +85,12 @@ public class EinBucherTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void insertBuchungTest() {
         insertBuchung();
         check();
     }
 
-    @Transactional("dbATransactionManager")
     public Buchung insertBuchung() {
         Mandant mandant = erzeugeMandant();
 
@@ -102,7 +102,6 @@ public class EinBucherTest {
         return buchungRepository.save(buchung);
     }
 
-    @Transactional("dbATransactionManager")
     public void check() {
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
@@ -119,6 +118,7 @@ public class EinBucherTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void insertAndLoadTest() {
         Buchung buchung = insertBuchung();
         EinBucher bucher = erzeugeEinbucher();
@@ -129,13 +129,13 @@ public class EinBucherTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void saldoTest() {
         Buchung buchung = insertBuchung();
         assertEquals(Geld.createAmount(1.12),
                 buchungRepository.getSaldo(buchung.getAbrechnung()));
     }
 
-    @Transactional("dbATransactionManager")
     public void erzeugeDifferenBuchung() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
@@ -146,12 +146,12 @@ public class EinBucherTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void differenBuchungTest() {
         erzeugeDifferenBuchung();
         check();
     }
 
-    @Transactional("dbATransactionManager")
     public void erzeugeDoppelteDifferenBuchung() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
@@ -162,6 +162,7 @@ public class EinBucherTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void differenDoppelteBuchungTest() {
         erzeugeDoppelteDifferenBuchung();
         check();

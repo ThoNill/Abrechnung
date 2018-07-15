@@ -7,6 +7,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,17 +46,15 @@ public class Mandant {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant",fetch = FetchType.LAZY)
     private Set<Abrechnung> abrechnung = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },fetch = FetchType.LAZY)
     @JoinTable(name = "mandant_gebuehrdefinition", joinColumns = { @JoinColumn(name = "mandantId") }, inverseJoinColumns = { @JoinColumn(name = "gebuehrDefinitionId") })
-    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<GebuehrDefinition> gebuehrDefinitionen = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant",fetch = FetchType.LAZY)
+ //   @LazyCollection(LazyCollectionOption.FALSE)
     private Set<ZahlungsDefinition> zahlungsDefinitionen = new HashSet<>();
 
     public void addAbrechnung(Abrechnung a) {

@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -89,7 +90,7 @@ public class Abrechnung  {
     
     // TODO Zeitraum zeitraum;
 
-    @OneToMany(mappedBy = "abrechnung")
+    @OneToMany(mappedBy = "abrechnung",fetch=FetchType.LAZY)
     private Set<Buchung> buchung = new HashSet<>();
     
 
