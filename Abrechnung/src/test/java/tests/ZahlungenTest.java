@@ -84,7 +84,6 @@ public class ZahlungenTest {
         d.setBank(new BankVerbindung(new IBAN("123"), new BIC("999")));
         d.setProzentSatz(prozentSatz);
         d.setTag(1);
-        d = zahlungsDefinitionRepository.save(d);
         d.setMandant(mandant);
         mandant.addZahlungsDefinitionen(d);
         zahlungsDefinitionRepository.save(d);
@@ -99,11 +98,8 @@ public class ZahlungenTest {
         abrechnung.setMonat(4);
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
-        abrechnung = abrechnungRepository.save(abrechnung);
         abrechnung.setMandant(mandant);
-        abrechnung = abrechnungRepository.save(abrechnung);
         mandant.addAbrechnung(abrechnung);
-        mandantRepository.save(mandant);
         return abrechnungRepository.save(abrechnung);
     }
 
@@ -145,7 +141,7 @@ public class ZahlungenTest {
         List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
                 Geld.createAmount(100), "verwendungszweck");
 
-        manager.erzeugeÜberweisungen(mandant, aufträge, new BankVerbindung(
+        manager.erzeugeÜberweisungen(aufträge, new BankVerbindung(
                 new IBAN("1"), new BIC("9")));
         assertEquals(2, überweisungRepository.count());
     }

@@ -50,9 +50,9 @@ public class ZahlungsAuftragsManager extends EinBucher {
         this.überwiesen = überwiesen;
     }
 
-    @Transactional("dbATransactionManager")
     public List<ZahlungsAuftrag> erzeugeAufträge(Abrechnung abrechnung,
             MonetaryAmount betrag, String verwendungszweck) {
+        abrechnung = abrechnungRepository.save(abrechnung);
         Mandant mandant = abrechnung.getMandant();
         Set<ZahlungsDefinition> definitionen = mandant
                 .getZahlungsDefinitionen();
@@ -70,7 +70,6 @@ public class ZahlungsAuftragsManager extends EinBucher {
             a.setBuchungsart(d.getBuchungsart());
             a.setVerwendungszweck(verwendungszweck);
             a.setZuZahlenAm(d.berechneAuszahlungsTernin(new Date()));
-            a = zahlungsAuftragRepository.save(a);
             a.setAbrechnung(abrechnung);
             a.setMandant(mandant);
             a = zahlungsAuftragRepository.save(a);
@@ -79,17 +78,16 @@ public class ZahlungsAuftragsManager extends EinBucher {
         return aufträge;
     }
 
-    @Transactional("dbATransactionManager")
-    public void erzeugeÜberweisungen(Mandant mandant,
+    public void erzeugeÜberweisungen(
             List<ZahlungsAuftrag> zahlungsAufträge, BankVerbindung vonBank) {
         for (ZahlungsAuftrag auftrag : zahlungsAufträge) {
+            auftrag = zahlungsAuftragRepository.save(auftrag);
             Überweisung überweisung = new Überweisung();
             überweisung.setBetrag(auftrag.getBetrag());
             überweisung.setAn(auftrag.getBank());
             überweisung.setVon(vonBank);
             überweisung.setBuchungsart(auftrag.getBuchungsart());
             überweisung.setErstellt(new Date());
-            überweisung = überweisungsRepository.save(überweisung);
             überweisung.setAuftrag(auftrag);
             überweisung.setMandant(auftrag.getMandant());
             überweisung = überweisungsRepository.save(überweisung);
