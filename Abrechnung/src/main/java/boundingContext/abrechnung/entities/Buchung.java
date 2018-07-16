@@ -62,7 +62,7 @@ public class Buchung  {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "buchung")
     private Set<KontoBewegung> bewegungen = new HashSet<>();
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AbrechnungId")
     private Abrechnung abrechnung;
 

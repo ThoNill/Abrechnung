@@ -14,6 +14,7 @@ import boundingContext.abrechnung.repositories.AbrechnungRepository;
 public class AbrechnungHelper {
 
     private AbrechnungRepository abrechnungRepository;
+    
 
     public AbrechnungHelper(AbrechnungRepository abrechnungRepository) {
         super();
@@ -21,6 +22,7 @@ public class AbrechnungHelper {
     }
 
     public Abrechnung createOrGetNächsteAbrechnung(@NotNull Abrechnung a) {
+        a = abrechnungRepository.save(a);
         List<Abrechnung> liste = abrechnungRepository.getAbrechnung(
                 a.getMandant(), a.getNummer() + 1);
         if (liste.isEmpty()) {
@@ -32,7 +34,7 @@ public class AbrechnungHelper {
             neu.setTyp(a.getTyp());
             return abrechnungRepository.save(neu);
         }
-        return liste.get(0);
+        return abrechnungRepository.save(liste.get(0));
     }
 
     public Optional<Abrechnung> getVorherigeAbrechnung(@NotNull Abrechnung a) {

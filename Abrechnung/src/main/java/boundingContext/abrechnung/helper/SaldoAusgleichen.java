@@ -5,6 +5,7 @@ import javax.money.MonetaryAmount;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
@@ -24,10 +25,11 @@ public class SaldoAusgleichen extends EinBucher {
     public SaldoAusgleichen(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
+            AbrechnungRepository abrechnungRepository,
             int buchungstypGuthaben, SachKonto kontonrGuthaben,
             String textGuthaben, int buchungstypSchulden,
             SachKonto kontonrSchulden, String textSchulden) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
+        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
         this.buchungstypGuthaben = buchungstypGuthaben;
         this.kontonrGuthaben = kontonrGuthaben;
         this.textGuthaben = textGuthaben;

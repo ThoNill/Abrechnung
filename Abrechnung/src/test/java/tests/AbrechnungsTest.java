@@ -42,7 +42,7 @@ public class AbrechnungsTest {
     }
 
     public Mandant erzeugeMandant() {
-        return mandantRepository.save(new Mandant());
+        return new Mandant();
     }
 
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
@@ -53,26 +53,27 @@ public class AbrechnungsTest {
         abrechnung.setMonat(4);
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
-        abrechnung = abrechnungRepository.save(abrechnung);
         mandant.addAbrechnung(abrechnung);
-        return abrechnung;
+        return abrechnungRepository.save(abrechnung);
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void nächsteAbrechnungTest() {
         Abrechnung abrechnung = naechsteAbrechnung();
         assertEquals(4, abrechnung.getNummer());
+        assertEquals(1, mandantRepository.count());
+        assertEquals(2, abrechnungRepository.count());
     }
 
-    @Transactional("dbATransactionManager")
+   
     public Abrechnung naechsteAbrechnung() {
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
         AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
         return helper.createOrGetNächsteAbrechnung(abrechnung);
     }
 
-    @Transactional("dbATransactionManager")
-    public Abrechnung naechsteAbrechnungMefacherAufruf() {
+    public Abrechnung naechsteAbrechnungMerfacherAufruf() {
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
         AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
         helper.createOrGetNächsteAbrechnung(abrechnung);
@@ -81,13 +82,14 @@ public class AbrechnungsTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void nächsteAbrechnungMehrfacherAufrufTest() {
-        Abrechnung abrechnung = naechsteAbrechnungMefacherAufruf();
+        Abrechnung abrechnung = naechsteAbrechnungMerfacherAufruf();
+        assertEquals(1, mandantRepository.count());
         assertEquals(4, abrechnung.getNummer());
         assertEquals(2, abrechnungRepository.count());
     }
 
-    @Transactional("dbATransactionManager")
     public Optional<Abrechnung> vorherigeAbrechnung() {
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
         AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
@@ -95,6 +97,7 @@ public class AbrechnungsTest {
     }
 
     @Test
+    @Transactional("dbATransactionManager")
     public void vorherigeAbrechnungTest() {
         Optional<Abrechnung> oAbrechnung = vorherigeAbrechnung();
         assertFalse(oAbrechnung.isPresent());
@@ -110,6 +113,7 @@ public class AbrechnungsTest {
                 .createOrGetNächsteAbrechnung(abrechnung);
         Optional<Abrechnung> vorkerigeDerNächstenAbrechnung = helper
                 .getVorherigeAbrechnung(nächsteAbrechnung);
+        assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());
         assertTrue(vorkerigeDerNächstenAbrechnung.isPresent());
         assertEquals(abrechnung.getAbrechnungId(),

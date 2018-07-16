@@ -25,13 +25,12 @@ public class SchuldenInDieAbrechnung extends EinBucher {
             int buchungstypSchuldenStart, int buchungstypSchulden,
             SachKonto kontonrSchulden, SachKonto kontonrZinsen, String text,
             double zinssatz) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
+        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
         this.buchungstypSchuldenStart = buchungstypSchuldenStart;
         this.kontonrZinsen = kontonrZinsen;
         this.text = text;
         this.buchungstypSchulden = buchungstypSchulden;
         this.kontonrSchulden = kontonrSchulden;
-        this.abrechnungRepository = abrechnungRepository;
         this.zinssatz = zinssatz;
     }
 
@@ -41,7 +40,6 @@ public class SchuldenInDieAbrechnung extends EinBucher {
 
     private int buchungstypSchulden;
     private SachKonto kontonrSchulden;
-    private AbrechnungRepository abrechnungRepository;
     private double zinssatz;
 
     public void übertragen(Abrechnung abrechnung, int zinsDauer) {

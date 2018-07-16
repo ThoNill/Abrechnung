@@ -60,7 +60,7 @@ public class AbrechnungFlow {
                 .transform(berechneBuchungsauftrag(konfigurator))
                 .transform(
                         bucheDenBuchungsauftrag(sachKontoProvider,
-                                buchungRepository, kontoBewegungRepository))
+                                buchungRepository, kontoBewegungRepository,abrechnungRepository))
                 .aggregate(a -> a.processor(new GebührDefinitionAggregator()))
                 .transform(
                         schließeDieAbrechnungAb(sachKontoProvider,
@@ -104,8 +104,9 @@ public class AbrechnungFlow {
     BucheDenBuchungsauftrag bucheDenBuchungsauftrag(
             SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository) {
+            KontoBewegungRepository kontoBewegungRepository,
+            AbrechnungRepository abrechnungRepository) {
         return new BucheDenBuchungsauftrag(sachKontoProvider,
-                buchungRepository, kontoBewegungRepository);
+                buchungRepository, kontoBewegungRepository,abrechnungRepository);
     }
 }

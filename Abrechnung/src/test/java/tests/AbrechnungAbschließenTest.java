@@ -101,7 +101,7 @@ public class AbrechnungAbschlieﬂenTest {
 
     private EinBucher erzeugeEinbucher() {
         return new EinBucher(sachKontoProvider(), buchungRepository,
-                kontoBewegungRepository);
+                kontoBewegungRepository,abrechnungRepository);
     }
 
     @Test
@@ -176,7 +176,7 @@ public class AbrechnungAbschlieﬂenTest {
         Buchung buchung = bucher.erzeugeBuchung(auftrag, abrechnung);
 
         SaldoAusgleichen abschluss = new SaldoAusgleichen(sachKontoProvider(),
-                buchungRepository, kontoBewegungRepository,
+                buchungRepository, kontoBewegungRepository,abrechnungRepository,
                 BuchungsArt.ABGLEICH_GUTHABEN, TestSachKonto.GUTHABEN,
                 "Guthaben", BuchungsArt.ABGLEICH_SCHULDEN,
                 TestSachKonto.SCHULDEN, "Schulden");

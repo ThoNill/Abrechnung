@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -61,7 +62,7 @@ public class Abrechnung  {
     @Column(name = "STATUS")
     private AbrechnungsStatus status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "MandantId")
     private Mandant mandant;
     
@@ -90,7 +91,7 @@ public class Abrechnung  {
     
     // TODO Zeitraum zeitraum;
 
-    @OneToMany(mappedBy = "abrechnung",fetch=FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "abrechnung",fetch=FetchType.LAZY)
     private Set<Buchung> buchung = new HashSet<>();
     
 

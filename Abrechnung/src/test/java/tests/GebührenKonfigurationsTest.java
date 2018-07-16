@@ -216,10 +216,10 @@ public class GebührenKonfigurationsTest {
                 auftragBündel.getBetrag(TestSachKonto.MWST));
 
         EinBucher bucher = new EinBucher(new TestSachKontoProvider(),
-                buchungRepository, kontoBewegungRepository);
-        bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
+                buchungRepository, kontoBewegungRepository,abrechnungRepository);
         // Noch einmal, darf nichts ausmachen
-        bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
+ 
+        bucher.erzeugeDifferenzBuchung(auftrag,abrechnung);
 
         BetragsBündel<SachKonto> bündel = bucher.beträgeEinerBuchungsartHolen(
                 abrechnung, BuchungsArt.TESTBUCHUNG);
@@ -231,6 +231,7 @@ public class GebührenKonfigurationsTest {
         assertEquals(Geld.createAmount(-summe * 0.06 * 0.19),
                 bündel.getBetrag(TestSachKonto.MWST));
 
+        assertEquals(1, abrechnungRepository.count());
         assertEquals(3, leistungRepository.count());
 
     }

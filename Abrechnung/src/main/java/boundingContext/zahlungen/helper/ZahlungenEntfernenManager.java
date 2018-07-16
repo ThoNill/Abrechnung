@@ -11,6 +11,7 @@ import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.ZahlungsAuftrag;
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
@@ -23,13 +24,16 @@ public class ZahlungenEntfernenManager extends EinBucher {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
     private int buchungstypGuthaben;
     private SachKonto kontonrGuthaben;
+    
+
 
     public ZahlungenEntfernenManager(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
+            AbrechnungRepository abrechnungRepository,        
             int buchungstypGuthaben, SachKonto kontonrGuthaben) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
+        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
         this.buchungstypGuthaben = buchungstypGuthaben;
         this.kontonrGuthaben = kontonrGuthaben;

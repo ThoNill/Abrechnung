@@ -69,7 +69,8 @@ public class BuchungsauftragInDBTest {
     }
 
     public Mandant erzeugeMandant() {
-        return mandantRepository.save(new Mandant());
+        return new Mandant();
+        //return mandantRepository.save(new Mandant());
     }
 
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
@@ -80,9 +81,9 @@ public class BuchungsauftragInDBTest {
         abrechnung.setMonat(4);
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
-        abrechnung = abrechnungRepository.save(abrechnung);
         mandant.addAbrechnung(abrechnung);
         return abrechnung;
+       // return abrechnungRepository.save(abrechnung);
     }
 
     public Buchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,
@@ -92,13 +93,13 @@ public class BuchungsauftragInDBTest {
         buchung.setText(auftrag.getBeschreibung().getText());
         buchung.setArt(auftrag.getBeschreibung().getArt());
         buchung.setAbrechnung(abrechnung);
-        buchung = buchungRepository.save(buchung);
+        //buchung = buchungRepository.save(buchung);
         for (SachKonto p : beträge.getKeys()) {
             KontoBewegung bew = new KontoBewegung();
             bew.setBetrag(beträge.getValue(p));
             bew.setArt(1);
             bew.setKontoNr(p.ordinal());
-            bew = kontoBewegungRepository.save(bew);
+            //bew = kontoBewegungRepository.save(bew);
             bew.setBuchung(buchung);
             buchung.addBewegungen(bew);
         }
@@ -130,8 +131,8 @@ public class BuchungsauftragInDBTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag();
         Buchung buchung = erzeugeBuchung(auftrag, abrechnung);
-
         return buchungRepository.save(buchung);
+//        return buchung;
     }
 
     @Transactional("dbATransactionManager")
@@ -143,6 +144,7 @@ public class BuchungsauftragInDBTest {
         for (Buchung buchung : buchungRepository.findAll()) {
             assertEquals(1, buchung.getBewegungen().size());
         }
+        
     }
 
     @Test

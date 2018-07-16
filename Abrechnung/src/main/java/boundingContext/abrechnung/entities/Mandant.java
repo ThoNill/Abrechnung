@@ -46,14 +46,14 @@ public class Mandant {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mandant",fetch = FetchType.LAZY)
     private Set<Abrechnung> abrechnung = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL },fetch = FetchType.LAZY)
     @JoinTable(name = "mandant_gebuehrdefinition", joinColumns = { @JoinColumn(name = "mandantId") }, inverseJoinColumns = { @JoinColumn(name = "gebuehrDefinitionId") })
     private Set<GebuehrDefinition> gebuehrDefinitionen = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mandant",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mandant",fetch = FetchType.LAZY)
  //   @LazyCollection(LazyCollectionOption.FALSE)
     private Set<ZahlungsDefinition> zahlungsDefinitionen = new HashSet<>();
 

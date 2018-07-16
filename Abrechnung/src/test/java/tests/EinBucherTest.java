@@ -114,7 +114,7 @@ public class EinBucherTest {
 
     private EinBucher erzeugeEinbucher() {
         return new EinBucher(new TestSachKontoProvider(), buchungRepository,
-                kontoBewegungRepository);
+                kontoBewegungRepository,abrechnungRepository);
     }
 
     @Test

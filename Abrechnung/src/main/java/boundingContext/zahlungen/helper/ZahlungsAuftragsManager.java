@@ -17,6 +17,7 @@ import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.entities.ZahlungsAuftrag;
 import boundingContext.abrechnung.entities.ZahlungsDefinition;
 import boundingContext.abrechnung.entities.Überweisung;
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
@@ -39,9 +40,10 @@ public class ZahlungsAuftragsManager extends EinBucher {
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
-            ÜberweisungRepository überweisungsRepository, SachKonto offen,
+            ÜberweisungRepository überweisungsRepository,
+            AbrechnungRepository abrechnungRepository,SachKonto offen,
             SachKonto überwiesen) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
+        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
         this.überweisungsRepository = überweisungsRepository;
         this.offen = offen;

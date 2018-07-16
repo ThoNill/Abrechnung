@@ -15,23 +15,22 @@ public class AbrechnungAbschlieﬂen extends EinBucher {
     private ZahlungenEntfernenManager zahlungenEntfernen;
     private SchuldenInDieAbrechnung schulden‹bertragen;
     private SaldoAusgleichen ausgleichen;
-    private AbrechnungRepository abrechnungRepository;
 
     public AbrechnungAbschlieﬂen(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository, double zinssatz) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository);
-        this.abrechnungRepository = abrechnungRepository;
+        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
+       
 
         zahlungenEntfernen = new ZahlungenEntfernenManager(sachKontoProvider,
                 buchungRepository, kontoBewegungRepository,
-                zahlungsAuftragRepository, BuchungsArt.ABGLEICH_GUTHABEN,
+                zahlungsAuftragRepository,abrechnungRepository, BuchungsArt.ABGLEICH_GUTHABEN,
                 GUTHABEN());
 
         ausgleichen = new SaldoAusgleichen(sachKontoProvider,
-                buchungRepository, kontoBewegungRepository,
+                buchungRepository, kontoBewegungRepository,abrechnungRepository,
                 BuchungsArt.ABGLEICH_GUTHABEN, GUTHABEN(), "Guthaben",
                 BuchungsArt.ABGLEICH_SCHULDEN, SCHULDEN(), "Schulden");
 
@@ -44,6 +43,7 @@ public class AbrechnungAbschlieﬂen extends EinBucher {
     }
 
     public Abrechnung abschleiﬂen(Abrechnung abrechnung, int zinsDauer) {
+        
         zahlungenEntfernen
                 .entferneZahlungsauftr‰geFallsRestguthaben(abrechnung);
         ausgleichen.saldoAusgleichen(abrechnung);
