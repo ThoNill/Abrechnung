@@ -16,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
+import boundingContext.abrechnung.aufzählungen.RunStatus;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.helper.AbrechnungHelper;
@@ -118,6 +120,43 @@ public class AbrechnungsTest {
         assertTrue(vorkerigeDerNächstenAbrechnung.isPresent());
         assertEquals(abrechnung.getAbrechnungId(),
                 vorkerigeDerNächstenAbrechnung.get().getAbrechnungId());
+    }
+    
+    @Test
+    @Transactional("dbATransactionManager")
+    public void abgerechneteAbrechnung() {
+        Mandant mandant = erzeugeMandant();
+        Abrechnung abrechnung = erzeugeAbrechnung(mandant);
+        abrechnung.setMonat(3);
+        abrechnung.setJahr(2018);
+        abrechnung.setRunStatus(RunStatus.ABGERECHNET);
+        abrechnung.setTyp(AbrechnungsTyp.TEILABRECHNUNG);
+        abrechnung = abrechnungRepository.save(abrechnung);
+        AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
+        Optional<Abrechnung> abgerechneteAbrechnung = helper
+                .getLetzteAbgerechneteAbrechnung(mandant, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
+        assertEquals(1, mandantRepository.count());
+        assertEquals(1, abrechnungRepository.count());
+        assertTrue(abgerechneteAbrechnung.isPresent());
+    }
+    
+    @Test
+    @Transactional("dbATransactionManager")
+    public void neueAbrechnung() {
+        Mandant mandant = mandantRepository.save(erzeugeMandant());
+        AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
+        Abrechnung neueAbrechnung = helper.createNeueAbrechnung(mandant, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
+        assertEquals(1, mandantRepository.count());
+        assertEquals(1, abrechnungRepository.count());
+        assertTrue(neueAbrechnung != null);
+        assertEquals(1, neueAbrechnung.getNummer());
+        
+        neueAbrechnung = helper.createNeueAbrechnung(mandant, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
+        assertEquals(1, mandantRepository.count());
+        assertEquals(2, abrechnungRepository.count());
+        assertTrue(neueAbrechnung!=null);
+        assertEquals(2, neueAbrechnung.getNummer());
+        
     }
 
 }
