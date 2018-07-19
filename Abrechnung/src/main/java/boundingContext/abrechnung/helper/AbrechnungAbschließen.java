@@ -26,8 +26,9 @@ public class AbrechnungAbschlieﬂen extends EinBucher {
 
         zahlungenEntfernen = new ZahlungenEntfernenManager(sachKontoProvider,
                 buchungRepository, kontoBewegungRepository,
-                zahlungsAuftragRepository,abrechnungRepository, BuchungsArt.ABGLEICH_GUTHABEN,
-                GUTHABEN());
+                zahlungsAuftragRepository,abrechnungRepository, 
+                BuchungsArt.ABGLEICH_GUTHABEN,GUTHABEN(),
+                BuchungsArt.ABGLEICH_SCHULDEN, SCHULDEN());
 
         ausgleichen = new SaldoAusgleichen(sachKontoProvider,
                 buchungRepository, kontoBewegungRepository,abrechnungRepository,

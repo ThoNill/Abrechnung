@@ -24,6 +24,9 @@ public class ZahlungenEntfernenManager extends EinBucher {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
     private int buchungstypGuthaben;
     private SachKonto kontonrGuthaben;
+    private int buchungstypSchulden;
+    private SachKonto kontonrSchulden;
+
     
 
 
@@ -32,11 +35,15 @@ public class ZahlungenEntfernenManager extends EinBucher {
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
             AbrechnungRepository abrechnungRepository,        
-            int buchungstypGuthaben, SachKonto kontonrGuthaben) {
+            int buchungstypGuthaben, SachKonto kontonrGuthaben, 
+            int buchungstypSchulden, SachKonto kontonrSchulden) {
         super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
         this.buchungstypGuthaben = buchungstypGuthaben;
         this.kontonrGuthaben = kontonrGuthaben;
+        this.buchungstypSchulden = buchungstypSchulden;
+        this.kontonrSchulden = kontonrSchulden;
+   
     }
 
     @Transactional("dbATransactionManager")
@@ -44,6 +51,8 @@ public class ZahlungenEntfernenManager extends EinBucher {
         MonetaryAmount saldo = buchungRepository.getSaldo(abrechnung);
         if (!saldo.isZero()) {
             entferneZahlungsaufträge(abrechnung, buchungstypGuthaben);
+            entferneRestGuthaben(abrechnung);
+            entferneRestSchulden(abrechnung);
         }
     }
 
@@ -56,6 +65,21 @@ public class ZahlungenEntfernenManager extends EinBucher {
         }
     }
 
+    private void entferneRestGuthaben(Abrechnung abrechnung) {
+        MonetaryAmount betrag = buchungRepository.getSumKonto(abrechnung,buchungstypGuthaben,kontonrGuthaben.ordinal());
+        if (betrag != null && !betrag.isZero()) {
+            bucheStorno(abrechnung,betrag,buchungstypGuthaben,kontonrGuthaben);
+        }
+    }
+
+    private void entferneRestSchulden(Abrechnung abrechnung) {
+        MonetaryAmount betrag = buchungRepository.getSumKonto(abrechnung,buchungstypSchulden,kontonrSchulden.ordinal());
+        if (betrag != null && !betrag.isZero()) {
+            bucheStorno(abrechnung,betrag,buchungstypSchulden,kontonrSchulden);
+        }
+    }
+
+    
     private void entferneZahlungsauftrag(ZahlungsAuftrag a) {
         a.setStorniert(new Date());
         bucheStorno(a.getAbrechnung(), a.getBetrag(), a.getBuchungsart(),
