@@ -1,5 +1,7 @@
 package boundingContext.buchhaltung.eingang;
 
+import java.util.HashMap;
+
 import javax.money.MonetaryAmount;
 
 import mathe.kopfpos.KopfMitPositionen;
@@ -10,12 +12,18 @@ public class BuchungsAuftrag<KEY>
         extends
         KopfMitPositionen<Beschreibung, KEY, MonetaryAmount, BetragsBündel<KEY>>
         implements Value {
+    
+        private HashMap<Integer,Long> verbundenMit;
 
     public BuchungsAuftrag(Beschreibung beschreibung,
             BetragsBündel<KEY> positionen) {
         super(beschreibung, positionen);
     }
 
+    public void verbinde(int rolle,Long value) {
+        getVerbundenMit().put(rolle, value);
+    }
+    
     public Beschreibung getBeschreibung() {
         return getKopf();
     }
@@ -29,5 +37,12 @@ public class BuchungsAuftrag<KEY>
             }
         }
         return true;
+    }
+
+    public synchronized HashMap<Integer,Long> getVerbundenMit() {
+        if (verbundenMit==null) {
+            verbundenMit = new HashMap<>();
+        }
+        return verbundenMit;
     }
 }

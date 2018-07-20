@@ -1,10 +1,13 @@
 package boundingContext.buchhaltung.eingang;
 
+import java.util.HashMap;
+
 import javax.money.MonetaryAmount;
 
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
+import boundingContext.abrechnung.entities.BezugZurBuchung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.KontoBewegung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
@@ -33,14 +36,19 @@ public class EinBucher extends SachKontoDelegate {
             Abrechnung abrechnung) {
         abrechnung = abrechnungRepository.save(abrechnung);
         if (!auftrag.isEmpty()) {
-            BetragsBündel<SachKonto> beträge = auftrag.getPositionen();
             Buchung buchung = new Buchung();
             buchung.setText(auftrag.getBeschreibung().getText());
             buchung.setArt(auftrag.getBeschreibung().getArt());
             buchung.setAbrechnung(abrechnung);
+
+            BetragsBündel<SachKonto> beträge = auftrag.getPositionen();
             for (SachKonto p : beträge.getKeys()) {
                 MonetaryAmount betrag = beträge.getValue(p);
                 bewegungHinzufügen(buchung, p, betrag);
+            }
+            HashMap<Integer,Long> bezüge = auftrag.getVerbundenMit();
+            for (Integer rolle : bezüge.keySet()) {
+                bezugHinzufügen(buchung,rolle,bezüge.get(rolle));
             }
             return buchungRepository.save(buchung);
         }
@@ -57,6 +65,12 @@ public class EinBucher extends SachKontoDelegate {
             bew.setBuchung(buchung);
             buchung.addBewegungen(bew);
         }
+    }
+
+    private void bezugHinzufügen(Buchung buchung, int rolle, Long refernzid) {
+        BezugZurBuchung bezug = new BezugZurBuchung();
+        bezug.setBuchung(buchung);
+        buchung.addBezug(bezug);
     }
 
     public BetragsBündel<SachKonto> beträgeEinerBuchungsartHolen(

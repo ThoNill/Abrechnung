@@ -2,6 +2,7 @@ package boundingContext.zahlungen.helper;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -91,29 +92,30 @@ public class ZahlungsAuftragsManager extends EinBucher {
             überweisung.setAuftrag(auftrag);
             überweisung.setMandant(auftrag.getMandant());
             überweisung = überweisungsRepository.save(überweisung);
-            erzeugeBuchung(überweisung.getBetrag(),
-                    überweisung.getBuchungsart(), offen, überwiesen,
-                    "Überweisung erzeugt", auftrag.getAbrechnung());
+            erzeugeBuchung(offen, überwiesen,"Überweisung erzeugt", auftrag.getAbrechnung(),überweisung);
         }
     }
 
     private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(
-            MonetaryAmount betrag, int buchungsart, SachKonto von,
-            SachKonto nach, String buchungstext) {
+            SachKonto von,
+            SachKonto nach, String buchungstext,Überweisung überweisung) {
+        MonetaryAmount betrag = überweisung.getBetrag();
+        int buchungsart = überweisung.getBuchungsart();
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         beträge.put(von, betrag.negate());
         beträge.put(nach, betrag);
         Beschreibung beschreibung = new Beschreibung(buchungsart, buchungstext);
-        return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
+        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
+        auftrag.verbinde(1,überweisung.getUeberweisungsId());
+        return auftrag;
     }
 
-    private Buchung erzeugeBuchung(MonetaryAmount betrag, int buchungsart,
-            SachKonto von, SachKonto nach, String buchungstext,
-            Abrechnung abrechnung) {
+    private Buchung erzeugeBuchung(SachKonto von, SachKonto nach, String buchungstext,
+            Abrechnung abrechnung,Überweisung überweisung) {
 
         return erzeugeBuchung(
-                erzeugeBuchungsAuftrag(betrag, buchungsart, von, nach,
-                        buchungstext), abrechnung);
+                erzeugeBuchungsAuftrag(von, nach,
+                        buchungstext,überweisung), abrechnung);
     }
 
 }

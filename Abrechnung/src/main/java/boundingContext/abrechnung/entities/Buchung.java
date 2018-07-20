@@ -62,10 +62,6 @@ public class Buchung  {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "buchung")
     private Set<KontoBewegung> bewegungen = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "AbrechnungId")
-    private Abrechnung abrechnung;
-
     public void addBewegungen(KontoBewegung bewegungen) {
         this.bewegungen.add(bewegungen);
     };
@@ -74,5 +70,20 @@ public class Buchung  {
         this.bewegungen.remove(bewegungen);
     };
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "buchung")
+    private Set<BezugZurBuchung> bezüge = new HashSet<>();
+
+    public void addBezug(BezugZurBuchung bezug) {
+        this.bezüge.add(bezug);
+    };
+
+    public void removeBezug(BezugZurBuchung bezug) {
+        this.bezüge.remove(bezug);
+    };
+
+    
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "AbrechnungId")
+    private Abrechnung abrechnung;
 
 }
