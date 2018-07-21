@@ -3,7 +3,7 @@ package boundingContext.buchhaltung.eingang;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 
-public class SachKontoDelegate {
+public class SachKontoDelegate implements SachKontoProvider {
     private SachKontoProvider sachKontoProvider;
 
     public SachKontoDelegate(SachKontoProvider sachKontoProvider) {
@@ -19,6 +19,11 @@ public class SachKontoDelegate {
         return sachKontoProvider.GUTHABEN();
     }
 
+    public SachKonto AUSZUZAHLEN() {
+        return sachKontoProvider.AUSZUZAHLEN();
+    }
+
+    
     public SachKonto AUSBEZAHLT() {
         return sachKontoProvider.AUSBEZAHLT();
     }

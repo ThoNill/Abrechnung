@@ -22,60 +22,46 @@ import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class ZahlungenEntfernenManager extends EinBucher {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
-    private int buchungstypGuthaben;
-    private SachKonto kontonrGuthaben;
-    private int buchungstypSchulden;
-    private SachKonto kontonrSchulden;
-
-    
-
-
+ 
     public ZahlungenEntfernenManager(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
-            AbrechnungRepository abrechnungRepository,        
-            int buchungstypGuthaben, SachKonto kontonrGuthaben, 
-            int buchungstypSchulden, SachKonto kontonrSchulden) {
+            AbrechnungRepository abrechnungRepository) {
         super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
-        this.buchungstypGuthaben = buchungstypGuthaben;
-        this.kontonrGuthaben = kontonrGuthaben;
-        this.buchungstypSchulden = buchungstypSchulden;
-        this.kontonrSchulden = kontonrSchulden;
-   
     }
 
     @Transactional("dbATransactionManager")
     public void entferneZahlungsaufträgeFallsRestguthaben(Abrechnung abrechnung) {
         MonetaryAmount saldo = buchungRepository.getSaldo(abrechnung);
         if (!saldo.isZero()) {
-            entferneZahlungsaufträge(abrechnung, buchungstypGuthaben);
+            entferneZahlungsaufträge(abrechnung);
             entferneRestGuthaben(abrechnung);
             entferneRestSchulden(abrechnung);
         }
     }
 
     @Transactional("dbATransactionManager")
-    public void entferneZahlungsaufträge(Abrechnung abrechnung, int art) {
+    public void entferneZahlungsaufträge(Abrechnung abrechnung) {
         List<ZahlungsAuftrag> aufträge = zahlungsAuftragRepository
-                .getOffeneZahlungen(abrechnung, art);
+                .getOffeneZahlungen(abrechnung,ABGLEICH_GUTHABEN());
         for (ZahlungsAuftrag a : aufträge) {
             entferneZahlungsauftrag(a);
         }
     }
 
     private void entferneRestGuthaben(Abrechnung abrechnung) {
-        MonetaryAmount betrag = buchungRepository.getSumKonto(abrechnung,buchungstypGuthaben,kontonrGuthaben.ordinal());
+        MonetaryAmount betrag = buchungRepository.getSumKonto(abrechnung,ABGLEICH_GUTHABEN(),GUTHABEN().ordinal());
         if (betrag != null && !betrag.isZero()) {
-            bucheStorno(abrechnung,betrag,buchungstypGuthaben,kontonrGuthaben);
+            bucheStorno(abrechnung,betrag,ABGLEICH_GUTHABEN(),GUTHABEN());
         }
     }
 
     private void entferneRestSchulden(Abrechnung abrechnung) {
-        MonetaryAmount betrag = buchungRepository.getSumKonto(abrechnung,buchungstypSchulden,kontonrSchulden.ordinal());
+        MonetaryAmount betrag = buchungRepository.getSumKonto(abrechnung,ABGLEICH_SCHULDEN(),SCHULDEN().ordinal());
         if (betrag != null && !betrag.isZero()) {
-            bucheStorno(abrechnung,betrag,buchungstypSchulden,kontonrSchulden);
+            bucheStorno(abrechnung,betrag,ABGLEICH_SCHULDEN(),SCHULDEN());
         }
     }
 
@@ -83,7 +69,7 @@ public class ZahlungenEntfernenManager extends EinBucher {
     private void entferneZahlungsauftrag(ZahlungsAuftrag a) {
         a.setStorniert(new Date());
         bucheStorno(a.getAbrechnung(), a.getBetrag(), a.getBuchungsart(),
-                kontonrGuthaben);
+                AUSZUZAHLEN());
     }
 
     private void bucheStorno(Abrechnung abrechnung, MonetaryAmount betrag,

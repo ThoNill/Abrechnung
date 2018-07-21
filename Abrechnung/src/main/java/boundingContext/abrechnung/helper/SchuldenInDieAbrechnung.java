@@ -22,24 +22,15 @@ public class SchuldenInDieAbrechnung extends EinBucher {
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
-            int buchungstypSchuldenStart, int buchungstypSchulden,
-            SachKonto kontonrSchulden, SachKonto kontonrZinsen, String text,
+             String text,
             double zinssatz) {
         super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
-        this.buchungstypSchuldenStart = buchungstypSchuldenStart;
-        this.kontonrZinsen = kontonrZinsen;
         this.text = text;
-        this.buchungstypSchulden = buchungstypSchulden;
-        this.kontonrSchulden = kontonrSchulden;
         this.zinssatz = zinssatz;
     }
 
-    private int buchungstypSchuldenStart;
-    private SachKonto kontonrZinsen;
     private String text;
 
-    private int buchungstypSchulden;
-    private SachKonto kontonrSchulden;
     private double zinssatz;
 
     public void übertragen(Abrechnung abrechnung, int zinsDauer) {
@@ -47,8 +38,8 @@ public class SchuldenInDieAbrechnung extends EinBucher {
         Optional<Abrechnung> oAbrechnung = h.getVorherigeAbrechnung(abrechnung);
         if (oAbrechnung.isPresent()) {
             MonetaryAmount saldo = buchungRepository.getSumKonto(
-                    oAbrechnung.get(), buchungstypSchuldenStart,
-                    kontonrSchulden.ordinal());
+                    oAbrechnung.get(), ABGLEICH_SCHULDEN(),
+                    SCHULDEN().ordinal());
             if (saldo != null) {
                 buche(abrechnung, saldo.negate(), zinsDauer);
             }
@@ -65,10 +56,10 @@ public class SchuldenInDieAbrechnung extends EinBucher {
     private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(
             MonetaryAmount betrag, int zinsDauer) {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
-        beträge.put(kontonrSchulden, betrag);
+        beträge.put(SCHULDEN(), betrag);
         MonetaryAmount zins = berechneZins(betrag, zinsDauer);
-        beträge.put(kontonrZinsen, zins);
-        Beschreibung beschreibung = new Beschreibung(buchungstypSchulden, text);
+        beträge.put(ZINS(), zins);
+        Beschreibung beschreibung = new Beschreibung(ÜBERNAHME_SCHULDEN(), text);
         return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
     }
 

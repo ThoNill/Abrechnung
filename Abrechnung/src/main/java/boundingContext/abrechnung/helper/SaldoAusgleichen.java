@@ -14,37 +14,26 @@ import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class SaldoAusgleichen extends EinBucher {
-    private int buchungstypGuthaben;
-    private SachKonto kontonrGuthaben;
     private String textGuthaben;
-
-    private int buchungstypSchulden;
-    private SachKonto kontonrSchulden;
     private String textSchulden;
 
     public SaldoAusgleichen(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
-            int buchungstypGuthaben, SachKonto kontonrGuthaben,
-            String textGuthaben, int buchungstypSchulden,
-            SachKonto kontonrSchulden, String textSchulden) {
+            String textGuthaben,  String textSchulden) {
         super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
-        this.buchungstypGuthaben = buchungstypGuthaben;
-        this.kontonrGuthaben = kontonrGuthaben;
         this.textGuthaben = textGuthaben;
-        this.buchungstypSchulden = buchungstypSchulden;
-        this.kontonrSchulden = kontonrSchulden;
         this.textSchulden = textSchulden;
     }
 
     public void saldoAusgleichen(Abrechnung abrechnung) {
         MonetaryAmount saldo = buchungRepository.getSaldo(abrechnung);
         if (saldo.isNegative()) {
-            buche(abrechnung, buchungstypSchulden, kontonrSchulden,
+            buche(abrechnung, ABGLEICH_SCHULDEN(), SCHULDEN(),
                     textSchulden, saldo.negate());
         } else {
-            buche(abrechnung, buchungstypGuthaben, kontonrGuthaben,
+            buche(abrechnung, ABGLEICH_GUTHABEN(), GUTHABEN(),
                     textGuthaben, saldo.negate());
         }
     }

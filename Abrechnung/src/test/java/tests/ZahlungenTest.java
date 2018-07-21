@@ -116,8 +116,7 @@ public class ZahlungenTest {
 
         ZahlungsAuftragsManager manager = new ZahlungsAuftragsManager(
                 sachKontoProvider, buchungRepository, kontoBewegungRepository,
-                zahlungsAuftragRepository, überweisungRepository,abrechnungRepository,
-                TestSachKonto.GUTHABEN, TestSachKonto.AUSBEZAHLT);
+                zahlungsAuftragRepository, überweisungRepository,abrechnungRepository);
         List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
                 Geld.createAmount(100), "verwendungszweck");
         assertEquals(2, aufträge.size());
@@ -136,8 +135,7 @@ public class ZahlungenTest {
 
         ZahlungsAuftragsManager manager = new ZahlungsAuftragsManager(
                 sachKontoProvider, buchungRepository, kontoBewegungRepository,
-                zahlungsAuftragRepository, überweisungRepository,abrechnungRepository,
-                TestSachKonto.GUTHABEN, TestSachKonto.AUSBEZAHLT);
+                zahlungsAuftragRepository, überweisungRepository,abrechnungRepository);
         List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
                 Geld.createAmount(100), "verwendungszweck");
 

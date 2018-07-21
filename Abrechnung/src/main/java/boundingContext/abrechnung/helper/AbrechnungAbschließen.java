@@ -21,30 +21,25 @@ public class AbrechnungAbschließen extends EinBucher {
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository, double zinssatz) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
-       
+        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,
+                abrechnungRepository);
 
         zahlungenEntfernen = new ZahlungenEntfernenManager(sachKontoProvider,
                 buchungRepository, kontoBewegungRepository,
-                zahlungsAuftragRepository,abrechnungRepository, 
-                BuchungsArt.ABGLEICH_GUTHABEN,GUTHABEN(),
-                BuchungsArt.ABGLEICH_SCHULDEN, SCHULDEN());
+                zahlungsAuftragRepository, abrechnungRepository);
 
         ausgleichen = new SaldoAusgleichen(sachKontoProvider,
-                buchungRepository, kontoBewegungRepository,abrechnungRepository,
-                BuchungsArt.ABGLEICH_GUTHABEN, GUTHABEN(), "Guthaben",
-                BuchungsArt.ABGLEICH_SCHULDEN, SCHULDEN(), "Schulden");
+                buchungRepository, kontoBewegungRepository,
+                abrechnungRepository, "Guthaben", "Schulden");
 
         schuldenÜbertragen = new SchuldenInDieAbrechnung(sachKontoProvider,
                 buchungRepository, kontoBewegungRepository,
-                abrechnungRepository, BuchungsArt.ABGLEICH_SCHULDEN,
-                BuchungsArt.ÜBERNAHME_SCHULDEN, SCHULDEN(), ZINS(),
-                "Schulden übernehmen", zinssatz);
+                abrechnungRepository, "Schulden übernehmen", zinssatz);
 
     }
 
     public Abrechnung abschleißen(Abrechnung abrechnung, int zinsDauer) {
-        
+
         zahlungenEntfernen
                 .entferneZahlungsaufträgeFallsRestguthaben(abrechnung);
         ausgleichen.saldoAusgleichen(abrechnung);

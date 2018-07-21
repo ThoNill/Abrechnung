@@ -72,7 +72,6 @@ public class AbrechnungAbschlieﬂenTest {
     @Autowired
     private ‹berweisungRepository ¸berweisungRepository;
 
-    
     @Before
     @After
     @Transactional("dbATransactionManager")
@@ -115,7 +114,7 @@ public class AbrechnungAbschlieﬂenTest {
 
     private EinBucher erzeugeEinbucher() {
         return new EinBucher(sachKontoProvider(), buchungRepository,
-                kontoBewegungRepository,abrechnungRepository);
+                kontoBewegungRepository, abrechnungRepository);
     }
 
     @Test
@@ -155,7 +154,7 @@ public class AbrechnungAbschlieﬂenTest {
     public void abschluss180() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        erzeugeBuchung(abrechnung,-100);
+        erzeugeBuchung(abrechnung, -100);
         Abrechnung n‰chsteAbrechnung = abschlieﬂen(abrechnung);
         checkAnzahlen();
         check‹bernahme(n‰chsteAbrechnung, -100, -3);
@@ -175,7 +174,7 @@ public class AbrechnungAbschlieﬂenTest {
     public void abschlussOhneWirkung180() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        erzeugeBuchung(abrechnung,100);
+        erzeugeBuchung(abrechnung, 100);
 
         Abrechnung n‰chsteAbrechnung = abschlieﬂen(abrechnung);
         check‹bernahmeOhneWirkung(n‰chsteAbrechnung);
@@ -184,18 +183,17 @@ public class AbrechnungAbschlieﬂenTest {
     public Abrechnung saldoAbgleichen(double betrag) {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        erzeugeBuchung(abrechnung,betrag);
+        erzeugeBuchung(abrechnung, betrag);
 
         SaldoAusgleichen abschluss = new SaldoAusgleichen(sachKontoProvider(),
-                buchungRepository, kontoBewegungRepository,abrechnungRepository,
-                BuchungsArt.ABGLEICH_GUTHABEN, TestSachKonto.GUTHABEN,
-                "Guthaben", BuchungsArt.ABGLEICH_SCHULDEN,
-                TestSachKonto.SCHULDEN, "Schulden");
+                buchungRepository, kontoBewegungRepository,
+                abrechnungRepository,
+                "Guthaben", "Schulden");
         abschluss.saldoAusgleichen(abrechnung);
         return abrechnung;
     }
 
-    private void erzeugeBuchung(Abrechnung abrechnung,double betrag) {
+    private void erzeugeBuchung(Abrechnung abrechnung, double betrag) {
         BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(betrag);
         EinBucher bucher = erzeugeEinbucher();
         Buchung buchung = bucher.erzeugeBuchung(auftrag, abrechnung);
@@ -236,15 +234,13 @@ public class AbrechnungAbschlieﬂenTest {
         SchuldenInDieAbrechnung ¸bernehmen = new SchuldenInDieAbrechnung(
                 sachKontoProvider(), buchungRepository,
                 kontoBewegungRepository, abrechnungRepository,
-                BuchungsArt.ABGLEICH_SCHULDEN, BuchungsArt.‹BERNAHME_SCHULDEN,
-                TestSachKonto.SCHULDEN, TestSachKonto.ZINS,
                 "Schulden ¸bernehmen", zinssatz);
         ¸bernehmen.¸bertragen(n‰chsteAbrechnung, tage);
         return n‰chsteAbrechnung;
     }
 
     public void check‹bernahme(Abrechnung abrechnung, double betrag, double zins) {
-       
+
         MonetaryAmount dbBetrag = buchungRepository.getSumKonto(abrechnung,
                 BuchungsArt.‹BERNAHME_SCHULDEN,
                 TestSachKonto.SCHULDEN.ordinal());
@@ -280,72 +276,86 @@ public class AbrechnungAbschlieﬂenTest {
 
     }
 
-    @Test    
+    @Test
     @Transactional("dbATransactionManager")
     public void mehrmaligerAbschluss() {
         Mandant mandant = erzeugeMandant();
-        mandant = addZahlungsDefinition(mandant,0.3);
-        mandant = addZahlungsDefinition(mandant,0.7);
-        
+        mandant = addZahlungsDefinition(mandant, 0.3);
+        mandant = addZahlungsDefinition(mandant, 0.7);
+
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        erzeugeBuchung(abrechnung,100);
+        erzeugeBuchung(abrechnung, 100);
         Abrechnung n‰chsteAbrechnung = abschlieﬂen(abrechnung);
-        
-        ZahlungsAuftragsManager zahlungenManager = new ZahlungsAuftragsManager(new TestSachKontoProvider(),
-                buchungRepository,
-                kontoBewegungRepository,
-                zahlungsAuftragRepository,
-                ¸berweisungRepository,
-                abrechnungRepository,TestSachKonto.GUTHABEN,
-                TestSachKonto.AUSBEZAHLT);
-        
-        
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN, TestSachKonto.GUTHABEN,-100);
-        checkKontoBetrag(abrechnung, BuchungsArt.‹BERNAHME_SCHULDEN, TestSachKonto.SCHULDEN,0);
-        
-        erzeugeBuchung(abrechnung,-40);
+
+        ZahlungsAuftragsManager zahlungenManager = new ZahlungsAuftragsManager(
+                new TestSachKontoProvider(), buchungRepository,
+                kontoBewegungRepository, zahlungsAuftragRepository,
+                ¸berweisungRepository, abrechnungRepository);
+
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,
+                TestSachKonto.GUTHABEN, -100);
+        checkKontoBetrag(abrechnung, BuchungsArt.‹BERNAHME_SCHULDEN,
+                TestSachKonto.SCHULDEN, 0);
+
+        erzeugeBuchung(abrechnung, -40);
         n‰chsteAbrechnung = abschlieﬂen(abrechnung);
-        
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN, TestSachKonto.GUTHABEN,-60);
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN, TestSachKonto.SCHULDEN,0);
-        
-        erzeugeBuchung(abrechnung,-60);
+
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,
+                TestSachKonto.GUTHABEN, -60);
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN,
+                TestSachKonto.SCHULDEN, 0);
+
+        erzeugeBuchung(abrechnung, -60);
         n‰chsteAbrechnung = abschlieﬂen(abrechnung);
-        
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN, TestSachKonto.GUTHABEN,0);
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN, TestSachKonto.SCHULDEN,0);
-        
-        erzeugeBuchung(abrechnung,20);
+
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,
+                TestSachKonto.GUTHABEN, 0);
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN,
+                TestSachKonto.SCHULDEN, 0);
+
+        erzeugeBuchung(abrechnung, 20);
         n‰chsteAbrechnung = abschlieﬂen(abrechnung);
-        
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN, TestSachKonto.GUTHABEN,-20);
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN, TestSachKonto.SCHULDEN,0);
-    
-        zahlungenManager.erzeugeAuftr‰ge(abrechnung,Geld.createAmount(20), "Test");
-        
-        erzeugeBuchung(abrechnung,-40);
+
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,
+                TestSachKonto.GUTHABEN, -20);
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN,
+                TestSachKonto.SCHULDEN, 0);
+
+        zahlungenManager.erzeugeAuftr‰ge(abrechnung, Geld.createAmount(20),
+                "Test");
+
+        erzeugeBuchung(abrechnung, -40);
         n‰chsteAbrechnung = abschlieﬂen(abrechnung);
-        
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN, TestSachKonto.GUTHABEN,0);
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN, TestSachKonto.SCHULDEN,20);
-        checkKontoBetrag(n‰chsteAbrechnung, BuchungsArt.‹BERNAHME_SCHULDEN, TestSachKonto.SCHULDEN,-20);
-        
-        erzeugeBuchung(abrechnung,-40);
+
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,
+                TestSachKonto.GUTHABEN, 0);
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN,
+                TestSachKonto.SCHULDEN, 20);
+        checkKontoBetrag(n‰chsteAbrechnung, BuchungsArt.‹BERNAHME_SCHULDEN,
+                TestSachKonto.SCHULDEN, -20);
+
+        erzeugeBuchung(abrechnung, -40);
         n‰chsteAbrechnung = abschlieﬂen(abrechnung);
-        
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN, TestSachKonto.GUTHABEN,0);
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN, TestSachKonto.SCHULDEN,60);
-        checkKontoBetrag(n‰chsteAbrechnung, BuchungsArt.‹BERNAHME_SCHULDEN, TestSachKonto.SCHULDEN,-60);
-        
-        erzeugeBuchung(abrechnung,80);
+
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,
+                TestSachKonto.GUTHABEN, 0);
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN,
+                TestSachKonto.SCHULDEN, 60);
+        checkKontoBetrag(n‰chsteAbrechnung, BuchungsArt.‹BERNAHME_SCHULDEN,
+                TestSachKonto.SCHULDEN, -60);
+
+        erzeugeBuchung(abrechnung, 80);
         n‰chsteAbrechnung = abschlieﬂen(abrechnung);
-        
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN, TestSachKonto.GUTHABEN,-20);
-        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN, TestSachKonto.SCHULDEN,0);
-        checkKontoBetrag(n‰chsteAbrechnung, BuchungsArt.‹BERNAHME_SCHULDEN, TestSachKonto.SCHULDEN,0);
-//        System.out.println("Test Ende");
+
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,
+                TestSachKonto.GUTHABEN, -20);
+        checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_SCHULDEN,
+                TestSachKonto.SCHULDEN, 0);
+        checkKontoBetrag(n‰chsteAbrechnung, BuchungsArt.‹BERNAHME_SCHULDEN,
+                TestSachKonto.SCHULDEN, 0);
+        // System.out.println("Test Ende");
     }
-    
+
     private Mandant addZahlungsDefinition(Mandant mandant, double prozentSatz) {
         ZahlungsDefinition d = new ZahlungsDefinition();
         d.setBuchungsart(1);

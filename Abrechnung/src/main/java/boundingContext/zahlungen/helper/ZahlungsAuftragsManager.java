@@ -34,21 +34,16 @@ import boundingContext.zahlungen.values.BankVerbindung;
 public class ZahlungsAuftragsManager extends EinBucher {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
     private ÜberweisungRepository überweisungsRepository;
-    private SachKonto offen;
-    private SachKonto überwiesen;
-
+  
     public ZahlungsAuftragsManager(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
             ÜberweisungRepository überweisungsRepository,
-            AbrechnungRepository abrechnungRepository,SachKonto offen,
-            SachKonto überwiesen) {
+            AbrechnungRepository abrechnungRepository) {
         super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
         this.überweisungsRepository = überweisungsRepository;
-        this.offen = offen;
-        this.überwiesen = überwiesen;
     }
 
     public List<ZahlungsAuftrag> erzeugeAufträge(Abrechnung abrechnung,
@@ -65,16 +60,17 @@ public class ZahlungsAuftragsManager extends EinBucher {
                 .verteilen(betrag);
         List<ZahlungsAuftrag> aufträge = new ArrayList<>();
         for (ZahlungsDefinition d : definitionen) {
-            ZahlungsAuftrag a = new ZahlungsAuftrag();
-            a.setBetrag(beträge.getBetrag(d));
-            a.setBank(d.getBank());
-            a.setBuchungsart(d.getBuchungsart());
-            a.setVerwendungszweck(verwendungszweck);
-            a.setZuZahlenAm(d.berechneAuszahlungsTernin(new Date()));
-            a.setAbrechnung(abrechnung);
-            a.setMandant(mandant);
-            a = zahlungsAuftragRepository.save(a);
-            aufträge.add(a);
+            ZahlungsAuftrag zahlungsAuftrag = new ZahlungsAuftrag();
+            zahlungsAuftrag.setBetrag(beträge.getBetrag(d));
+            zahlungsAuftrag.setBank(d.getBank());
+            zahlungsAuftrag.setBuchungsart(d.getBuchungsart());
+            zahlungsAuftrag.setVerwendungszweck(verwendungszweck);
+            zahlungsAuftrag.setZuZahlenAm(d.berechneAuszahlungsTernin(new Date()));
+            zahlungsAuftrag.setAbrechnung(abrechnung);
+            zahlungsAuftrag.setMandant(mandant);
+            zahlungsAuftrag = zahlungsAuftragRepository.save(zahlungsAuftrag);
+            aufträge.add(zahlungsAuftrag);
+            erzeugeBuchung(GUTHABEN(),AUSZUZAHLEN(),"Zahlungsauftrag erzeugt", abrechnung,zahlungsAuftrag);
         }
         return aufträge;
     }
@@ -92,7 +88,7 @@ public class ZahlungsAuftragsManager extends EinBucher {
             überweisung.setAuftrag(auftrag);
             überweisung.setMandant(auftrag.getMandant());
             überweisung = überweisungsRepository.save(überweisung);
-            erzeugeBuchung(offen, überwiesen,"Überweisung erzeugt", auftrag.getAbrechnung(),überweisung);
+            erzeugeBuchung(AUSZUZAHLEN(),AUSBEZAHLT(),"Überweisung erzeugt", auftrag.getAbrechnung(),überweisung);
         }
     }
 
@@ -106,7 +102,7 @@ public class ZahlungsAuftragsManager extends EinBucher {
         beträge.put(nach, betrag);
         Beschreibung beschreibung = new Beschreibung(buchungsart, buchungstext);
         BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
-        auftrag.verbinde(1,überweisung.getUeberweisungsId());
+        auftrag.verbinde(2,überweisung.getUeberweisungsId());
         return auftrag;
     }
 
@@ -116,6 +112,29 @@ public class ZahlungsAuftragsManager extends EinBucher {
         return erzeugeBuchung(
                 erzeugeBuchungsAuftrag(von, nach,
                         buchungstext,überweisung), abrechnung);
+    }
+
+
+    private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(
+            SachKonto von,
+            SachKonto nach, String buchungstext,ZahlungsAuftrag zahlungsAuftrag) {
+        MonetaryAmount betrag = zahlungsAuftrag.getBetrag();
+        int buchungsart = zahlungsAuftrag.getBuchungsart();
+        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
+        beträge.put(von, betrag.negate());
+        beträge.put(nach, betrag);
+        Beschreibung beschreibung = new Beschreibung(buchungsart, buchungstext);
+        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
+        auftrag.verbinde(1,zahlungsAuftrag.getZahlungsAuftragsId());
+        return auftrag;
+    }
+
+    private Buchung erzeugeBuchung(SachKonto von, SachKonto nach, String buchungstext,
+            Abrechnung abrechnung,ZahlungsAuftrag auftrag) {
+
+        return erzeugeBuchung(
+                erzeugeBuchungsAuftrag(von, nach,
+                        buchungstext,auftrag), abrechnung);
     }
 
 }
