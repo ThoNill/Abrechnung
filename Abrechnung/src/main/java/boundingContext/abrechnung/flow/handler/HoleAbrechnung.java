@@ -22,7 +22,7 @@ public class HoleAbrechnung extends
     private AbrechnungRepository abrechnungRepository;
 
     AbrechnungHelper helper;
-    
+
     public HoleAbrechnung(MandantRepository mandantRepository,
             AbrechnungRepository abrechnungRepository) {
         super();
@@ -34,9 +34,20 @@ public class HoleAbrechnung extends
     @Override
     protected AbrechnungPayload transformPayload(AufrufPayload payload)
             throws Exception {
+        checkPayload(payload);
         Abrechnung abrechnung = holeAbrechnung(payload);
         return new AbrechnungPayload(abrechnung, abrechnung.getMandant(),
                 payload.getArt());
+    }
+
+    private void checkPayload(AufrufPayload payload) {
+        if (payload.getAbrechnungId() == 0 && (payload.getArt().equals(AbrechnungsArt.NACHBERCHNEN) || payload.getArt().equals(AbrechnungsArt.ERGÄNZEN))) {
+            throw new IllegalArgumentException("Aktion erfordert eine Abrechnung");
+        }
+        if (payload.getAbrechnungId() > 0 && payload.getArt().equals(AbrechnungsArt.NEU)) {
+            throw new IllegalArgumentException("Aktion darf keine Abrechnung enthalten");
+        }
+        prüfeObMandantInPayload(payload);
     }
 
     private Abrechnung holeAbrechnung(AufrufPayload payload) {
@@ -50,27 +61,36 @@ public class HoleAbrechnung extends
     }
 
     private Abrechnung mitAbrechnungsId(AufrufPayload payload) {
-        Abrechnung abrechnung = abrechnungRepository.findOne(payload.getAbrechnungId());
+        Abrechnung abrechnung = abrechnungRepository.findOne(payload
+                .getAbrechnungId());
         prüfeAbrechnungPasstZumMandanten(payload, abrechnung);
+        if (payload.getMonat() != abrechnung.getMonat() || payload.getJahr() != abrechnung.getJahr()) {
+            throw new IllegalArgumentException("Monat oder Jahr passen nicht zur Abrechnung");
+        }
         return abrechnung;
     }
 
     private void prüfeAbrechnungPasstZumMandanten(AufrufPayload payload,
             Abrechnung abrechnung) {
-        if (payload.getMandantId()>0 && payload.getMandantId() != abrechnung.getMandant().getMandantId()) {
-            throw new IllegalArgumentException("Abrechnung und Mandant passen nicht zusammen");
+        if (abrechnung ==null) {
+            throw new IllegalArgumentException("Die Abrechnung " + payload.getAbrechnungId() + " ist nicht vorhanden");
+        }
+        if (payload.getMandantId() > 0
+                && payload.getMandantId() != abrechnung.getMandant()
+                        .getMandantId()) {
+            throw new IllegalArgumentException(
+                    "Abrechnung und Mandant passen nicht zusammen");
         }
     }
 
     private Abrechnung ohneAbrechnungsId(AufrufPayload payload) {
-        prüfeObMandantInPayload(payload);
         Mandant mandant = sucheMandant(payload);
-        
-        Optional<Abrechnung> oAbrechnung = helper.getLetzteAbgerechneteAbrechnung(
-                mandant, payload.getMonat(), payload.getJahr(),
-                payload.getTyp());
+
+        Optional<Abrechnung> oAbrechnung = helper
+                .getLetzteAbgerechneteAbrechnung(mandant, payload.getMonat(),
+                        payload.getJahr(), payload.getTyp());
         if (oAbrechnung.isPresent()) {
-            return fallsEineAbrechnungSchonAbgerechnetWurde(payload, 
+            return fallsEineAbrechnungSchonAbgerechnetWurde(payload,
                     oAbrechnung.get());
         } else {
             return ohneBereitsAbgerechneteAbrechnungen(payload, mandant);
@@ -78,7 +98,7 @@ public class HoleAbrechnung extends
     }
 
     private void prüfeObMandantInPayload(AufrufPayload payload) {
-        if (payload.getMandantId()==0) {
+        if (payload.getMandantId() == 0) {
             throw new IllegalArgumentException("MandantenId fehlt");
         }
     }
@@ -87,24 +107,34 @@ public class HoleAbrechnung extends
         return mandantRepository.findOne(payload.getMandantId());
     }
 
-
     private Abrechnung fallsEineAbrechnungSchonAbgerechnetWurde(
-            AufrufPayload payload,Abrechnung abrechnung) {
-        if (payload.getArt().equals(AbrechnungsArt.NACHBERCHNEN)) {
-            return abrechnung;
-        } else {
-            return helper.createOrGetNächsteAbrechnung(abrechnung);
-        }
+            AufrufPayload payload, Abrechnung abrechnung) {
+        return helper.createOrGetNächsteAbrechnung(abrechnung);
     }
 
     private Abrechnung ohneBereitsAbgerechneteAbrechnungen(
             AufrufPayload payload, Mandant mandant) {
-        Integer n = abrechnungRepository.getLetzteAbrechnung(mandant,payload.getMonat(), payload.getJahr());
+        Integer n = abrechnungRepository.getLetzteAbrechnung(mandant,
+                payload.getMonat(), payload.getJahr());
         if (n == null) {
+            keineNeueAbrechnung(payload);
             return helper.createNeueAbrechnung(mandant, payload.getMonat(),
                     payload.getJahr(), payload.getTyp());
         } else {
-            return abrechnungRepository.getAbrechnung(mandant, n.intValue()).get(0);
+            return abrechnungRepository.getAbrechnung(mandant, n.intValue())
+                    .get(0);
         }
     }
+
+    private void keineNeueAbrechnung(AufrufPayload payload) {
+        if (payload.getArt().equals(AbrechnungsArt.NACHBERCHNEN) || payload.getArt().equals(AbrechnungsArt.ERGÄNZEN)) {
+            throw new IllegalArgumentException("Aktion erfordert eine Abrechnung");
+        }
+    }
+
+    public AbrechnungPayload testTransformPayload(AufrufPayload payload)
+            throws Exception {
+        return transformPayload(payload);
+    }
+
 }

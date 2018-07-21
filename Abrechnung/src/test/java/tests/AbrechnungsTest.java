@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.RunStatus;
 import boundingContext.abrechnung.entities.Abrechnung;
@@ -129,7 +130,7 @@ public class AbrechnungsTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         abrechnung.setMonat(3);
         abrechnung.setJahr(2018);
-        abrechnung.setRunStatus(RunStatus.ABGERECHNET);
+        abrechnung.setStatus(AbrechnungsStatus.ABGERECHNET);
         abrechnung.setTyp(AbrechnungsTyp.TEILABRECHNUNG);
         abrechnung = abrechnungRepository.save(abrechnung);
         AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);

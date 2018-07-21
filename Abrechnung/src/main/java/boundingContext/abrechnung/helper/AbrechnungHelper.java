@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
+import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.RunStatus;
 import boundingContext.abrechnung.entities.Abrechnung;
@@ -51,7 +52,7 @@ public class AbrechnungHelper {
     public Optional<Abrechnung> getLetzteAbgerechneteAbrechnung(
             @NotNull Mandant mandant, int monat, int jahr, AbrechnungsTyp typ) {
         Integer n = abrechnungRepository.getLetzteAbgerechneteAbrechnung(
-                mandant, RunStatus.ABGERECHNET, monat, jahr);
+                mandant, AbrechnungsStatus.ABGERECHNET, monat, jahr);
         if (n != null && n > 0) {
             List<Abrechnung> liste = abrechnungRepository.getAbrechnung(
                     mandant, n);
