@@ -5,4 +5,4 @@
  * @author javaman
  *
  */
-package boundingContext.abrechnung.helper;
+package boundingContext.zahlungen.actions;

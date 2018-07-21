@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
+import boundingContext.abrechnung.actions.AbrechnungHelper;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.payloads.AbrechnungPayload;
 import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.flow.payloads.AufrufPayload;
-import boundingContext.abrechnung.helper.AbrechnungHelper;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 

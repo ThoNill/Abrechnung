@@ -1,11 +1,11 @@
 package tests.flow;
 
 import tests.konten.TestSachKontoProvider;
+import boundingContext.abrechnung.actions.GebührenBerechnung;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.gebühren.GebührFabrik;
-import boundingContext.abrechnung.helper.GebührenBerechnung;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.daten.GebührRepository;
 

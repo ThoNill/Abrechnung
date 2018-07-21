@@ -3,15 +3,15 @@ package boundingContext.abrechnung.flow.handler;
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
 import boundingContext.abrechnung.flow.payloads.AuszahlungPayload;
-import boundingContext.zahlungen.helper.ÜberweisungenManager;
+import boundingContext.zahlungen.actions.ÜberweisungsDatei;
 
 public class DateienMarkierenUndErstellen
         extends
         AbstractPayloadTransformer<AuszahlungPayload, AuszahlungPayload> {
 
-    protected ÜberweisungenManager manager;
+    protected ÜberweisungsDatei manager;
 
-    public DateienMarkierenUndErstellen(ÜberweisungenManager manager) {
+    public DateienMarkierenUndErstellen(ÜberweisungsDatei manager) {
         super();
         this.manager = manager;
     }

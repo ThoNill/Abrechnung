@@ -2,10 +2,10 @@ package boundingContext.abrechnung.flow.handler;
 
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
+import boundingContext.abrechnung.actions.GebührenBerechnung;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.flow.payloads.BuchungAuftragPayload;
 import boundingContext.abrechnung.flow.payloads.GebührDefinitionPayload;
-import boundingContext.abrechnung.helper.GebührenBerechnung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 
 public class BerechneBuchungsauftrag

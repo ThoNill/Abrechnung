@@ -19,6 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import tests.konten.TestSachKonto;
 import tests.konten.TestSachKontoProvider;
 import betrag.Geld;
+import boundingContext.abrechnung.actions.AbrechnungAbschließen;
+import boundingContext.abrechnung.actions.AbrechnungHelper;
+import boundingContext.abrechnung.actions.SaldoAusgleichen;
+import boundingContext.abrechnung.actions.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
@@ -26,10 +30,6 @@ import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.entities.ZahlungsDefinition;
-import boundingContext.abrechnung.helper.AbrechnungAbschließen;
-import boundingContext.abrechnung.helper.AbrechnungHelper;
-import boundingContext.abrechnung.helper.SaldoAusgleichen;
-import boundingContext.abrechnung.helper.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
@@ -41,7 +41,7 @@ import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündelMap;
-import boundingContext.zahlungen.helper.ZahlungsAuftragsManager;
+import boundingContext.zahlungen.actions.ZahlungsAufträgeErzeugen;
 import boundingContext.zahlungen.values.BIC;
 import boundingContext.zahlungen.values.BankVerbindung;
 import boundingContext.zahlungen.values.IBAN;
@@ -287,7 +287,7 @@ public class AbrechnungAbschließenTest {
         erzeugeBuchung(abrechnung, 100);
         Abrechnung nächsteAbrechnung = abschließen(abrechnung);
 
-        ZahlungsAuftragsManager zahlungenManager = new ZahlungsAuftragsManager(
+        ZahlungsAufträgeErzeugen zahlungenManager = new ZahlungsAufträgeErzeugen(
                 new TestSachKontoProvider(), buchungRepository,
                 kontoBewegungRepository, zahlungsAuftragRepository,
                 überweisungRepository, abrechnungRepository);

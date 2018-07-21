@@ -14,13 +14,13 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 import org.stringtemplate.v4.StringRenderer;
 
-public class STVorlage<VORLAGEN_MODELL> {
+public class BankExportVorlage<VORLAGEN_MODELL> {
     private STGroupFile group = null;
     private String zielVerzeichnis;
     private Charset charSet;
     private VORLAGEN_MODELL model;
 
-    public STVorlage(String dateiName, String zielVerzeichnis, Charset charSet,
+    public BankExportVorlage(String dateiName, String zielVerzeichnis, Charset charSet,
             VORLAGEN_MODELL model) {
         super();
         this.zielVerzeichnis = zielVerzeichnis;

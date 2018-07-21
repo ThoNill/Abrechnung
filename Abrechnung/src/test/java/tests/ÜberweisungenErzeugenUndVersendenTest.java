@@ -20,7 +20,7 @@ import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.repositories.AusgangsDateiRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
-import boundingContext.zahlungen.helper.ÜberweisungenManager;
+import boundingContext.zahlungen.actions.ÜberweisungsDatei;
 import boundingContext.zahlungen.values.TypeReference;
 
 @RunWith(SpringRunner.class)
@@ -66,7 +66,7 @@ public class ÜberweisungenErzeugenUndVersendenTest extends MitÜberweisungenTest 
         assertEquals(25, überweisungRepository.count());
 
         try {
-            ÜberweisungenManager manager = new ÜberweisungenManager(
+            ÜberweisungsDatei manager = new ÜberweisungsDatei(
                     ausgangsDateiRepository, überweisungRepository, ".",
                     "Test", 1, new TypeReference(1, 1L));
             manager.markiereÜberweisungsDateien(10);

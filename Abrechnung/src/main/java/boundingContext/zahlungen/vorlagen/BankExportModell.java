@@ -10,14 +10,14 @@ import betrag.Geld;
 import boundingContext.abrechnung.entities.Überweisung;
 import boundingContext.zahlungen.values.BankVerbindung;
 
-public class STModel {
+public class BankExportModell {
     private int anzahl;
     private long referenz;
     private String name;
     private List<Überweisung> überweisungen;
     private MonetaryAmount summe;
 
-    public STModel(long referenz, String name, List<Überweisung> überweisungen) {
+    public BankExportModell(long referenz, String name, List<Überweisung> überweisungen) {
         super();
         this.anzahl = überweisungen.size();
         this.referenz = referenz;

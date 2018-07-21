@@ -43,8 +43,8 @@ import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 import boundingContext.zahlungen.values.BIC;
 import boundingContext.zahlungen.values.BankVerbindung;
 import boundingContext.zahlungen.values.IBAN;
-import boundingContext.zahlungen.vorlagen.STModel;
-import boundingContext.zahlungen.vorlagen.STVorlage;
+import boundingContext.zahlungen.vorlagen.BankExportModell;
+import boundingContext.zahlungen.vorlagen.BankExportVorlage;
 
 @RunWith(SpringRunner.class)
 // Class that run the tests
@@ -129,9 +129,9 @@ public class BankDateiTest {
         createÜberweisung(überweisungen, 1.2, 1);
         createÜberweisung(überweisungen, 2.2, 2);
         createÜberweisung(überweisungen, 3.2, 3);
-        STModel model = new STModel(123, "Test Name", überweisungen);
+        BankExportModell model = new BankExportModell(123, "Test Name", überweisungen);
 
-        STVorlage<STModel> vorlage = new STVorlage<>("pain.001.003.03", ".",
+        BankExportVorlage<BankExportModell> vorlage = new BankExportVorlage<>("pain.001.003.03", ".",
                 Charset.defaultCharset(), model);
         try {
             XmlValidator validator = XmlValidatorFactory.createValidator(

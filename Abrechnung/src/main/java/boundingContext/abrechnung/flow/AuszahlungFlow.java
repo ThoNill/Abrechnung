@@ -14,7 +14,7 @@ import boundingContext.abrechnung.flow.handler.DateienMarkierenUndErstellen;
 import boundingContext.abrechnung.flow.handler.MarkiereÜberweiungsDateien;
 import boundingContext.abrechnung.repositories.AusgangsDateiRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
-import boundingContext.zahlungen.helper.ÜberweisungenManager;
+import boundingContext.zahlungen.actions.ÜberweisungsDatei;
 import boundingContext.zahlungen.values.TypeReference;
 
 @Log
@@ -62,10 +62,10 @@ public class AuszahlungFlow {
     }
 
     
-    ÜberweisungenManager createManager(
+    ÜberweisungsDatei createManager(
             AusgangsDateiRepository ausgangsDateiRepository,
             ÜberweisungRepository überweisungRepository) {
-        return new ÜberweisungenManager(ausgangsDateiRepository,
+        return new ÜberweisungsDatei(ausgangsDateiRepository,
                 überweisungRepository, ".", "Test", 1, new TypeReference(1, 1L));
     }
 }

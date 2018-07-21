@@ -1,4 +1,4 @@
-package boundingContext.zahlungen.helper;
+package boundingContext.zahlungen.actions;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -14,10 +14,10 @@ import boundingContext.abrechnung.repositories.AusgangsDateiRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 import boundingContext.zahlungen.values.IBAN;
 import boundingContext.zahlungen.values.TypeReference;
-import boundingContext.zahlungen.vorlagen.STModel;
-import boundingContext.zahlungen.vorlagen.STVorlage;
+import boundingContext.zahlungen.vorlagen.BankExportModell;
+import boundingContext.zahlungen.vorlagen.BankExportVorlage;
 
-public class ÜberweisungenManager {
+public class ÜberweisungsDatei {
     private AusgangsDateiRepository ausgangsDateiRepository;
     private ÜberweisungRepository überweisungsRepository;
     private String ausgangsVerzeichnis;
@@ -25,7 +25,7 @@ public class ÜberweisungenManager {
     private int fileArt;
     private TypeReference protokoll;
 
-    public ÜberweisungenManager(
+    public ÜberweisungsDatei(
             AusgangsDateiRepository ausgangsDateiRepository,
             ÜberweisungRepository überweisungsRepository,
             String ausgangsVerzeichnis, String name, int fileArt,
@@ -115,9 +115,9 @@ public class ÜberweisungenManager {
         List<Überweisung> überweisungen = überweisungsRepository
                 .getÜberweisungen(d);
 
-        STModel model = new STModel(d.getAusgangsDateiId(), name, überweisungen);
+        BankExportModell model = new BankExportModell(d.getAusgangsDateiId(), name, überweisungen);
 
-        STVorlage<STModel> vorlage = new STVorlage<>("pain.001.003.03",
+        BankExportVorlage<BankExportModell> vorlage = new BankExportVorlage<>("pain.001.003.03",
                 ausgangsVerzeichnis, Charset.defaultCharset(), model);
         return vorlage.erzeugeAusgabe();
 

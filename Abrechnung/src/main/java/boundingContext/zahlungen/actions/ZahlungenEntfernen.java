@@ -1,4 +1,4 @@
-package boundingContext.zahlungen.helper;
+package boundingContext.zahlungen.actions;
 
 import java.util.Date;
 import java.util.List;
@@ -20,10 +20,10 @@ import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündelMap;
 
-public class ZahlungenEntfernenManager extends EinBucher {
+public class ZahlungenEntfernen extends EinBucher {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
  
-    public ZahlungenEntfernenManager(SachKontoProvider sachKontoProvider,
+    public ZahlungenEntfernen(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,

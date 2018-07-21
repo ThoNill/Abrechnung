@@ -2,10 +2,10 @@ package boundingContext.abrechnung.flow.handler;
 
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
+import boundingContext.abrechnung.actions.AbrechnungAbschlieﬂen;
 import boundingContext.abrechnung.aufz‰hlungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.flow.payloads.AbrechnungPayload;
-import boundingContext.abrechnung.helper.AbrechnungAbschlieﬂen;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;

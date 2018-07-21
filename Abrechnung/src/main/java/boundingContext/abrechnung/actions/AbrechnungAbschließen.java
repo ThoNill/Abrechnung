@@ -1,4 +1,4 @@
-package boundingContext.abrechnung.helper;
+package boundingContext.abrechnung.actions;
 
 import boundingContext.abrechnung.aufz‰hlungen.BuchungsArt;
 import boundingContext.abrechnung.aufz‰hlungen.SachKontoProvider;
@@ -8,11 +8,11 @@ import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.buchhaltung.eingang.EinBucher;
-import boundingContext.zahlungen.helper.ZahlungenEntfernenManager;
+import boundingContext.zahlungen.actions.ZahlungenEntfernen;
 
 public class AbrechnungAbschlieﬂen extends EinBucher {
 
-    private ZahlungenEntfernenManager zahlungenEntfernen;
+    private ZahlungenEntfernen zahlungenEntfernen;
     private SchuldenInDieAbrechnung schulden‹bertragen;
     private SaldoAusgleichen ausgleichen;
 
@@ -24,7 +24,7 @@ public class AbrechnungAbschlieﬂen extends EinBucher {
         super(sachKontoProvider, buchungRepository, kontoBewegungRepository,
                 abrechnungRepository);
 
-        zahlungenEntfernen = new ZahlungenEntfernenManager(sachKontoProvider,
+        zahlungenEntfernen = new ZahlungenEntfernen(sachKontoProvider,
                 buchungRepository, kontoBewegungRepository,
                 zahlungsAuftragRepository, abrechnungRepository);
 

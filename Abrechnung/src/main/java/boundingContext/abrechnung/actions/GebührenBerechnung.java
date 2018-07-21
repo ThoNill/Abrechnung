@@ -1,4 +1,4 @@
-package boundingContext.abrechnung.helper;
+package boundingContext.abrechnung.actions;
 
 import javax.money.MonetaryAmount;
 

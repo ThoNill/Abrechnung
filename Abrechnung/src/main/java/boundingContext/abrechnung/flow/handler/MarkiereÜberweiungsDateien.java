@@ -3,16 +3,16 @@ package boundingContext.abrechnung.flow.handler;
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
 import boundingContext.abrechnung.flow.payloads.AuszahlungPayload;
-import boundingContext.zahlungen.helper.‹berweisungenManager;
+import boundingContext.zahlungen.actions.‹berweisungsDatei;
 
 public class Markiere‹berweiungsDateien
         extends
         AbstractPayloadTransformer<AuszahlungPayload,AuszahlungPayload> {
 
-    protected ‹berweisungenManager manager;
+    protected ‹berweisungsDatei manager;
     protected int count;
 
-    public Markiere‹berweiungsDateien(‹berweisungenManager manager,int count) {
+    public Markiere‹berweiungsDateien(‹berweisungsDatei manager,int count) {
         super();
         this.manager = manager;
         this.count = count;

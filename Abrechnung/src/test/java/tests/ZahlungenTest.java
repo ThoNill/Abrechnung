@@ -29,7 +29,7 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
-import boundingContext.zahlungen.helper.ZahlungsAuftragsManager;
+import boundingContext.zahlungen.actions.ZahlungsAufträgeErzeugen;
 import boundingContext.zahlungen.values.BIC;
 import boundingContext.zahlungen.values.BankVerbindung;
 import boundingContext.zahlungen.values.IBAN;
@@ -114,7 +114,7 @@ public class ZahlungenTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         SachKontoProvider sachKontoProvider = sachKontoProvider();
 
-        ZahlungsAuftragsManager manager = new ZahlungsAuftragsManager(
+        ZahlungsAufträgeErzeugen manager = new ZahlungsAufträgeErzeugen(
                 sachKontoProvider, buchungRepository, kontoBewegungRepository,
                 zahlungsAuftragRepository, überweisungRepository,abrechnungRepository);
         List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
@@ -133,7 +133,7 @@ public class ZahlungenTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         SachKontoProvider sachKontoProvider = sachKontoProvider();
 
-        ZahlungsAuftragsManager manager = new ZahlungsAuftragsManager(
+        ZahlungsAufträgeErzeugen manager = new ZahlungsAufträgeErzeugen(
                 sachKontoProvider, buchungRepository, kontoBewegungRepository,
                 zahlungsAuftragRepository, überweisungRepository,abrechnungRepository);
         List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,

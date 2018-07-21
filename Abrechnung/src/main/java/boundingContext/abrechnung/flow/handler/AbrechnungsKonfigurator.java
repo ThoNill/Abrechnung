@@ -1,9 +1,9 @@
 package boundingContext.abrechnung.flow.handler;
 
+import boundingContext.abrechnung.actions.GebührenBerechnung;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.gebühren.GebührFabrik;
-import boundingContext.abrechnung.helper.GebührenBerechnung;
 import boundingContext.daten.GebührRepository;
 
 public interface AbrechnungsKonfigurator {

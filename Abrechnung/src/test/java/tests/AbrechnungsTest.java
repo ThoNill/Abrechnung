@@ -16,12 +16,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import boundingContext.abrechnung.actions.AbrechnungHelper;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.RunStatus;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
-import boundingContext.abrechnung.helper.AbrechnungHelper;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 

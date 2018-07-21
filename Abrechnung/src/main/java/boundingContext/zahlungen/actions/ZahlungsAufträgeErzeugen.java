@@ -1,4 +1,4 @@
-package boundingContext.zahlungen.helper;
+package boundingContext.zahlungen.actions;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,11 +31,11 @@ import boundingContext.gemeinsam.BetragsBündelMap;
 import boundingContext.gemeinsam.ProzentBündelMap;
 import boundingContext.zahlungen.values.BankVerbindung;
 
-public class ZahlungsAuftragsManager extends EinBucher {
+public class ZahlungsAufträgeErzeugen extends EinBucher {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
     private ÜberweisungRepository überweisungsRepository;
   
-    public ZahlungsAuftragsManager(SachKontoProvider sachKontoProvider,
+    public ZahlungsAufträgeErzeugen(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,

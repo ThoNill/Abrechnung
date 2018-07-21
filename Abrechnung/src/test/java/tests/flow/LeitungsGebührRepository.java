@@ -1,4 +1,4 @@
-package boundingContext.abrechnung.helper;
+package tests.flow;
 
 import javax.money.MonetaryAmount;
 
