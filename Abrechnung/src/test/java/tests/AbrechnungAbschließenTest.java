@@ -7,17 +7,13 @@ import java.util.Date;
 
 import javax.money.MonetaryAmount;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import tests.konten.TestSachKonto;
-import tests.konten.TestSachKontoProvider;
 import betrag.Geld;
 import boundingContext.abrechnung.actions.AbrechnungAbschließen;
 import boundingContext.abrechnung.actions.AbrechnungHelper;
@@ -25,18 +21,10 @@ import boundingContext.abrechnung.actions.SaldoAusgleichen;
 import boundingContext.abrechnung.actions.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
-import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.entities.ZahlungsDefinition;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
-import boundingContext.abrechnung.repositories.MandantRepository;
-import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
-import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
-import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
@@ -49,38 +37,7 @@ import boundingContext.zahlungen.values.IBAN;
 @RunWith(SpringRunner.class)
 // Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
-public class AbrechnungAbschließenTest {
-
-    @Autowired
-    private MandantRepository mandantRepository;
-
-    @Autowired
-    private AbrechnungRepository abrechnungRepository;
-
-    @Autowired
-    private BuchungRepository buchungRepository;
-
-    @Autowired
-    private KontoBewegungRepository kontoBewegungRepository;
-
-    @Autowired
-    private ZahlungsAuftragRepository zahlungsAuftragRepository;
-
-    @Autowired
-    private ZahlungsDefinitionRepository zahlungsDefinitionRepository;
-
-    @Autowired
-    private ÜberweisungRepository überweisungRepository;
-
-    @Before
-    @After
-    @Transactional("dbATransactionManager")
-    public void clear() {
-        kontoBewegungRepository.deleteAll();
-        buchungRepository.deleteAll();
-        abrechnungRepository.deleteAll();
-        mandantRepository.deleteAll();
-    }
+public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
 
     public BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(double betrag) {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
@@ -106,10 +63,6 @@ public class AbrechnungAbschließenTest {
         abrechnung = abrechnungRepository.save(abrechnung);
         mandant.addAbrechnung(abrechnung);
         return abrechnung;
-    }
-
-    private SachKontoProvider sachKontoProvider() {
-        return new TestSachKontoProvider();
     }
 
     private EinBucher erzeugeEinbucher() {
@@ -187,8 +140,7 @@ public class AbrechnungAbschließenTest {
 
         SaldoAusgleichen abschluss = new SaldoAusgleichen(sachKontoProvider(),
                 buchungRepository, kontoBewegungRepository,
-                abrechnungRepository,
-                "Guthaben", "Schulden");
+                abrechnungRepository, "Guthaben", "Schulden");
         abschluss.saldoAusgleichen(abrechnung);
         return abrechnung;
     }
@@ -288,7 +240,7 @@ public class AbrechnungAbschließenTest {
         Abrechnung nächsteAbrechnung = abschließen(abrechnung);
 
         ZahlungsAufträgeErzeugen zahlungenManager = new ZahlungsAufträgeErzeugen(
-                new TestSachKontoProvider(), buchungRepository,
+                sachKontoProvider(), buchungRepository,
                 kontoBewegungRepository, zahlungsAuftragRepository,
                 überweisungRepository, abrechnungRepository);
 

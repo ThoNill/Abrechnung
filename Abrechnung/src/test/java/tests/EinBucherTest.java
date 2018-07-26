@@ -18,6 +18,7 @@ import tests.konten.TestSachKontoProvider;
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
@@ -34,29 +35,7 @@ import boundingContext.gemeinsam.BetragsBündelMap;
 @RunWith(SpringRunner.class)
 // Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
-public class EinBucherTest {
-
-    @Autowired
-    private MandantRepository mandantRepository;
-
-    @Autowired
-    private AbrechnungRepository abrechnungRepository;
-
-    @Autowired
-    private BuchungRepository buchungRepository;
-
-    @Autowired
-    private KontoBewegungRepository kontoBewegungRepository;
-
-    @Before
-    @After
-    @Transactional("dbATransactionManager")
-    public void clear() {
-        kontoBewegungRepository.deleteAll();
-        buchungRepository.deleteAll();
-        abrechnungRepository.deleteAll();
-        mandantRepository.deleteAll();
-    }
+public class EinBucherTest extends AbrechnungBasisTest {
 
     public BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag() {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
@@ -112,8 +91,10 @@ public class EinBucherTest {
         }
     }
 
+  
+    
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(new TestSachKontoProvider(), buchungRepository,
+        return new EinBucher(sachKontoProvider(), buchungRepository,
                 kontoBewegungRepository,abrechnungRepository);
     }
 

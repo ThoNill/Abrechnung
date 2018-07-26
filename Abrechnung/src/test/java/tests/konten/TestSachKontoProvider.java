@@ -2,12 +2,46 @@ package tests.konten;
 
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.BuchungRepository;
+import boundingContext.abrechnung.repositories.KontoBewegungRepository;
+import boundingContext.abrechnung.repositories.MandantRepository;
+import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
+import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
+import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 
 public class TestSachKontoProvider implements SachKontoProvider {
 
-    public TestSachKontoProvider() {
+    private MandantRepository mandantRepository;
+    private AbrechnungRepository abrechnungRepository;
+
+    private BuchungRepository buchungRepository;
+
+    private KontoBewegungRepository kontoBewegungRepository;
+
+    private ZahlungsAuftragRepository zahlungsAuftragRepository;
+
+    private ZahlungsDefinitionRepository zahlungsDefinitionRepository;
+
+    private ÜberweisungRepository überweisungRepository;
+
+    public TestSachKontoProvider(MandantRepository mandantRepository,
+            AbrechnungRepository abrechnungRepository,
+            BuchungRepository buchungRepository,
+            KontoBewegungRepository kontoBewegungRepository,
+            ZahlungsAuftragRepository zahlungsAuftragRepository,
+            ZahlungsDefinitionRepository zahlungsDefinitionRepository,
+            ÜberweisungRepository überweisungRepository) {
         super();
+        this.mandantRepository = mandantRepository;
+        this.abrechnungRepository = abrechnungRepository;
+        this.buchungRepository = buchungRepository;
+        this.kontoBewegungRepository = kontoBewegungRepository;
+        this.zahlungsAuftragRepository = zahlungsAuftragRepository;
+        this.zahlungsDefinitionRepository = zahlungsDefinitionRepository;
+        this.überweisungRepository = überweisungRepository;
     }
+
 
     @Override
     public SachKonto GEBÜHR() {
@@ -24,7 +58,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
         return TestSachKonto.AUSZUZAHLEN;
     }
 
-    
     @Override
     public SachKonto AUSBEZAHLT() {
         return TestSachKonto.AUSBEZAHLT;
@@ -48,6 +81,76 @@ public class TestSachKontoProvider implements SachKontoProvider {
     @Override
     public SachKonto sachKontoFrom(int pos) {
         return TestSachKonto.values()[pos];
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tests.konten.RepositoryProvider#getMandantRepository()
+     */
+    @Override
+    public MandantRepository getMandantRepository() {
+        return mandantRepository;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tests.konten.RepositoryProvider#getAbrechnungRepository()
+     */
+    @Override
+    public AbrechnungRepository getAbrechnungRepository() {
+        return abrechnungRepository;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tests.konten.RepositoryProvider#getBuchungRepository()
+     */
+    @Override
+    public BuchungRepository getBuchungRepository() {
+        return buchungRepository;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tests.konten.RepositoryProvider#getKontoBewegungRepository()
+     */
+    @Override
+    public KontoBewegungRepository getKontoBewegungRepository() {
+        return kontoBewegungRepository;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tests.konten.RepositoryProvider#getZahlungsAuftragRepository()
+     */
+    @Override
+    public ZahlungsAuftragRepository getZahlungsAuftragRepository() {
+        return zahlungsAuftragRepository;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tests.konten.RepositoryProvider#getZahlungsDefinitionRepository()
+     */
+    @Override
+    public ZahlungsDefinitionRepository getZahlungsDefinitionRepository() {
+        return zahlungsDefinitionRepository;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tests.konten.RepositoryProvider#getÜberweisungRepository()
+     */
+    @Override
+    public ÜberweisungRepository getÜberweisungRepository() {
+        return überweisungRepository;
     }
 
 }

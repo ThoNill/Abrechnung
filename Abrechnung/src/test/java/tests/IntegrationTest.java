@@ -38,44 +38,24 @@ import boundingContext.abrechnung.repositories.MandantRepository;
         tests.config.TestDbConfig.class,
         boundingContext.abrechnung.flow.AbrechnungFlow.class })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class IntegrationTest {
-
-    @Autowired
-    private MandantRepository mandantRepository;
-
-    @Autowired
-    private AbrechnungRepository abrechnungRepository;
+public class IntegrationTest extends AbrechnungBasisTest{
 
     @Autowired
     private GebührenDefinitionRepository gebührenDefinitinRepository;
 
-    @Autowired
-    private LeistungRepository leistungRepository;
-
-    @Autowired
-    private BuchungRepository buchungRepository;
-
-    @Autowired
-    private KontoBewegungRepository kontoBewegungRepository;
-
-    @Autowired
-    private SachKontoProvider sachKontoProvider;
-
+ 
     @Before
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
-        leistungRepository.deleteAll();
-        kontoBewegungRepository.deleteAll();
-        buchungRepository.deleteAll();
-        abrechnungRepository.deleteAll();
-        mandantRepository.deleteAll();
+        super.clear();
         gebührenDefinitinRepository.deleteAll();
     }
 
     public Mandant erzeugeMandant() {
         Mandant mandant = mandantRepository.save(new Mandant());
-
+        SachKontoProvider sachKontoProvider = sachKontoProvider();
+        
         GebuehrDefinition gebührDefinition = new GebuehrDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setKontoNr(sachKontoProvider.GEBÜHR().ordinal());

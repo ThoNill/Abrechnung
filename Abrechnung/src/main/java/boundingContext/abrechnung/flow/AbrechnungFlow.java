@@ -57,7 +57,7 @@ public class AbrechnungFlow {
                         holeAbrechnung(mandantRepository, abrechnungRepository))
                 .channel("mandantChannel")
                 .split(gebührDefinitionSplitter())
-                .transform(berechneBuchungsauftrag(konfigurator))
+                .transform(berechneBuchungsauftrag(konfigurator,sachKontoProvider))
                 .transform(
                         bucheDenBuchungsauftrag(sachKontoProvider,
                                 buchungRepository, kontoBewegungRepository,abrechnungRepository))
@@ -96,8 +96,8 @@ public class AbrechnungFlow {
 
     @Bean
     BerechneBuchungsauftrag berechneBuchungsauftrag(
-            AbrechnungsKonfigurator konfigurator) {
-        return new BerechneBuchungsauftrag(konfigurator);
+            AbrechnungsKonfigurator konfigurator,SachKontoProvider sachKontoProvider) {
+        return new BerechneBuchungsauftrag(konfigurator,sachKontoProvider);
     }
 
     @Bean

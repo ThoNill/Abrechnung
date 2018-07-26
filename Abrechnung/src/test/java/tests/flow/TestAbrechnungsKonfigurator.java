@@ -3,6 +3,7 @@ package tests.flow;
 import tests.konten.TestSachKontoProvider;
 import boundingContext.abrechnung.actions.GebührenBerechnung;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.gebühren.GebührFabrik;
@@ -32,8 +33,8 @@ public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
 
     @Override
     public GebührenBerechnung erzeugeGebührenBerechner(
-            GebuehrDefinition definition) {
-        return new GebührenBerechnung(new TestSachKontoProvider(), definition,
+            GebuehrDefinition definition,SachKontoProvider sachKontoProvider) {
+        return new GebührenBerechnung(sachKontoProvider, definition,
                 erzeugeGebührRepository(definition.getDatenArt()),
                 erzeugeGebührFabrik(definition.getGebührArt()));
     }

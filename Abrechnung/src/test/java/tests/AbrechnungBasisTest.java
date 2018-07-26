@@ -1,24 +1,22 @@
-package tests.config;
+package tests;
 
+import org.junit.After;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
-import tests.flow.TestAbrechnungsKonfigurator;
 import tests.konten.TestSachKontoProvider;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
-import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.KontoBewegungRepository;
-import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 
-@Configuration
-public class TestConfig {
+public class AbrechnungBasisTest {
 
     @Autowired
     protected MandantRepository mandantRepository;
@@ -35,20 +33,29 @@ public class TestConfig {
     @Autowired
     protected ÜberweisungRepository überweisungRepository;
 
-    @Bean
-    public AbrechnungsKonfigurator configurator(
-            LeistungRepository leistungRepository) {
-        return new TestAbrechnungsKonfigurator(leistungRepository);
+    public AbrechnungBasisTest() {
+        super();
     }
 
+    @Before
+    @After
+    @Transactional("dbATransactionManager")
+    public void clear() {
+        kontoBewegungRepository.deleteAll();
+        buchungRepository.deleteAll();
+        überweisungRepository.deleteAll();
+        zahlungsAuftragRepository.deleteAll();
+        zahlungsDefinitionRepository.deleteAll();
+        abrechnungRepository.deleteAll();
+        mandantRepository.deleteAll();
+    }
 
-    @Bean
+    
     protected SachKontoProvider sachKontoProvider() {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
                 kontoBewegungRepository, zahlungsAuftragRepository,
                 zahlungsDefinitionRepository, überweisungRepository);
     }
-
 
 }

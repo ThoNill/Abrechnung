@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,38 +45,24 @@ import boundingContext.gemeinsam.BetragsBündel;
 // Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class GebührenKonfigurationsTest {
-
-    @Autowired
-    private MandantRepository mandantRepository;
-
-    @Autowired
-    private AbrechnungRepository abrechnungRepository;
-
-    @Autowired
-    private GebührenDefinitionRepository gebührenDefinitinRepository;
+public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
 
     @Autowired
     private LeistungRepository leistungRepository;
 
     @Autowired
-    private BuchungRepository buchungRepository;
-
-    @Autowired
-    private KontoBewegungRepository kontoBewegungRepository;
+    private GebührenDefinitionRepository gebührenDefinitinRepository;
 
     @Before
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
-        leistungRepository.deleteAll();
-        kontoBewegungRepository.deleteAll();
-        buchungRepository.deleteAll();
-        abrechnungRepository.deleteAll();
+        super.clear();
         gebührenDefinitinRepository.deleteAll();
-        mandantRepository.deleteAll();
+        leistungRepository.deleteAll();
     }
 
+    
     public Mandant erzeugeMandant() {
         return mandantRepository.save(new Mandant());
     }
@@ -203,7 +190,7 @@ public class GebührenKonfigurationsTest {
         AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(
                 leistungRepository);
         GebührenBerechnung berechnung = konfigurator
-                .erzeugeGebührenBerechner(gebührDefinition);
+                .erzeugeGebührenBerechner(gebührDefinition,sachKontoProvider());
         BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(abrechnung);
         BetragsBündel<SachKonto> auftragBündel = auftrag.getPositionen();
@@ -215,11 +202,12 @@ public class GebührenKonfigurationsTest {
         assertEquals(Geld.createAmount(-summe * 0.06 * 0.19),
                 auftragBündel.getBetrag(TestSachKonto.MWST));
 
-        EinBucher bucher = new EinBucher(new TestSachKontoProvider(),
-                buchungRepository, kontoBewegungRepository,abrechnungRepository);
+        EinBucher bucher = new EinBucher(sachKontoProvider(),
+                buchungRepository, kontoBewegungRepository,
+                abrechnungRepository);
         // Noch einmal, darf nichts ausmachen
- 
-        bucher.erzeugeDifferenzBuchung(auftrag,abrechnung);
+
+        bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
 
         BetragsBündel<SachKonto> bündel = bucher.beträgeEinerBuchungsartHolen(
                 abrechnung, BuchungsArt.TESTBUCHUNG);

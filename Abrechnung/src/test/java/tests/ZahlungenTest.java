@@ -37,41 +37,7 @@ import boundingContext.zahlungen.values.IBAN;
 @RunWith(SpringRunner.class)
 // Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
-public class ZahlungenTest {
-
-    @Autowired
-    private MandantRepository mandantRepository;
-
-    @Autowired
-    private AbrechnungRepository abrechnungRepository;
-
-    @Autowired
-    private ZahlungsDefinitionRepository zahlungsDefinitionRepository;
-
-    @Autowired
-    private ZahlungsAuftragRepository zahlungsAuftragRepository;
-
-    @Autowired
-    private ÜberweisungRepository überweisungRepository;
-
-    @Autowired
-    private BuchungRepository buchungRepository;
-
-    @Autowired
-    private KontoBewegungRepository kontoBewegungRepository;
-
-    @Before
-    @After
-    @Transactional("dbATransactionManager")
-    public void clear() {
-        kontoBewegungRepository.deleteAll();
-        buchungRepository.deleteAll();
-        überweisungRepository.deleteAll();
-        zahlungsAuftragRepository.deleteAll();
-        zahlungsDefinitionRepository.deleteAll();
-        abrechnungRepository.deleteAll();
-        mandantRepository.deleteAll();
-    }
+public class ZahlungenTest extends AbrechnungBasisTest{
 
     public Mandant erzeugeMandant() {
         Mandant mandant = mandantRepository.save(new Mandant());
@@ -103,9 +69,7 @@ public class ZahlungenTest {
         return abrechnungRepository.save(abrechnung);
     }
 
-    private SachKontoProvider sachKontoProvider() {
-        return new TestSachKontoProvider();
-    }
+ 
 
     @Test
     @Transactional("dbATransactionManager")

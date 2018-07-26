@@ -97,7 +97,12 @@
 			<artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.8.1</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>thomas.nill</groupId>
+			<artifactId>BasisKomponenten</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 	</dependencies>
 

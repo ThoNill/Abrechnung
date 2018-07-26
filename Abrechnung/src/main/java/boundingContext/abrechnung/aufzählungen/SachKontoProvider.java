@@ -1,6 +1,16 @@
 package boundingContext.abrechnung.aufzählungen;
 
-public interface SachKontoProvider {
+import org.springframework.beans.factory.annotation.Autowired;
+
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.BuchungRepository;
+import boundingContext.abrechnung.repositories.KontoBewegungRepository;
+import boundingContext.abrechnung.repositories.MandantRepository;
+import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
+import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
+import boundingContext.abrechnung.repositories.ÜberweisungRepository;
+
+public interface SachKontoProvider extends RepositoryProvider {
     SachKonto GEBÜHR();
 
     SachKonto GUTHABEN();
@@ -35,5 +45,6 @@ public interface SachKontoProvider {
  //       public static final int ÜBERNAHME_SCHULDEN = 4;
     };
  
+
 
 }
