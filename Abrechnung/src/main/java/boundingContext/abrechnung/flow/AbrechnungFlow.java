@@ -79,9 +79,7 @@ public class AbrechnungFlow {
             BuchungRepository buchungRepository,
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository) {
-        return new SchlieﬂeDieAbrechnungAb(sachKontoProvider,
-                abrechnungRepository, buchungRepository,
-                kontoBewegungRepository, zahlungsAuftragRepository);
+        return new SchlieﬂeDieAbrechnungAb(sachKontoProvider);
     }
 
     @Bean

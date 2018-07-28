@@ -11,9 +11,6 @@ import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.ZahlungsAuftrag;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
@@ -21,15 +18,8 @@ import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class ZahlungenEntfernen extends EinBucher {
-    private ZahlungsAuftragRepository zahlungsAuftragRepository;
- 
-    public ZahlungenEntfernen(SachKontoProvider sachKontoProvider,
-            BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository,
-            ZahlungsAuftragRepository zahlungsAuftragRepository,
-            AbrechnungRepository abrechnungRepository) {
+    public ZahlungenEntfernen(SachKontoProvider sachKontoProvider) {
         super(sachKontoProvider);
-        this.zahlungsAuftragRepository = zahlungsAuftragRepository;
     }
 
     @Transactional("dbATransactionManager")
@@ -44,6 +34,7 @@ public class ZahlungenEntfernen extends EinBucher {
 
     @Transactional("dbATransactionManager")
     public void entferneZahlungsaufträge(Abrechnung abrechnung) {
+        ZahlungsAuftragRepository zahlungsAuftragRepository = getZahlungsAuftragRepository();
         List<ZahlungsAuftrag> aufträge = zahlungsAuftragRepository
                 .getOffeneZahlungen(abrechnung,ABGLEICH_GUTHABEN());
         for (ZahlungsAuftrag a : aufträge) {

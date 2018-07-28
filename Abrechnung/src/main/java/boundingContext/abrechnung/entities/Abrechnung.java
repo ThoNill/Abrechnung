@@ -26,20 +26,22 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import boundingContext.abrechnung.actions.SaldoAusgleichen;
+import boundingContext.abrechnung.actions.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.RunStatus;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.zahlungen.actions.ZahlungenEntfernen;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-
 @Entity
 @Table(name = "ABRECHNUNG")
 @SequenceGenerator(name = "ABRECHNUNG_SEQ", sequenceName = "ABRECHNUNG_SEQ")
-public class Abrechnung  {
+public class Abrechnung {
 
     @EqualsAndHashCode.Include
     @ToString.Include
@@ -51,14 +53,12 @@ public class Abrechnung  {
 
     @EqualsAndHashCode.Include
     @ToString.Include
- 
     @Basic
     @Column(name = "MONAT")
     private int monat;
- 
+
     @EqualsAndHashCode.Include
     @ToString.Include
-    
     @Basic
     @Column(name = "JAHR")
     private int jahr;
@@ -70,18 +70,17 @@ public class Abrechnung  {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "MandantId")
     private Mandant mandant;
-    
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "TYP")
     private AbrechnungsTyp typ = AbrechnungsTyp.INITIAL;
-    
+
     @Basic
     @Column(name = "BEZEICHNUNG")
     private String bezeichnung;
- 
+
     @EqualsAndHashCode.Include
     @ToString.Include
- 
     @Basic
     @Column(name = "NUMMER")
     private int nummer;
@@ -93,12 +92,11 @@ public class Abrechnung  {
     @Basic
     @Column(name = "ANGELEGT")
     private Date angelegt = new Date();
-    
+
     // TODO Zeitraum zeitraum;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "abrechnung",fetch=FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "abrechnung", fetch = FetchType.LAZY)
     private Set<Buchung> buchung = new HashSet<>();
-    
 
     public void addBuchung(Buchung buchung) {
         this.buchung.add(buchung);
@@ -108,10 +106,11 @@ public class Abrechnung  {
         this.buchung.remove(buchung);
     };
 
+    public Abrechnung createOrGetNächsteAbrechnung(
+            @NotNull SachKontoProvider provider) {
+        AbrechnungRepository abrechnungRepository = provider
+                .getAbrechnungRepository();
 
-    public Abrechnung createOrGetNächsteAbrechnung(@NotNull SachKontoProvider provider) {
-        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
-        
         abrechnungRepository.save(this);
         Mandant mandant = provider.getMandantRepository().save(getMandant());
         List<Abrechnung> liste = abrechnungRepository.getAbrechnung(
@@ -128,8 +127,10 @@ public class Abrechnung  {
         return abrechnungRepository.save(liste.get(0));
     }
 
-    public Optional<Abrechnung> getVorherigeAbrechnung(@NotNull SachKontoProvider provider) {
-        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
+    public Optional<Abrechnung> getVorherigeAbrechnung(
+            @NotNull SachKontoProvider provider) {
+        AbrechnungRepository abrechnungRepository = provider
+                .getAbrechnungRepository();
         List<Abrechnung> liste = abrechnungRepository.getAbrechnung(
                 getMandant(), getNummer() - 1);
         if (liste.isEmpty()) {
@@ -138,5 +139,22 @@ public class Abrechnung  {
         return Optional.of(liste.get(0));
     }
 
+    public Abrechnung abschleißen(SachKontoProvider provider, int zinsDauer,
+            double zinssatz) {
+
+        ZahlungenEntfernen zahlungenEntfernen = new ZahlungenEntfernen(provider);
+
+        SaldoAusgleichen ausgleichen = new SaldoAusgleichen(provider,
+                "Guthaben", "Schulden");
+
+        SchuldenInDieAbrechnung schuldenÜbertragen = new SchuldenInDieAbrechnung(
+                provider, "Schulden übernehmen", zinssatz);
+        zahlungenEntfernen.entferneZahlungsaufträgeFallsRestguthaben(this);
+        ausgleichen.saldoAusgleichen(this);
+        Abrechnung nächsteAbrechnung = this
+                .createOrGetNächsteAbrechnung(provider);
+        schuldenÜbertragen.übertragen(nächsteAbrechnung, zinsDauer);
+        return nächsteAbrechnung;
+    }
 
 }

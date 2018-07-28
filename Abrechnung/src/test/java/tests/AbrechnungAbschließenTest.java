@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tests.konten.TestSachKonto;
 import betrag.Geld;
-import boundingContext.abrechnung.actions.AbrechnungAbschlieﬂen;
 import boundingContext.abrechnung.actions.SaldoAusgleichen;
 import boundingContext.abrechnung.actions.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.aufz‰hlungen.BuchungsArt;
@@ -113,11 +112,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     }
 
     private Abrechnung abschlieﬂen(Abrechnung abrechnung) {
-        AbrechnungAbschlieﬂen abchluss = new AbrechnungAbschlieﬂen(
-                sachKontoProvider(), buchungRepository,
-                kontoBewegungRepository, abrechnungRepository,
-                zahlungsAuftragRepository, 0.06);
-        Abrechnung n‰chsteAbrechnung = abchluss.abschleiﬂen(abrechnung, 180);
+        Abrechnung n‰chsteAbrechnung = abrechnung.abschleiﬂen(sachKontoProvider(), 180,0.06);
         return n‰chsteAbrechnung;
     }
 
@@ -137,9 +132,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         erzeugeBuchung(abrechnung, betrag);
 
-        SaldoAusgleichen abschluss = new SaldoAusgleichen(sachKontoProvider(),
-                buchungRepository, kontoBewegungRepository,
-                abrechnungRepository, "Guthaben", "Schulden");
+        SaldoAusgleichen abschluss = new SaldoAusgleichen(sachKontoProvider(), "Guthaben", "Schulden");
         abschluss.saldoAusgleichen(abrechnung);
         return abrechnung;
     }
