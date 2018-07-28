@@ -1,9 +1,9 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
-import java.util.Optional;
 
 import lombok.extern.java.Log;
 
@@ -11,35 +11,24 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import boundingContext.abrechnung.actions.AbrechnungHelper;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
-import boundingContext.abrechnung.aufzählungen.RunStatus;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.handler.HoleAbrechnung;
 import boundingContext.abrechnung.flow.payloads.AbrechnungPayload;
 import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.flow.payloads.AufrufPayload;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.MandantRepository;
 
 @Log
 @RunWith(SpringRunner.class)
 // Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
-public class HoleAbrechnungsTest {
-
-    @Autowired
-    private MandantRepository mandantRepository;
-
-    @Autowired
-    private AbrechnungRepository abrechnungRepository;
+public class HoleAbrechnungsTest extends AbrechnungBasisTest{
 
     @Before
     @After
@@ -219,7 +208,7 @@ public class HoleAbrechnungsTest {
 
     
     private AbrechnungPayload aufruf(AufrufPayload parameter) {
-        HoleAbrechnung handler = new HoleAbrechnung(mandantRepository, abrechnungRepository);
+        HoleAbrechnung handler = new HoleAbrechnung(sachKontoProvider());
         AbrechnungPayload testErgebnis;
         try {
             return handler.testTransformPayload(parameter);
@@ -232,7 +221,7 @@ public class HoleAbrechnungsTest {
     }
     
     private void aufrufMitException(AufrufPayload parameter) {
-        HoleAbrechnung handler = new HoleAbrechnung(mandantRepository, abrechnungRepository);
+        HoleAbrechnung handler = new HoleAbrechnung(sachKontoProvider());
         
         try {
             handler.testTransformPayload(parameter);

@@ -1,7 +1,5 @@
 package boundingContext.buchhaltung.eingang;
 
-import java.util.Objects;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ddd.Value;

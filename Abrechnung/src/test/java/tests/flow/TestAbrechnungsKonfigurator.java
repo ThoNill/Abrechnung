@@ -1,6 +1,5 @@
 package tests.flow;
 
-import tests.konten.TestSachKontoProvider;
 import boundingContext.abrechnung.actions.GebührenBerechnung;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;

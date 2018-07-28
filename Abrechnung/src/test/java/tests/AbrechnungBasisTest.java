@@ -3,7 +3,6 @@ package tests;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
 import tests.konten.TestSachKontoProvider;

@@ -2,6 +2,8 @@ package boundingContext.abrechnung.entities;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -19,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +29,8 @@ import lombok.ToString;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.RunStatus;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -102,6 +107,36 @@ public class Abrechnung  {
     public void removeBuchung(Buchung buchung) {
         this.buchung.remove(buchung);
     };
+
+
+    public Abrechnung createOrGetNächsteAbrechnung(@NotNull SachKontoProvider provider) {
+        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
+        
+        abrechnungRepository.save(this);
+        Mandant mandant = provider.getMandantRepository().save(getMandant());
+        List<Abrechnung> liste = abrechnungRepository.getAbrechnung(
+                getMandant(), getNummer() + 1);
+        if (liste.isEmpty()) {
+            Abrechnung neu = new Abrechnung();
+            neu.setNummer(getNummer() + 1);
+            neu.setMandant(mandant);
+            neu.setMonat(getMonat());
+            neu.setJahr(getJahr());
+            neu.setTyp(getTyp());
+            return abrechnungRepository.save(neu);
+        }
+        return abrechnungRepository.save(liste.get(0));
+    }
+
+    public Optional<Abrechnung> getVorherigeAbrechnung(@NotNull SachKontoProvider provider) {
+        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
+        List<Abrechnung> liste = abrechnungRepository.getAbrechnung(
+                getMandant(), getNummer() - 1);
+        if (liste.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(liste.get(0));
+    }
 
 
 }

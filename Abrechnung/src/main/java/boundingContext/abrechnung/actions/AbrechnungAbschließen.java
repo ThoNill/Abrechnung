@@ -1,6 +1,5 @@
 package boundingContext.abrechnung.actions;
 
-import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
@@ -21,8 +20,7 @@ public class AbrechnungAbschließen extends EinBucher {
             KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository, double zinssatz) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,
-                abrechnungRepository);
+        super(sachKontoProvider);
 
         zahlungenEntfernen = new ZahlungenEntfernen(sachKontoProvider,
                 buchungRepository, kontoBewegungRepository,
@@ -32,9 +30,7 @@ public class AbrechnungAbschließen extends EinBucher {
                 buchungRepository, kontoBewegungRepository,
                 abrechnungRepository, "Guthaben", "Schulden");
 
-        schuldenÜbertragen = new SchuldenInDieAbrechnung(sachKontoProvider,
-                buchungRepository, kontoBewegungRepository,
-                abrechnungRepository, "Schulden übernehmen", zinssatz);
+        schuldenÜbertragen = new SchuldenInDieAbrechnung(sachKontoProvider, "Schulden übernehmen", zinssatz);
 
     }
 
@@ -43,9 +39,7 @@ public class AbrechnungAbschließen extends EinBucher {
         zahlungenEntfernen
                 .entferneZahlungsaufträgeFallsRestguthaben(abrechnung);
         ausgleichen.saldoAusgleichen(abrechnung);
-        AbrechnungHelper h = new AbrechnungHelper(abrechnungRepository);
-        Abrechnung nächsteAbrechnung = h
-                .createOrGetNächsteAbrechnung(abrechnung);
+        Abrechnung nächsteAbrechnung = abrechnung.createOrGetNächsteAbrechnung(this);
         schuldenÜbertragen.übertragen(nächsteAbrechnung, zinsDauer);
         return nächsteAbrechnung;
     }

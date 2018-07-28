@@ -1,34 +1,25 @@
 package boundingContext.abrechnung.flow.handler;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
-import boundingContext.abrechnung.actions.AbrechnungHelper;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.payloads.AbrechnungPayload;
 import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.flow.payloads.AufrufPayload;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.MandantRepository;
 
 public class HoleAbrechnung extends
         AbstractPayloadTransformer<AufrufPayload, AbrechnungPayload> {
 
-    private MandantRepository mandantRepository;
+    private SachKontoProvider provider;
 
-    private AbrechnungRepository abrechnungRepository;
-
-    AbrechnungHelper helper;
-
-    public HoleAbrechnung(MandantRepository mandantRepository,
-            AbrechnungRepository abrechnungRepository) {
+    public HoleAbrechnung(SachKontoProvider provider) {
         super();
-        this.mandantRepository = mandantRepository;
-        this.abrechnungRepository = abrechnungRepository;
-        this.helper = new AbrechnungHelper(abrechnungRepository);
+        this.provider = provider;
     }
 
     @Override
@@ -36,7 +27,7 @@ public class HoleAbrechnung extends
             throws Exception {
         checkPayload(payload);
         Abrechnung abrechnung = holeAbrechnung(payload);
-        return new AbrechnungPayload(abrechnung, abrechnung.getMandant(),
+        return new AbrechnungPayload(abrechnung, provider.getMandantRepository().save(abrechnung.getMandant()),
                 payload.getArt());
     }
 
@@ -61,6 +52,7 @@ public class HoleAbrechnung extends
     }
 
     private Abrechnung mitAbrechnungsId(AufrufPayload payload) {
+        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
         Abrechnung abrechnung = abrechnungRepository.findOne(payload
                 .getAbrechnungId());
         prüfeAbrechnungPasstZumMandanten(payload, abrechnung);
@@ -85,9 +77,8 @@ public class HoleAbrechnung extends
 
     private Abrechnung ohneAbrechnungsId(AufrufPayload payload) {
         Mandant mandant = sucheMandant(payload);
-
-        Optional<Abrechnung> oAbrechnung = helper
-                .getLetzteAbgerechneteAbrechnung(mandant, payload.getMonat(),
+        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
+        Optional<Abrechnung> oAbrechnung = mandant.getLetzteAbgerechneteAbrechnung(provider, payload.getMonat(),
                         payload.getJahr(), payload.getTyp());
         if (oAbrechnung.isPresent()) {
             return fallsEineAbrechnungSchonAbgerechnetWurde(payload,
@@ -104,24 +95,24 @@ public class HoleAbrechnung extends
     }
 
     private Mandant sucheMandant(AufrufPayload payload) {
-        return mandantRepository.findOne(payload.getMandantId());
+        return provider.getMandantRepository().findOne(payload.getMandantId());
     }
 
     private Abrechnung fallsEineAbrechnungSchonAbgerechnetWurde(
             AufrufPayload payload, Abrechnung abrechnung) {
-        return helper.createOrGetNächsteAbrechnung(abrechnung);
+        return abrechnung.createOrGetNächsteAbrechnung(provider);
     }
 
     private Abrechnung ohneBereitsAbgerechneteAbrechnungen(
             AufrufPayload payload, Mandant mandant) {
-        Integer n = abrechnungRepository.getLetzteAbrechnung(mandant,
+        Integer n = provider.getAbrechnungRepository().getLetzteAbrechnung(mandant,
                 payload.getMonat(), payload.getJahr());
         if (n == null) {
             keineNeueAbrechnung(payload);
-            return helper.createNeueAbrechnung(mandant, payload.getMonat(),
+            return mandant.createNeueAbrechnung(provider, payload.getMonat(),
                     payload.getJahr(), payload.getTyp());
         } else {
-            return abrechnungRepository.getAbrechnung(mandant, n.intValue())
+            return provider.getAbrechnungRepository().getAbrechnung(mandant, n.intValue())
                     .get(0);
         }
     }

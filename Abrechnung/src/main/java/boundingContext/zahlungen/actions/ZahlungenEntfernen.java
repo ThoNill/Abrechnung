@@ -28,13 +28,13 @@ public class ZahlungenEntfernen extends EinBucher {
             KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
             AbrechnungRepository abrechnungRepository) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
+        super(sachKontoProvider);
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
     }
 
     @Transactional("dbATransactionManager")
     public void entferneZahlungsaufträgeFallsRestguthaben(Abrechnung abrechnung) {
-        MonetaryAmount saldo = buchungRepository.getSaldo(abrechnung);
+        MonetaryAmount saldo = getBuchungRepository().getSaldo(abrechnung);
         if (!saldo.isZero()) {
             entferneZahlungsaufträge(abrechnung);
             entferneRestGuthaben(abrechnung);
@@ -52,14 +52,14 @@ public class ZahlungenEntfernen extends EinBucher {
     }
 
     private void entferneRestGuthaben(Abrechnung abrechnung) {
-        MonetaryAmount betrag = buchungRepository.getSumKonto(abrechnung,ABGLEICH_GUTHABEN(),GUTHABEN().ordinal());
+        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,ABGLEICH_GUTHABEN(),GUTHABEN().ordinal());
         if (betrag != null && !betrag.isZero()) {
             bucheStorno(abrechnung,betrag,ABGLEICH_GUTHABEN(),GUTHABEN());
         }
     }
 
     private void entferneRestSchulden(Abrechnung abrechnung) {
-        MonetaryAmount betrag = buchungRepository.getSumKonto(abrechnung,ABGLEICH_SCHULDEN(),SCHULDEN().ordinal());
+        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,ABGLEICH_SCHULDEN(),SCHULDEN().ordinal());
         if (betrag != null && !betrag.isZero()) {
             bucheStorno(abrechnung,betrag,ABGLEICH_SCHULDEN(),SCHULDEN());
         }

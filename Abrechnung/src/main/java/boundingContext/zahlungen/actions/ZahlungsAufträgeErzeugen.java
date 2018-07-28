@@ -2,13 +2,10 @@ package boundingContext.zahlungen.actions;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import javax.money.MonetaryAmount;
-
-import org.springframework.transaction.annotation.Transactional;
 
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
@@ -41,14 +38,14 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
             ZahlungsAuftragRepository zahlungsAuftragRepository,
             ÜberweisungRepository überweisungsRepository,
             AbrechnungRepository abrechnungRepository) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
+        super(sachKontoProvider);
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
         this.überweisungsRepository = überweisungsRepository;
     }
 
     public List<ZahlungsAuftrag> erzeugeAufträge(Abrechnung abrechnung,
             MonetaryAmount betrag, String verwendungszweck) {
-        abrechnung = abrechnungRepository.save(abrechnung);
+        abrechnung = getAbrechnungRepository().save(abrechnung);
         Mandant mandant = abrechnung.getMandant();
         Set<ZahlungsDefinition> definitionen = mandant
                 .getZahlungsDefinitionen();

@@ -8,9 +8,6 @@ import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
@@ -19,12 +16,9 @@ import boundingContext.gemeinsam.BetragsBündelMap;
 public class SchuldenInDieAbrechnung extends EinBucher {
 
     public SchuldenInDieAbrechnung(SachKontoProvider sachKontoProvider,
-            BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository,
-            AbrechnungRepository abrechnungRepository,
              String text,
             double zinssatz) {
-        super(sachKontoProvider, buchungRepository, kontoBewegungRepository,abrechnungRepository);
+        super(sachKontoProvider);
         this.text = text;
         this.zinssatz = zinssatz;
     }
@@ -34,10 +28,9 @@ public class SchuldenInDieAbrechnung extends EinBucher {
     private double zinssatz;
 
     public void übertragen(Abrechnung abrechnung, int zinsDauer) {
-        AbrechnungHelper h = new AbrechnungHelper(abrechnungRepository);
-        Optional<Abrechnung> oAbrechnung = h.getVorherigeAbrechnung(abrechnung);
+        Optional<Abrechnung> oAbrechnung = abrechnung.getVorherigeAbrechnung(this);
         if (oAbrechnung.isPresent()) {
-            MonetaryAmount saldo = buchungRepository.getSumKonto(
+            MonetaryAmount saldo = getBuchungRepository().getSumKonto(
                     oAbrechnung.get(), ABGLEICH_SCHULDEN(),
                     SCHULDEN().ordinal());
             if (saldo != null) {

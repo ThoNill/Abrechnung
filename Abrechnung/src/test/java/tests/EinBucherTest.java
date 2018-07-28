@@ -4,28 +4,19 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import tests.konten.TestSachKonto;
-import tests.konten.TestSachKontoProvider;
 import betrag.Geld;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
-import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
-import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
@@ -94,8 +85,7 @@ public class EinBucherTest extends AbrechnungBasisTest {
   
     
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(sachKontoProvider(), buchungRepository,
-                kontoBewegungRepository,abrechnungRepository);
+        return new EinBucher(sachKontoProvider());
     }
 
     @Test

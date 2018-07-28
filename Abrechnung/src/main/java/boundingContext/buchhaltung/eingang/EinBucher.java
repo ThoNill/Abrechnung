@@ -10,31 +10,18 @@ import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.BezugZurBuchung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.KontoBewegung;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.gemeinsam.BetragsBündel;
 import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class EinBucher extends SachKontoDelegate {
 
-    protected BuchungRepository buchungRepository;
-    protected KontoBewegungRepository kontoBewegungRepository;
-    protected AbrechnungRepository abrechnungRepository;
-
-    public EinBucher(SachKontoProvider sachKontoProvider,
-            BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository,
-            AbrechnungRepository abrechnungRepository) {
+    public EinBucher(SachKontoProvider sachKontoProvider) {
         super(sachKontoProvider);
-        this.buchungRepository = buchungRepository;
-        this.kontoBewegungRepository = kontoBewegungRepository;
-        this.abrechnungRepository = abrechnungRepository;
     }
 
     public Buchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,
             Abrechnung abrechnung) {
-        abrechnung = abrechnungRepository.save(abrechnung);
+        abrechnung = getAbrechnungRepository().save(abrechnung);
         if (!auftrag.isEmpty()) {
             Buchung buchung = new Buchung();
             buchung.setText(auftrag.getBeschreibung().getText());
@@ -50,7 +37,7 @@ public class EinBucher extends SachKontoDelegate {
             for (Integer rolle : bezüge.keySet()) {
                 bezugHinzufügen(buchung,rolle,bezüge.get(rolle));
             }
-            return buchungRepository.save(buchung);
+            return getBuchungRepository().save(buchung);
         }
         return null;
     }
@@ -76,7 +63,7 @@ public class EinBucher extends SachKontoDelegate {
     public BetragsBündel<SachKonto> beträgeEinerBuchungsartHolen(
             Abrechnung abrechnung, int art) {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
-        for (Object o : buchungRepository.getSumBewegungen(abrechnung, art)) {
+        for (Object o : getBuchungRepository().getSumBewegungen(abrechnung, art)) {
             Object[] werte = (Object[]) o;
             SachKonto p = sachKontoFrom((int) werte[0]);
             beträge.put(p, (MonetaryAmount) werte[1]);
@@ -86,7 +73,7 @@ public class EinBucher extends SachKontoDelegate {
 
     public Buchung erzeugeDifferenzBuchung(BuchungsAuftrag<SachKonto> auftrag,
             Abrechnung abrechnung) {
-        abrechnung = abrechnungRepository.save(abrechnung);
+        abrechnung = getAbrechnungRepository().save(abrechnung);
         BetragsBündel<SachKonto> aktuell = beträgeEinerBuchungsartHolen(
                 abrechnung, auftrag.getBeschreibung().getArt());
         BetragsBündel<SachKonto> differenz = (BetragsBündel<SachKonto>) aktuell

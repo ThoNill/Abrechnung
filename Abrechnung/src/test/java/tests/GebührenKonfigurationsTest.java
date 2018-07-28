@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tests.flow.TestAbrechnungsKonfigurator;
 import tests.flow.TestLeistungsRepository;
 import tests.konten.TestSachKonto;
-import tests.konten.TestSachKontoProvider;
 import betrag.Geld;
 import boundingContext.abrechnung.actions.GebührenBerechnung;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
@@ -31,12 +29,8 @@ import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Leistung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.GebührenDefinitionRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.LeistungRepository;
-import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündel;
@@ -202,9 +196,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         assertEquals(Geld.createAmount(-summe * 0.06 * 0.19),
                 auftragBündel.getBetrag(TestSachKonto.MWST));
 
-        EinBucher bucher = new EinBucher(sachKontoProvider(),
-                buchungRepository, kontoBewegungRepository,
-                abrechnungRepository);
+        EinBucher bucher = new EinBucher(sachKontoProvider());
         // Noch einmal, darf nichts ausmachen
 
         bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);

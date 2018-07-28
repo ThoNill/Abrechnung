@@ -54,13 +54,14 @@ public class AbrechnungFlow {
         return IntegrationFlows
                 .from("parameterChannel")
                 .transform(
-                        holeAbrechnung(mandantRepository, abrechnungRepository))
+                        holeAbrechnung(sachKontoProvider))
                 .channel("mandantChannel")
                 .split(gebührDefinitionSplitter())
-                .transform(berechneBuchungsauftrag(konfigurator,sachKontoProvider))
+               .transform(berechneBuchungsauftrag(konfigurator,sachKontoProvider))
                 .transform(
                         bucheDenBuchungsauftrag(sachKontoProvider,
                                 buchungRepository, kontoBewegungRepository,abrechnungRepository))
+      
                 .aggregate(a -> a.processor(new GebührDefinitionAggregator()))
                 .transform(
                         schließeDieAbrechnungAb(sachKontoProvider,
@@ -84,9 +85,8 @@ public class AbrechnungFlow {
     }
 
     @Bean
-    HoleAbrechnung holeAbrechnung(MandantRepository mandantRepository,
-            AbrechnungRepository abrechnungRepository) {
-        return new HoleAbrechnung(mandantRepository, abrechnungRepository);
+    HoleAbrechnung holeAbrechnung(SachKontoProvider provider) {
+        return new HoleAbrechnung(provider);
     }
 
     @Bean

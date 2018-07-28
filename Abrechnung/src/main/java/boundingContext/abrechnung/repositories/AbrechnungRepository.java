@@ -7,7 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
-import boundingContext.abrechnung.aufzählungen.RunStatus;
 import boundingContext.abrechnung.entities.Abrechnung;
 
 public interface AbrechnungRepository extends CrudRepository<Abrechnung, Long> {

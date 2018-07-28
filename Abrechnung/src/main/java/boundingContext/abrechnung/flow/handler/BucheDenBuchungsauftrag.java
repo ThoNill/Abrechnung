@@ -30,8 +30,7 @@ public class BucheDenBuchungsauftrag
     }
 
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(sachKontoProvider, buchungRepository,
-                kontoBewegungRepository,abrechnungRepository);
+        return new EinBucher(sachKontoProvider);
     }
 
     @Override

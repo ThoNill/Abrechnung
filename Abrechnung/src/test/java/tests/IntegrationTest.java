@@ -25,12 +25,7 @@ import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.flow.payloads.AufrufPayload;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.GebührenDefinitionRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
-import boundingContext.abrechnung.repositories.LeistungRepository;
-import boundingContext.abrechnung.repositories.MandantRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableIntegration
@@ -84,6 +79,7 @@ public class IntegrationTest extends AbrechnungBasisTest{
     @Qualifier("abrechnungFlow")
     StandardIntegrationFlow flow;
 
+    
     @Test
     @Transactional("dbATransactionManager")
     public void normalerAblauf()  {

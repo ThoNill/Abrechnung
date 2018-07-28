@@ -1,5 +1,6 @@
 package boundingContext.abrechnung.entities;
 
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "GEBUEHRDEFINITION")
 @SequenceGenerator(name = "GEBUEHRDEFINITION_SEQ", sequenceName = "GEBUEHRDEFINITION_SEQ")
-public class GebuehrDefinition {
+public class GebuehrDefinition { 
     
     @EqualsAndHashCode.Include
     @ToString.Include

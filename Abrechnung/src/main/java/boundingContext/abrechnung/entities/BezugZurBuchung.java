@@ -1,9 +1,5 @@
 package boundingContext.abrechnung.entities;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Basic;
@@ -22,7 +18,6 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import boundingContext.zahlungen.values.BankVerbindung;
 import boundingContext.zahlungen.values.TypeReference;
 
 @Data

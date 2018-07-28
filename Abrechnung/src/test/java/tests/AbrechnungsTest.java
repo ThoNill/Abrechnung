@@ -11,30 +11,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import boundingContext.abrechnung.actions.AbrechnungHelper;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
-import boundingContext.abrechnung.aufzählungen.RunStatus;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.MandantRepository;
 
 @RunWith(SpringRunner.class)
 // Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
-public class AbrechnungsTest {
-
-    @Autowired
-    private MandantRepository mandantRepository;
-
-    @Autowired
-    private AbrechnungRepository abrechnungRepository;
+public class AbrechnungsTest extends AbrechnungBasisTest {
 
     @Before
     @After
@@ -72,16 +62,15 @@ public class AbrechnungsTest {
    
     public Abrechnung naechsteAbrechnung() {
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
-        AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
-        return helper.createOrGetNächsteAbrechnung(abrechnung);
+         return abrechnung.createOrGetNächsteAbrechnung(sachKontoProvider());
     }
 
     public Abrechnung naechsteAbrechnungMerfacherAufruf() {
+        SachKontoProvider provider = sachKontoProvider();
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
-        AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
-        helper.createOrGetNächsteAbrechnung(abrechnung);
-        helper.createOrGetNächsteAbrechnung(abrechnung);
-        return helper.createOrGetNächsteAbrechnung(abrechnung);
+        abrechnung.createOrGetNächsteAbrechnung(provider);
+        abrechnung.createOrGetNächsteAbrechnung(provider);
+        return abrechnung.createOrGetNächsteAbrechnung(provider);
     }
 
     @Test
@@ -95,8 +84,7 @@ public class AbrechnungsTest {
 
     public Optional<Abrechnung> vorherigeAbrechnung() {
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
-        AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
-        return helper.getVorherigeAbrechnung(abrechnung);
+        return abrechnung.getVorherigeAbrechnung(sachKontoProvider());
     }
 
     @Test
@@ -110,12 +98,12 @@ public class AbrechnungsTest {
     @Test
     @Transactional("dbATransactionManager")
     public void zusammenspielNachherVorher() {
+        SachKontoProvider provider = sachKontoProvider();
+
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
-        AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
-        Abrechnung nächsteAbrechnung = helper
-                .createOrGetNächsteAbrechnung(abrechnung);
-        Optional<Abrechnung> vorkerigeDerNächstenAbrechnung = helper
-                .getVorherigeAbrechnung(nächsteAbrechnung);
+        Abrechnung nächsteAbrechnung = abrechnung
+                .createOrGetNächsteAbrechnung(provider);
+        Optional<Abrechnung> vorkerigeDerNächstenAbrechnung = nächsteAbrechnung.getVorherigeAbrechnung(provider);
         assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());
         assertTrue(vorkerigeDerNächstenAbrechnung.isPresent());
@@ -133,9 +121,8 @@ public class AbrechnungsTest {
         abrechnung.setStatus(AbrechnungsStatus.ABGERECHNET);
         abrechnung.setTyp(AbrechnungsTyp.TEILABRECHNUNG);
         abrechnung = abrechnungRepository.save(abrechnung);
-        AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
-        Optional<Abrechnung> abgerechneteAbrechnung = helper
-                .getLetzteAbgerechneteAbrechnung(mandant, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
+        Optional<Abrechnung> abgerechneteAbrechnung = mandant
+                .getLetzteAbgerechneteAbrechnung(sachKontoProvider(), 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
         assertTrue(abgerechneteAbrechnung.isPresent());
@@ -144,15 +131,16 @@ public class AbrechnungsTest {
     @Test
     @Transactional("dbATransactionManager")
     public void neueAbrechnung() {
+        SachKontoProvider provider = sachKontoProvider();
+        
         Mandant mandant = mandantRepository.save(erzeugeMandant());
-        AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
-        Abrechnung neueAbrechnung = helper.createNeueAbrechnung(mandant, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
+        Abrechnung neueAbrechnung = mandant.createNeueAbrechnung(provider, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
         assertTrue(neueAbrechnung != null);
         assertEquals(1, neueAbrechnung.getNummer());
         
-        neueAbrechnung = helper.createNeueAbrechnung(mandant, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
+        neueAbrechnung = mandant.createNeueAbrechnung(provider, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());
         assertTrue(neueAbrechnung!=null);

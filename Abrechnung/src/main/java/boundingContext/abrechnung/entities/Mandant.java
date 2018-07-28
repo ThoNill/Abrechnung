@@ -1,6 +1,8 @@
 package boundingContext.abrechnung.entities;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -17,13 +19,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
+import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
+import boundingContext.abrechnung.repositories.AbrechnungRepository;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -68,6 +72,35 @@ public class Mandant {
     public void addGebuehrDefinitionen(GebuehrDefinition d) {
         gebuehrDefinitionen.add(d);
 
+    }
+
+
+    public Optional<Abrechnung> getLetzteAbgerechneteAbrechnung(@NotNull SachKontoProvider provider,
+            int monat, int jahr, AbrechnungsTyp typ) {
+        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
+            
+           
+        Integer n = abrechnungRepository.getLetzteAbgerechneteAbrechnung(
+                this, AbrechnungsStatus.ABGERECHNET, monat, jahr);
+        if (n != null && n > 0) {
+            List<Abrechnung> liste = abrechnungRepository.getAbrechnung(this, n);
+            return Optional.of(liste.get(0));
+        }
+        return Optional.empty();
+    }
+
+    public Abrechnung createNeueAbrechnung(@NotNull SachKontoProvider provider, int monat,
+            int jahr, AbrechnungsTyp typ) {
+        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
+        
+        Integer n = abrechnungRepository.getLetzteAbrechnung(this);
+        Abrechnung neu = new Abrechnung();
+        neu.setNummer((n == null) ? 1 : n.intValue() + 1);
+        neu.setMandant(this);
+        neu.setMonat(monat);
+        neu.setJahr(jahr);
+        neu.setTyp(typ);
+        return abrechnungRepository.save(neu);
     }
 
 }

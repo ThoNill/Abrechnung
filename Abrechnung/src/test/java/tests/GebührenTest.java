@@ -1,10 +1,7 @@
 package tests;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import mathe.bündel.GruppenBündel;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 

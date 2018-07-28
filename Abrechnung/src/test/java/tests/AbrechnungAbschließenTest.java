@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import tests.konten.TestSachKonto;
 import betrag.Geld;
 import boundingContext.abrechnung.actions.AbrechnungAbschließen;
-import boundingContext.abrechnung.actions.AbrechnungHelper;
 import boundingContext.abrechnung.actions.SaldoAusgleichen;
 import boundingContext.abrechnung.actions.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.aufzählungen.BuchungsArt;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
+import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Buchung;
 import boundingContext.abrechnung.entities.Mandant;
@@ -66,8 +66,7 @@ public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
     }
 
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(sachKontoProvider(), buchungRepository,
-                kontoBewegungRepository, abrechnungRepository);
+        return new EinBucher(sachKontoProvider());
     }
 
     @Test
@@ -179,13 +178,12 @@ public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
 
     public Abrechnung schuldenÜbernahme(Abrechnung abrechnung, double zinssatz,
             int tage) {
-        AbrechnungHelper helper = new AbrechnungHelper(abrechnungRepository);
-        Abrechnung nächsteAbrechnung = helper
-                .createOrGetNächsteAbrechnung(abrechnung);
+        SachKontoProvider provider = sachKontoProvider();
+        Abrechnung nächsteAbrechnung = abrechnung
+                .createOrGetNächsteAbrechnung(provider);
 
         SchuldenInDieAbrechnung übernehmen = new SchuldenInDieAbrechnung(
-                sachKontoProvider(), buchungRepository,
-                kontoBewegungRepository, abrechnungRepository,
+                sachKontoProvider(),
                 "Schulden übernehmen", zinssatz);
         übernehmen.übertragen(nächsteAbrechnung, tage);
         return nächsteAbrechnung;
