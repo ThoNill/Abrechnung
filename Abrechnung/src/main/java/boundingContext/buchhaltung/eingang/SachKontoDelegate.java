@@ -4,7 +4,6 @@ import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
@@ -63,9 +62,6 @@ public class SachKontoDelegate implements SachKontoProvider {
         return sachKontoProvider.getBuchungRepository();
     }
 
-    public KontoBewegungRepository getKontoBewegungRepository() {
-        return sachKontoProvider.getKontoBewegungRepository();
-    }
 
     public ZahlungsAuftragRepository getZahlungsAuftragRepository() {
         return sachKontoProvider.getZahlungsAuftragRepository();

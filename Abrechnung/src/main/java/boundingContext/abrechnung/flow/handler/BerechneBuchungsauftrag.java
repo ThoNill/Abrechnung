@@ -30,7 +30,7 @@ public class BerechneBuchungsauftrag
     protected BuchungAuftragPayload transformPayload(
             GebührDefinitionPayload payload) throws Exception {
         GebührenBerechnung berechnung = konfigurator
-                .erzeugeGebührenBerechner(payload.getDefinition(),sachKontoProvider);
+                .erzeugeGebührenBerechner(payload.getDefinition(),sachKontoProvider,payload.getArt());
         BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(payload.getAbrechnung());
         return new BuchungAuftragPayload(payload.getAbrechnung(),

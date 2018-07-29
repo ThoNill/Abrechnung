@@ -19,7 +19,6 @@ import boundingContext.abrechnung.flow.handler.HoleAbrechnung;
 import boundingContext.abrechnung.flow.handler.SchlieﬂeDieAbrechnungAb;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
@@ -47,7 +46,6 @@ public class AbrechnungFlow {
             AbrechnungRepository abrechnungRepository,
             LeistungRepository leistungRepository,
             BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
             AbrechnungsKonfigurator konfigurator,
             ApplicationContext applicationContext) {
@@ -60,13 +58,12 @@ public class AbrechnungFlow {
                .transform(berechneBuchungsauftrag(konfigurator,sachKontoProvider))
                 .transform(
                         bucheDenBuchungsauftrag(sachKontoProvider,
-                                buchungRepository, kontoBewegungRepository,abrechnungRepository))
+                                buchungRepository, abrechnungRepository))
       
                 .aggregate(a -> a.processor(new Geb¸hrDefinitionAggregator()))
                 .transform(
                         schlieﬂeDieAbrechnungAb(sachKontoProvider,
                                 abrechnungRepository, buchungRepository,
-                                kontoBewegungRepository,
                                 zahlungsAuftragRepository))
                 .handle(x -> log.info("im Handler: " + x.toString()))
                 .get();
@@ -77,7 +74,6 @@ public class AbrechnungFlow {
             SachKontoProvider sachKontoProvider,
             AbrechnungRepository abrechnungRepository,
             BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository) {
         return new SchlieﬂeDieAbrechnungAb(sachKontoProvider);
     }
@@ -102,9 +98,8 @@ public class AbrechnungFlow {
     BucheDenBuchungsauftrag bucheDenBuchungsauftrag(
             SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository,
             AbrechnungRepository abrechnungRepository) {
         return new BucheDenBuchungsauftrag(sachKontoProvider,
-                buchungRepository, kontoBewegungRepository,abrechnungRepository);
+                buchungRepository, abrechnungRepository);
     }
 }

@@ -5,6 +5,7 @@ import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
+import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.gebühren.GebührFabrik;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.daten.GebührRepository;
@@ -32,10 +33,10 @@ public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
 
     @Override
     public GebührenBerechnung erzeugeGebührenBerechner(
-            GebuehrDefinition definition,SachKontoProvider sachKontoProvider) {
+            GebuehrDefinition definition,SachKontoProvider sachKontoProvider,AbrechnungsArt abrechnungsArt) {
         return new GebührenBerechnung(sachKontoProvider, definition,
                 erzeugeGebührRepository(definition.getDatenArt()),
-                erzeugeGebührFabrik(definition.getGebührArt()));
+                erzeugeGebührFabrik(definition.getGebührArt()),abrechnungsArt);
     }
 
 }

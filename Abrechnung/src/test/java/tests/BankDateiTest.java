@@ -35,7 +35,6 @@ import boundingContext.abrechnung.entities.ZahlungsDefinition;
 import boundingContext.abrechnung.entities.Überweisung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
@@ -70,9 +69,6 @@ public class BankDateiTest {
     @Autowired
     private BuchungRepository buchungRepository;
 
-    @Autowired
-    private KontoBewegungRepository kontoBewegungRepository;
-
     @Value("classpath:pain.001.003.03.xsd")
     Resource überweisungsXmlSchema;
 
@@ -80,7 +76,6 @@ public class BankDateiTest {
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
-        kontoBewegungRepository.deleteAll();
         buchungRepository.deleteAll();
         überweisungRepository.deleteAll();
         zahlungsAuftragRepository.deleteAll();

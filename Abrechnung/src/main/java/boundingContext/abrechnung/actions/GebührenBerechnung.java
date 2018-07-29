@@ -7,6 +7,7 @@ import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
+import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.gebühren.Gebühr;
 import boundingContext.abrechnung.gebühren.GebührFabrik;
 import boundingContext.buchhaltung.eingang.Beschreibung;
@@ -19,14 +20,16 @@ public class GebührenBerechnung extends SachKontoDelegate {
     private GebuehrDefinition definition;
     private GebührRepository<SachKonto> daten;
     private GebührFabrik gebührFabrik;
+    private AbrechnungsArt abrechnungsArt;
 
     public GebührenBerechnung(SachKontoProvider sachKontoProvider,
             GebuehrDefinition definition, GebührRepository<SachKonto> daten,
-            GebührFabrik gebührFabrik) {
+            GebührFabrik gebührFabrik, AbrechnungsArt abrechnungsArt) {
         super(sachKontoProvider);
         this.definition = definition;
         this.daten = daten;
         this.gebührFabrik = gebührFabrik;
+        this.abrechnungsArt = abrechnungsArt;
     }
 
     public BetragsBündel<SachKonto> gebührDazu(Abrechnung abrechnung,
@@ -58,7 +61,9 @@ public class GebührenBerechnung extends SachKontoDelegate {
 
     public BuchungsAuftrag<SachKonto> markierenUndberechnen(
             Abrechnung abrechnung) {
-        daten.markieren(abrechnung);
+        if (!AbrechnungsArt.NACHBERCHNEN.equals(abrechnungsArt)) {
+            daten.markieren(abrechnung);
+        }
         return berechnen(abrechnung);
     }
 

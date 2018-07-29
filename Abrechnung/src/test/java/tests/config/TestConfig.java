@@ -10,7 +10,6 @@ import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
@@ -26,8 +25,6 @@ public class TestConfig {
     protected AbrechnungRepository abrechnungRepository;
     @Autowired
     protected BuchungRepository buchungRepository;
-    @Autowired
-    protected KontoBewegungRepository kontoBewegungRepository;
     @Autowired
     protected ZahlungsAuftragRepository zahlungsAuftragRepository;
     @Autowired
@@ -46,7 +43,7 @@ public class TestConfig {
     protected SachKontoProvider sachKontoProvider() {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
-                kontoBewegungRepository, zahlungsAuftragRepository,
+                zahlungsAuftragRepository,
                 zahlungsDefinitionRepository, überweisungRepository);
     }
 

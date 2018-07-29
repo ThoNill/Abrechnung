@@ -4,7 +4,6 @@ import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
@@ -17,8 +16,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
 
     private BuchungRepository buchungRepository;
 
-    private KontoBewegungRepository kontoBewegungRepository;
-
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
 
     private ZahlungsDefinitionRepository zahlungsDefinitionRepository;
@@ -28,7 +25,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
     public TestSachKontoProvider(MandantRepository mandantRepository,
             AbrechnungRepository abrechnungRepository,
             BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
             ZahlungsDefinitionRepository zahlungsDefinitionRepository,
             ÜberweisungRepository überweisungRepository) {
@@ -36,7 +32,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
         this.mandantRepository = mandantRepository;
         this.abrechnungRepository = abrechnungRepository;
         this.buchungRepository = buchungRepository;
-        this.kontoBewegungRepository = kontoBewegungRepository;
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
         this.zahlungsDefinitionRepository = zahlungsDefinitionRepository;
         this.überweisungRepository = überweisungRepository;
@@ -113,15 +108,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
         return buchungRepository;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see tests.konten.RepositoryProvider#getKontoBewegungRepository()
-     */
-    @Override
-    public KontoBewegungRepository getKontoBewegungRepository() {
-        return kontoBewegungRepository;
-    }
 
     /*
      * (non-Javadoc)

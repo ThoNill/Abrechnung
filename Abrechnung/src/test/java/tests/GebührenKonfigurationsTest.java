@@ -29,6 +29,7 @@ import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Leistung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
+import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.repositories.GebührenDefinitionRepository;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
@@ -184,7 +185,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(
                 leistungRepository);
         GebührenBerechnung berechnung = konfigurator
-                .erzeugeGebührenBerechner(gebührDefinition,sachKontoProvider());
+                .erzeugeGebührenBerechner(gebührDefinition,sachKontoProvider(),AbrechnungsArt.NEU);
         BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(abrechnung);
         BetragsBündel<SachKonto> auftragBündel = auftrag.getPositionen();

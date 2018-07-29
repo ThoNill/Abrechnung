@@ -17,7 +17,6 @@ import boundingContext.abrechnung.entities.ZahlungsDefinition;
 import boundingContext.abrechnung.entities.Überweisung;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
@@ -34,7 +33,6 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
   
     public ZahlungsAufträgeErzeugen(SachKontoProvider sachKontoProvider,
             BuchungRepository buchungRepository,
-            KontoBewegungRepository kontoBewegungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
             ÜberweisungRepository überweisungsRepository,
             AbrechnungRepository abrechnungRepository) {

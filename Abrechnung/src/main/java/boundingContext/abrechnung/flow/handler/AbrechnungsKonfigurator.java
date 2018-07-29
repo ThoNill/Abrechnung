@@ -4,6 +4,7 @@ import boundingContext.abrechnung.actions.GebührenBerechnung;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.GebuehrDefinition;
+import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.gebühren.GebührFabrik;
 import boundingContext.daten.GebührRepository;
 
@@ -12,5 +13,5 @@ public interface AbrechnungsKonfigurator {
 
     GebührRepository<SachKonto> erzeugeGebührRepository(int datenArt);
 
-    GebührenBerechnung erzeugeGebührenBerechner(GebuehrDefinition definition,SachKontoProvider sachKontoProvider);
+    GebührenBerechnung erzeugeGebührenBerechner(GebuehrDefinition definition,SachKontoProvider sachKontoProvider,AbrechnungsArt abrechnungsArt);
 }

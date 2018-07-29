@@ -232,7 +232,7 @@ public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
 
         ZahlungsAufträgeErzeugen zahlungenManager = new ZahlungsAufträgeErzeugen(
                 sachKontoProvider(), buchungRepository,
-                kontoBewegungRepository, zahlungsAuftragRepository,
+                zahlungsAuftragRepository,
                 überweisungRepository, abrechnungRepository);
 
         checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,

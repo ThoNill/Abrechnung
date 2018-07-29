@@ -67,7 +67,7 @@ public class ZahlungenTest extends AbrechnungBasisTest{
         SachKontoProvider sachKontoProvider = sachKontoProvider();
 
         ZahlungsAufträgeErzeugen manager = new ZahlungsAufträgeErzeugen(
-                sachKontoProvider, buchungRepository, kontoBewegungRepository,
+                sachKontoProvider, buchungRepository, 
                 zahlungsAuftragRepository, überweisungRepository,abrechnungRepository);
         List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
                 Geld.createAmount(100), "verwendungszweck");
@@ -86,7 +86,7 @@ public class ZahlungenTest extends AbrechnungBasisTest{
         SachKontoProvider sachKontoProvider = sachKontoProvider();
 
         ZahlungsAufträgeErzeugen manager = new ZahlungsAufträgeErzeugen(
-                sachKontoProvider, buchungRepository, kontoBewegungRepository,
+                sachKontoProvider, buchungRepository, 
                 zahlungsAuftragRepository, überweisungRepository,abrechnungRepository);
         List<ZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
                 Geld.createAmount(100), "verwendungszweck");

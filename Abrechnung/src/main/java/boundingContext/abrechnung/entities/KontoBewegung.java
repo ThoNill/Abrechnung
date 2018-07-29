@@ -59,9 +59,10 @@ public class KontoBewegung  {
     
     private javax.money.MonetaryAmount betrag;
     
+    
+    
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "BuchungId")
-    
     private Buchung buchung;
 
 }

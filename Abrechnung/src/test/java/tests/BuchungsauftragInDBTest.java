@@ -25,7 +25,6 @@ import boundingContext.abrechnung.entities.KontoBewegung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
@@ -45,15 +44,11 @@ public class BuchungsauftragInDBTest {
 
     @Autowired
     private BuchungRepository buchungRepository;
-
-    @Autowired
-    private KontoBewegungRepository kontoBewegungRepository;
     
     @Before
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
-        kontoBewegungRepository.deleteAll();
         buchungRepository.deleteAll();
         abrechnungRepository.deleteAll();
         mandantRepository.deleteAll();
@@ -99,7 +94,6 @@ public class BuchungsauftragInDBTest {
             bew.setBetrag(beträge.getValue(p));
             bew.setArt(1);
             bew.setKontoNr(p.ordinal());
-            //bew = kontoBewegungRepository.save(bew);
             bew.setBuchung(buchung);
             buchung.addBewegungen(bew);
         }

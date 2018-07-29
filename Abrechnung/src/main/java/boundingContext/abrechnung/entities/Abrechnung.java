@@ -26,13 +26,19 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import boundingContext.abrechnung.actions.GebührenBerechnung;
 import boundingContext.abrechnung.actions.SaldoAusgleichen;
 import boundingContext.abrechnung.actions.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.RunStatus;
+import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
+import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
+import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
+import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.zahlungen.actions.ZahlungenEntfernen;
 
 @Data
@@ -155,6 +161,32 @@ public class Abrechnung {
                 .createOrGetNächsteAbrechnung(provider);
         schuldenÜbertragen.übertragen(nächsteAbrechnung, zinsDauer);
         return nächsteAbrechnung;
+    }
+
+    public void berechneDieGebühren(SachKontoProvider provider,
+            AbrechnungsKonfigurator konfigurator, AbrechnungsArt abrechnungsArt) {
+        Set<GebuehrDefinition> liste = getMandant().getGebuehrDefinitionen();
+
+        for (GebuehrDefinition definition : liste) {
+            bucheDenAuftrag(
+                    provider,
+                    berechneDenAuftrag(provider, konfigurator, abrechnungsArt,
+                            definition));
+        }
+    }
+
+    private BuchungsAuftrag<SachKonto> berechneDenAuftrag(
+            SachKontoProvider provider, AbrechnungsKonfigurator konfigurator,
+            AbrechnungsArt abrechnungsArt, GebuehrDefinition definition) {
+
+        GebührenBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
+                definition, provider, abrechnungsArt);
+        return berechnung.markierenUndberechnen(this);
+    }
+
+    private void bucheDenAuftrag(SachKontoProvider provider,
+            BuchungsAuftrag<SachKonto> auftrag) {
+        new EinBucher(provider).erzeugeDifferenzBuchung(auftrag, this);
     }
 
 }

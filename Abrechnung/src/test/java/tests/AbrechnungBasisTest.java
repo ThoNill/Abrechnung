@@ -9,7 +9,6 @@ import tests.konten.TestSachKontoProvider;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.KontoBewegungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
@@ -23,8 +22,6 @@ public class AbrechnungBasisTest {
     protected AbrechnungRepository abrechnungRepository;
     @Autowired
     protected BuchungRepository buchungRepository;
-    @Autowired
-    protected KontoBewegungRepository kontoBewegungRepository;
     @Autowired
     protected ZahlungsAuftragRepository zahlungsAuftragRepository;
     @Autowired
@@ -40,7 +37,7 @@ public class AbrechnungBasisTest {
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
-        kontoBewegungRepository.deleteAll();
+   //     kontoBewegungRepository.deleteAll();
         buchungRepository.deleteAll();
         überweisungRepository.deleteAll();
         zahlungsAuftragRepository.deleteAll();
@@ -53,7 +50,7 @@ public class AbrechnungBasisTest {
     protected SachKontoProvider sachKontoProvider() {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
-                kontoBewegungRepository, zahlungsAuftragRepository,
+                zahlungsAuftragRepository,
                 zahlungsDefinitionRepository, überweisungRepository);
     }
 
