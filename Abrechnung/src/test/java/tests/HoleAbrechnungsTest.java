@@ -26,10 +26,10 @@ import boundingContext.abrechnung.flow.payloads.AufrufPayload;
 
 @Log
 @RunWith(SpringRunner.class)
-// Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class HoleAbrechnungsTest extends AbrechnungBasisTest{
 
+    @Override
     @Before
     @After
     @Transactional("dbATransactionManager")

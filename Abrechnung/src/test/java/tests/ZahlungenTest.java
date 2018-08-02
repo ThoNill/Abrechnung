@@ -23,7 +23,6 @@ import boundingContext.zahlungen.values.BankVerbindung;
 import boundingContext.zahlungen.values.IBAN;
 
 @RunWith(SpringRunner.class)
-// Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class ZahlungenTest extends AbrechnungBasisTest{
 
@@ -40,7 +39,6 @@ public class ZahlungenTest extends AbrechnungBasisTest{
         d.setTag(1);
         d.setMandant(mandant);
         mandant.addZahlungsDefinitionen(d);
-        zahlungsDefinitionRepository.save(d);
         return mandantRepository.save(mandant);
     }
 

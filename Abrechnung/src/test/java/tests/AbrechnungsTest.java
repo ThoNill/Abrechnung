@@ -22,10 +22,10 @@ import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
 
 @RunWith(SpringRunner.class)
-// Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class AbrechnungsTest extends AbrechnungBasisTest {
 
+    @Override
     @Before
     @After
     @Transactional("dbATransactionManager")

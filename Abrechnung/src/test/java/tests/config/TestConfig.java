@@ -13,7 +13,6 @@ import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
-import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 
 @Configuration
@@ -27,8 +26,6 @@ public class TestConfig {
     protected BuchungRepository buchungRepository;
     @Autowired
     protected ZahlungsAuftragRepository zahlungsAuftragRepository;
-    @Autowired
-    protected ZahlungsDefinitionRepository zahlungsDefinitionRepository;
     @Autowired
     protected ÜberweisungRepository überweisungRepository;
 
@@ -44,7 +41,7 @@ public class TestConfig {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
                 zahlungsAuftragRepository,
-                zahlungsDefinitionRepository, überweisungRepository);
+                überweisungRepository);
     }
 
 

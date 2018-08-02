@@ -30,14 +30,12 @@ import boundingContext.abrechnung.entities.Leistung;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
-import boundingContext.abrechnung.repositories.GebührenDefinitionRepository;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündel;
 
 @RunWith(SpringRunner.class)
-// Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
@@ -45,15 +43,12 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
     @Autowired
     private LeistungRepository leistungRepository;
 
-    @Autowired
-    private GebührenDefinitionRepository gebührenDefinitinRepository;
-
+    @Override
     @Before
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
         super.clear();
-        gebührenDefinitinRepository.deleteAll();
         leistungRepository.deleteAll();
     }
 
@@ -69,7 +64,6 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
 
         verbindeMitEinemMandaten(d);
         assertEquals(1, mandantRepository.count());
-        assertEquals(1, gebührenDefinitinRepository.count());
     }
 
     @Test
@@ -81,7 +75,6 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         verbindeMitEinemMandaten(d);
         verbindeMitEinemMandaten(d);
         assertEquals(3, mandantRepository.count());
-        assertEquals(1, gebührenDefinitinRepository.count());
     }
 
     private void verbindeMitEinemMandaten(GebuehrDefinition d) {
@@ -91,8 +84,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
 
     private Mandant verbindeMitMandanten(Mandant mandant, GebuehrDefinition d) {
         d.addMandant(mandant);
-        GebuehrDefinition nd = gebührenDefinitinRepository.save(d);
-        mandant.addGebuehrDefinitionen(nd);
+        mandant.addGebuehrDefinitionen(d);
         return mandantRepository.save(mandant);
     }
 
@@ -103,7 +95,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         d.setGebührArt(1);
         d.setDatenArt(1);
         d.setParameter(0.05);
-        return gebührenDefinitinRepository.save(d);
+        return d; 
     }
 
     public Leistung erzeugeEineLeistung(Mandant mandant, int art, double betrag) {

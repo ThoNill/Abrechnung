@@ -6,7 +6,6 @@ import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
-import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 
 public class TestSachKontoProvider implements SachKontoProvider {
@@ -18,22 +17,18 @@ public class TestSachKontoProvider implements SachKontoProvider {
 
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
 
-    private ZahlungsDefinitionRepository zahlungsDefinitionRepository;
-
     private ÜberweisungRepository überweisungRepository;
 
     public TestSachKontoProvider(MandantRepository mandantRepository,
             AbrechnungRepository abrechnungRepository,
             BuchungRepository buchungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
-            ZahlungsDefinitionRepository zahlungsDefinitionRepository,
             ÜberweisungRepository überweisungRepository) {
         super();
         this.mandantRepository = mandantRepository;
         this.abrechnungRepository = abrechnungRepository;
         this.buchungRepository = buchungRepository;
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
-        this.zahlungsDefinitionRepository = zahlungsDefinitionRepository;
         this.überweisungRepository = überweisungRepository;
     }
 
@@ -119,15 +114,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
         return zahlungsAuftragRepository;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see tests.konten.RepositoryProvider#getZahlungsDefinitionRepository()
-     */
-    @Override
-    public ZahlungsDefinitionRepository getZahlungsDefinitionRepository() {
-        return zahlungsDefinitionRepository;
-    }
 
     /*
      * (non-Javadoc)

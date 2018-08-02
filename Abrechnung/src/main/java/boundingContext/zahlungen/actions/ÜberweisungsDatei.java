@@ -93,7 +93,6 @@ public class ÜberweisungsDatei {
             ü.setAusbezahlt(new Date());
             überweisungsRepository.save(ü);
         }
-        // überweisungsRepository.save(abschnitt);
     }
 
     public void dateienMarkierenUndErstellen() throws IOException  {

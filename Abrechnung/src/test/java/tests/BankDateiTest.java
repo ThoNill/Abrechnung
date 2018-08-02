@@ -37,7 +37,6 @@ import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
-import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 import boundingContext.zahlungen.values.BIC;
 import boundingContext.zahlungen.values.BankVerbindung;
@@ -46,7 +45,6 @@ import boundingContext.zahlungen.vorlagen.BankExportModell;
 import boundingContext.zahlungen.vorlagen.BankExportVorlage;
 
 @RunWith(SpringRunner.class)
-// Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class BankDateiTest {
     protected static final Logger log = LoggerFactory.getLogger(BankDateiTest.class);
@@ -57,8 +55,6 @@ public class BankDateiTest {
     @Autowired
     private AbrechnungRepository abrechnungRepository;
 
-    @Autowired
-    private ZahlungsDefinitionRepository zahlungsDefinitionRepository;
 
     @Autowired
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
@@ -79,7 +75,6 @@ public class BankDateiTest {
         buchungRepository.deleteAll();
         überweisungRepository.deleteAll();
         zahlungsAuftragRepository.deleteAll();
-        zahlungsDefinitionRepository.deleteAll();
         abrechnungRepository.deleteAll();
         mandantRepository.deleteAll();
     }
@@ -96,10 +91,8 @@ public class BankDateiTest {
                 new BIC("BYLADEM1001")));
         d.setProzentSatz(prozentSatz);
         d.setTag(1);
-        d = zahlungsDefinitionRepository.save(d);
         d.setMandant(mandant);
         mandant.addZahlungsDefinitionen(d);
-        zahlungsDefinitionRepository.save(d);
         return mandantRepository.save(mandant);
     }
 

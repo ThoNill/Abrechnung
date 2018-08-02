@@ -32,7 +32,6 @@ import boundingContext.gemeinsam.BetragsBündel;
 import boundingContext.gemeinsam.BetragsBündelMap;
 
 @RunWith(SpringRunner.class)
-// Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class BuchungsauftragInDBTest {
 
@@ -65,7 +64,6 @@ public class BuchungsauftragInDBTest {
 
     public Mandant erzeugeMandant() {
         return new Mandant();
-        //return mandantRepository.save(new Mandant());
     }
 
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
@@ -78,7 +76,6 @@ public class BuchungsauftragInDBTest {
         abrechnung.setAngelegt(new Date());
         mandant.addAbrechnung(abrechnung);
         return abrechnung;
-       // return abrechnungRepository.save(abrechnung);
     }
 
     public Buchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,
@@ -88,7 +85,6 @@ public class BuchungsauftragInDBTest {
         buchung.setText(auftrag.getBeschreibung().getText());
         buchung.setArt(auftrag.getBeschreibung().getArt());
         buchung.setAbrechnung(abrechnung);
-        //buchung = buchungRepository.save(buchung);
         for (SachKonto p : beträge.getKeys()) {
             KontoBewegung bew = new KontoBewegung();
             bew.setBetrag(beträge.getValue(p));
@@ -126,7 +122,6 @@ public class BuchungsauftragInDBTest {
         BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag();
         Buchung buchung = erzeugeBuchung(auftrag, abrechnung);
         return buchungRepository.save(buchung);
-//        return buchung;
     }
 
     @Transactional("dbATransactionManager")

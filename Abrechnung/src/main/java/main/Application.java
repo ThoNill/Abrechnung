@@ -7,7 +7,6 @@ import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.config.EnableIntegration;
 
 @SpringBootApplication
-// simple SpringBoot application
 @EnableIntegration
 @IntegrationComponentScan(basePackages = { "org.batch" })
 @ComponentScan(basePackages = { "tests.config" })

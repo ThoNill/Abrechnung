@@ -23,7 +23,4 @@ public interface ‹berweisungRepository extends
     public List<‹berweisung> get‹berweisungen(
             @Param("datei") AusgangsDatei datei);
 
-    // @Query("select count(*), sum(u.betrag), max(u.von.iban) from boundingContext.abrechnung.entities.‹berweisung u where u.ausgangsDatei = :datei ")
-    // public Object[] getKopfDaten(@Param("datei") AusgangsDatei datei);
-
 }

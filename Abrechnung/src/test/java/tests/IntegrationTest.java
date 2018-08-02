@@ -25,7 +25,6 @@ import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.flow.payloads.AufrufPayload;
-import boundingContext.abrechnung.repositories.GebührenDefinitionRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableIntegration
@@ -35,16 +34,13 @@ import boundingContext.abrechnung.repositories.GebührenDefinitionRepository;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class IntegrationTest extends AbrechnungBasisTest{
 
-    @Autowired
-    private GebührenDefinitionRepository gebührenDefinitinRepository;
-
- 
+    
+    @Override
     @Before
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
         super.clear();
-        gebührenDefinitinRepository.deleteAll();
     }
 
     public Mandant erzeugeMandant() {
@@ -61,7 +57,6 @@ public class IntegrationTest extends AbrechnungBasisTest{
         gebührDefinition.setMwstSatz(0.19);
         gebührDefinition.setBuchungsArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setBuchungstext("Testbuchung");
-        gebührenDefinitinRepository.save(gebührDefinition);
         gebührDefinition.addMandant(mandant);
         mandant.addGebuehrDefinitionen(gebührDefinition);
         return mandantRepository.save(mandant);

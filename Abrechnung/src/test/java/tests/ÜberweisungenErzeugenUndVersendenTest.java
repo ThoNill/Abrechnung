@@ -24,7 +24,6 @@ import boundingContext.zahlungen.actions.‹berweisungsDatei;
 import boundingContext.zahlungen.values.TypeReference;
 
 @RunWith(SpringRunner.class)
-// Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class ‹berweisungenErzeugenUndVersendenTest extends Mit‹berweisungenTest {
     protected static final Logger log = LoggerFactory.getLogger(‹berweisungenErzeugenUndVersendenTest.class);

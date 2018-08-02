@@ -58,7 +58,6 @@ public class Mandant {
     private Set<GebuehrDefinition> gebuehrDefinitionen = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mandant",fetch = FetchType.LAZY)
- //   @LazyCollection(LazyCollectionOption.FALSE)
     private Set<ZahlungsDefinition> zahlungsDefinitionen = new HashSet<>();
 
     public void addAbrechnung(Abrechnung a) {

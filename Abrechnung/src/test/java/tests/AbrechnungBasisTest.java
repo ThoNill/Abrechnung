@@ -11,7 +11,6 @@ import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
-import boundingContext.abrechnung.repositories.ZahlungsDefinitionRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 
 public class AbrechnungBasisTest {
@@ -25,8 +24,6 @@ public class AbrechnungBasisTest {
     @Autowired
     protected ZahlungsAuftragRepository zahlungsAuftragRepository;
     @Autowired
-    protected ZahlungsDefinitionRepository zahlungsDefinitionRepository;
-    @Autowired
     protected ÜberweisungRepository überweisungRepository;
 
     public AbrechnungBasisTest() {
@@ -37,11 +34,9 @@ public class AbrechnungBasisTest {
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
-   //     kontoBewegungRepository.deleteAll();
         buchungRepository.deleteAll();
         überweisungRepository.deleteAll();
         zahlungsAuftragRepository.deleteAll();
-        zahlungsDefinitionRepository.deleteAll();
         abrechnungRepository.deleteAll();
         mandantRepository.deleteAll();
     }
@@ -51,7 +46,7 @@ public class AbrechnungBasisTest {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
                 zahlungsAuftragRepository,
-                zahlungsDefinitionRepository, überweisungRepository);
+                überweisungRepository);
     }
 
 }

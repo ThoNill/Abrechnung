@@ -15,6 +15,7 @@ public class BIC {
         this.bic = bic;
     }
     
+    @Override
     public String toString() {
         return bic;
     }

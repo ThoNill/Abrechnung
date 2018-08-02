@@ -34,7 +34,6 @@ import boundingContext.zahlungen.values.BankVerbindung;
 import boundingContext.zahlungen.values.IBAN;
 
 @RunWith(SpringRunner.class)
-// Class that run the tests
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
 
@@ -296,7 +295,6 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
                 TestSachKonto.SCHULDEN, 0);
         checkKontoBetrag(n‰chsteAbrechnung, BuchungsArt.‹BERNAHME_SCHULDEN,
                 TestSachKonto.SCHULDEN, 0);
-        // System.out.println("Test Ende");
     }
 
     private Mandant addZahlungsDefinition(Mandant mandant, double prozentSatz) {
@@ -307,7 +305,6 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         d.setTag(1);
         d.setMandant(mandant);
         mandant.addZahlungsDefinitionen(d);
-        zahlungsDefinitionRepository.save(d);
         return mandantRepository.save(mandant);
     }
 
