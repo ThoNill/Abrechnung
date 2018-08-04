@@ -5,6 +5,7 @@ import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
+import boundingContext.abrechnung.repositories.ParameterRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 
@@ -18,18 +19,22 @@ public class TestSachKontoProvider implements SachKontoProvider {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
 
     private ÜberweisungRepository überweisungRepository;
+    
+    private ParameterRepository parameterRepository;
 
     public TestSachKontoProvider(MandantRepository mandantRepository,
             AbrechnungRepository abrechnungRepository,
             BuchungRepository buchungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
-            ÜberweisungRepository überweisungRepository) {
+            ÜberweisungRepository überweisungRepository,
+            ParameterRepository parameterRepository) {
         super();
         this.mandantRepository = mandantRepository;
         this.abrechnungRepository = abrechnungRepository;
         this.buchungRepository = buchungRepository;
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
         this.überweisungRepository = überweisungRepository;
+        this.parameterRepository = parameterRepository;
     }
 
 
@@ -123,6 +128,11 @@ public class TestSachKontoProvider implements SachKontoProvider {
     @Override
     public ÜberweisungRepository getÜberweisungRepository() {
         return überweisungRepository;
+    }
+    
+    @Override
+    public ParameterRepository getParameterRepository() {
+        return parameterRepository;
     }
 
 }

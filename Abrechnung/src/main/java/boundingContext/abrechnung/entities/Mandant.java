@@ -28,6 +28,7 @@ import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.zahlungen.values.MonatJahr;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -75,12 +76,12 @@ public class Mandant {
 
 
     public Optional<Abrechnung> getLetzteAbgerechneteAbrechnung(@NotNull SachKontoProvider provider,
-            int monat, int jahr, AbrechnungsTyp typ) {
+            MonatJahr mj, AbrechnungsTyp typ) {
         AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
             
            
         Integer n = abrechnungRepository.getLetzteAbgerechneteAbrechnung(
-                this, AbrechnungsStatus.ABGERECHNET, monat, jahr);
+                this, AbrechnungsStatus.ABGERECHNET, mj);
         if (n != null && n > 0) {
             List<Abrechnung> liste = abrechnungRepository.getAbrechnung(this, n);
             return Optional.of(liste.get(0));
@@ -88,16 +89,14 @@ public class Mandant {
         return Optional.empty();
     }
 
-    public Abrechnung createNeueAbrechnung(@NotNull SachKontoProvider provider, int monat,
-            int jahr, AbrechnungsTyp typ) {
+    public Abrechnung createNeueAbrechnung(@NotNull SachKontoProvider provider, MonatJahr mj, AbrechnungsTyp typ) {
         AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
         
         Integer n = abrechnungRepository.getLetzteAbrechnung(this);
         Abrechnung neu = new Abrechnung();
         neu.setNummer((n == null) ? 1 : n.intValue() + 1);
         neu.setMandant(this);
-        neu.setMonat(monat);
-        neu.setJahr(jahr);
+        neu.setMj(mj);
         neu.setTyp(typ);
         return abrechnungRepository.save(neu);
     }

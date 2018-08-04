@@ -32,6 +32,7 @@ import boundingContext.zahlungen.actions.ZahlungsAuftr‰geErzeugen;
 import boundingContext.zahlungen.values.BIC;
 import boundingContext.zahlungen.values.BankVerbindung;
 import boundingContext.zahlungen.values.IBAN;
+import boundingContext.zahlungen.values.MonatJahr;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
@@ -54,8 +55,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setMandant(mandant);
         abrechnung.setNummer(3);
-        abrechnung.setJahr(2018);
-        abrechnung.setMonat(4);
+        abrechnung.setMj(new MonatJahr(4,2018));
+     
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung = abrechnungRepository.save(abrechnung);
@@ -85,7 +86,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     @Transactional("dbATransactionManager")
     public void schulden‹benehmen360() {
         Abrechnung abrechnung = saldoAbgleichen(-100);
-        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06, 360);
+        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06, 0.19,360);
         checkAnzahlen();
         check‹bernahme(n‰chsteAbrechnung, -100, -6);
     }
@@ -94,7 +95,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     @Transactional("dbATransactionManager")
     public void schulden‹benehmen180() {
         Abrechnung abrechnung = saldoAbgleichen(-100);
-        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06, 180);
+        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06, 0.19,180);
         checkAnzahlen();
         check‹bernahme(n‰chsteAbrechnung, -100, -3);
     }
@@ -111,7 +112,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     }
 
     private Abrechnung abschlieﬂen(Abrechnung abrechnung) {
-        Abrechnung n‰chsteAbrechnung = abrechnung.abschleiﬂen(sachKontoProvider(), 180,0.06);
+        Abrechnung n‰chsteAbrechnung = abrechnung.abschleiﬂen(sachKontoProvider(), 180,0.06,0.19);
         return n‰chsteAbrechnung;
     }
 
@@ -168,7 +169,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         assertEquals(Geld.createAmount(betrag), dbBetrag);
     }
 
-    public Abrechnung schulden‹bernahme(Abrechnung abrechnung, double zinssatz,
+    public Abrechnung schulden‹bernahme(Abrechnung abrechnung, double zinssatz,double mwstsatz,
             int tage) {
         SachKontoProvider provider = sachKontoProvider();
         Abrechnung n‰chsteAbrechnung = abrechnung
@@ -176,7 +177,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
 
         SchuldenInDieAbrechnung ¸bernehmen = new SchuldenInDieAbrechnung(
                 sachKontoProvider(),
-                "Schulden ¸bernehmen", zinssatz);
+                "Schulden ¸bernehmen", zinssatz,mwstsatz);
         ¸bernehmen.¸bertragen(n‰chsteAbrechnung, tage);
         return n‰chsteAbrechnung;
     }
@@ -188,10 +189,14 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
                 TestSachKonto.SCHULDEN.ordinal());
         MonetaryAmount dbZins = buchungRepository.getSumKonto(abrechnung,
                 BuchungsArt.‹BERNAHME_SCHULDEN, TestSachKonto.ZINS.ordinal());
+        MonetaryAmount dbMwst = buchungRepository.getSumKonto(abrechnung,
+                BuchungsArt.‹BERNAHME_SCHULDEN, TestSachKonto.MWST.ordinal());
+        double mwst = 0.19 * zins;
         assertEquals(Geld.createAmount(betrag), dbBetrag);
         assertEquals(Geld.createAmount(zins), dbZins);
+        assertEquals(Geld.createAmount(mwst), dbMwst);
         MonetaryAmount saldo = buchungRepository.getSaldo(abrechnung);
-        assertEquals(Geld.createAmount(betrag + zins), saldo);
+        assertEquals(Geld.createAmount(betrag + zins+mwst), saldo);
 
     }
 

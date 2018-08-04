@@ -41,6 +41,7 @@ import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 import boundingContext.zahlungen.values.BIC;
 import boundingContext.zahlungen.values.BankVerbindung;
 import boundingContext.zahlungen.values.IBAN;
+import boundingContext.zahlungen.values.MonatJahr;
 import boundingContext.zahlungen.vorlagen.BankExportModell;
 import boundingContext.zahlungen.vorlagen.BankExportVorlage;
 
@@ -99,8 +100,7 @@ public class BankDateiTest {
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setNummer(3);
-        abrechnung.setJahr(2018);
-        abrechnung.setMonat(4);
+        abrechnung.setMj(new MonatJahr(4,2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung = abrechnungRepository.save(abrechnung);

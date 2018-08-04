@@ -17,15 +17,16 @@ public class SchuldenInDieAbrechnung extends EinBucher {
 
     public SchuldenInDieAbrechnung(SachKontoProvider sachKontoProvider,
              String text,
-            double zinssatz) {
+            double zinssatz,double mwstsatz) {
         super(sachKontoProvider);
         this.text = text;
         this.zinssatz = zinssatz;
+        this.mwstsatz = mwstsatz;
     }
 
     private String text;
-
     private double zinssatz;
+    private double mwstsatz;
 
     public void übertragen(Abrechnung abrechnung, int zinsDauer) {
         Optional<Abrechnung> oAbrechnung = abrechnung.getVorherigeAbrechnung(this);
@@ -52,6 +53,9 @@ public class SchuldenInDieAbrechnung extends EinBucher {
         beträge.put(SCHULDEN(), betrag);
         MonetaryAmount zins = berechneZins(betrag, zinsDauer);
         beträge.put(ZINS(), zins);
+        MonetaryAmount mwst = berechneMwst(zins);
+        beträge.put(MWST(), mwst);
+     
         Beschreibung beschreibung = new Beschreibung(ÜBERNAHME_SCHULDEN(), text);
         return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
     }
@@ -59,6 +63,10 @@ public class SchuldenInDieAbrechnung extends EinBucher {
     private MonetaryAmount berechneZins(MonetaryAmount betrag, int zinsDauer) {
         return Geld.round(betrag.multiply(zinsDauer).multiply(zinssatz)
                 .divide(360));
+    }
+    
+    private MonetaryAmount berechneMwst(MonetaryAmount betrag) {
+        return Geld.round(betrag.multiply(mwstsatz));
     }
 
 }

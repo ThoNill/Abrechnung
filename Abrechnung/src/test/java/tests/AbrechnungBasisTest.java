@@ -10,6 +10,7 @@ import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
+import boundingContext.abrechnung.repositories.ParameterRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 
@@ -25,7 +26,10 @@ public class AbrechnungBasisTest {
     protected ZahlungsAuftragRepository zahlungsAuftragRepository;
     @Autowired
     protected ÜberweisungRepository überweisungRepository;
+    @Autowired
+    protected ParameterRepository parameterRepository;
 
+    
     public AbrechnungBasisTest() {
         super();
     }
@@ -39,6 +43,7 @@ public class AbrechnungBasisTest {
         zahlungsAuftragRepository.deleteAll();
         abrechnungRepository.deleteAll();
         mandantRepository.deleteAll();
+        parameterRepository.deleteAll();
     }
 
     
@@ -46,7 +51,7 @@ public class AbrechnungBasisTest {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
                 zahlungsAuftragRepository,
-                überweisungRepository);
+                überweisungRepository,parameterRepository);
     }
 
 }

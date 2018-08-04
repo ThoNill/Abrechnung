@@ -22,6 +22,7 @@ import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.gemeinsam.BetragsBündel;
 import boundingContext.gemeinsam.BetragsBündelMap;
+import boundingContext.zahlungen.values.MonatJahr;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
@@ -44,8 +45,7 @@ public class EinBucherTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setMandant(mandant);
         abrechnung.setNummer(3);
-        abrechnung.setJahr(2018);
-        abrechnung.setMonat(4);
+        abrechnung.setMj(new MonatJahr(4,2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung = abrechnungRepository.save(abrechnung);

@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,6 +32,7 @@ import boundingContext.abrechnung.actions.SaldoAusgleichen;
 import boundingContext.abrechnung.actions.SchuldenInDieAbrechnung;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
+import boundingContext.abrechnung.aufzählungen.ParameterKey;
 import boundingContext.abrechnung.aufzählungen.RunStatus;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
@@ -40,6 +42,9 @@ import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
 import boundingContext.zahlungen.actions.ZahlungenEntfernen;
+import boundingContext.zahlungen.values.MonatJahr;
+import boundingContext.zahlungen.values.MonatJahrAdapter;
+import boundingContext.zahlungen.values.TypeReference;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -57,17 +62,10 @@ public class Abrechnung {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ABRECHNUNG_SEQ")
     private java.lang.Long AbrechnungId;
 
-    @EqualsAndHashCode.Include
-    @ToString.Include
     @Basic
-    @Column(name = "MONAT")
-    private int monat;
-
-    @EqualsAndHashCode.Include
-    @ToString.Include
-    @Basic
-    @Column(name = "JAHR")
-    private int jahr;
+    @Column(name = "MJ")
+    @Convert(converter = MonatJahrAdapter.class)
+    private MonatJahr mj;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "STATUS")
@@ -125,8 +123,7 @@ public class Abrechnung {
             Abrechnung neu = new Abrechnung();
             neu.setNummer(getNummer() + 1);
             neu.setMandant(mandant);
-            neu.setMonat(getMonat());
-            neu.setJahr(getJahr());
+            neu.setMj(getMj());
             neu.setTyp(getTyp());
             return abrechnungRepository.save(neu);
         }
@@ -146,7 +143,7 @@ public class Abrechnung {
     }
 
     public Abrechnung abschleißen(SachKontoProvider provider, int zinsDauer,
-            double zinssatz) {
+            double zinssatz,double mwstsatz) {
 
         ZahlungenEntfernen zahlungenEntfernen = new ZahlungenEntfernen(provider);
 
@@ -154,7 +151,7 @@ public class Abrechnung {
                 "Guthaben", "Schulden");
 
         SchuldenInDieAbrechnung schuldenÜbertragen = new SchuldenInDieAbrechnung(
-                provider, "Schulden übernehmen", zinssatz);
+                provider, "Schulden übernehmen", zinssatz,mwstsatz);
         zahlungenEntfernen.entferneZahlungsaufträgeFallsRestguthaben(this);
         ausgleichen.saldoAusgleichen(this);
         Abrechnung nächsteAbrechnung = this
@@ -189,4 +186,21 @@ public class Abrechnung {
         new EinBucher(provider).erzeugeDifferenzBuchung(auftrag, this);
     }
 
+    double getÜberzahlungsZins(SachKontoProvider provider) {
+        return provider.getParameterRepository().getDoubleZeitWert(
+                ParameterKey.ZINS_ÜBERZAHLUNGEN, TypeReference.ALLE, getMj());
+
+    }
+    
+    double getGanzeMwst(SachKontoProvider provider) {
+        return provider.getParameterRepository().getDoubleZeitWert(
+                ParameterKey.MWST_GANZ, TypeReference.ALLE, getMj());
+
+    }
+    
+    double getHalbeMwst(SachKontoProvider provider) {
+        return provider.getParameterRepository().getDoubleZeitWert(
+                ParameterKey.MWST_HALB, TypeReference.ALLE, getMj());
+
+    }
 }

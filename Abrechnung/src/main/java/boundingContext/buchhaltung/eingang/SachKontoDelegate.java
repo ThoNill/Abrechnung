@@ -6,6 +6,7 @@ import boundingContext.abrechnung.aufz‰hlungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
+import boundingContext.abrechnung.repositories.ParameterRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.‹berweisungRepository;
 
@@ -84,6 +85,11 @@ public class SachKontoDelegate implements SachKontoProvider {
     @Override
     public ‹berweisungRepository get‹berweisungRepository() {
         return sachKontoProvider.get‹berweisungRepository();
+    }
+
+    @Override
+    public ParameterRepository getParameterRepository() {
+       return sachKontoProvider.getParameterRepository();
     }
 
 

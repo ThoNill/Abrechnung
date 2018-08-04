@@ -20,6 +20,7 @@ import boundingContext.abrechnung.aufzählungen.AbrechnungsTyp;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Mandant;
+import boundingContext.zahlungen.values.MonatJahr;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
@@ -42,8 +43,7 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setMandant(mandant);
         abrechnung.setNummer(3);
-        abrechnung.setJahr(2018);
-        abrechnung.setMonat(4);
+        abrechnung.setMj(new MonatJahr(4,2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         mandant.addAbrechnung(abrechnung);
@@ -116,13 +116,12 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
     public void abgerechneteAbrechnung() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        abrechnung.setMonat(3);
-        abrechnung.setJahr(2018);
+        abrechnung.setMj(new MonatJahr(3,2018));
         abrechnung.setStatus(AbrechnungsStatus.ABGERECHNET);
         abrechnung.setTyp(AbrechnungsTyp.TEILABRECHNUNG);
         abrechnung = abrechnungRepository.save(abrechnung);
         Optional<Abrechnung> abgerechneteAbrechnung = mandant
-                .getLetzteAbgerechneteAbrechnung(sachKontoProvider(), 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
+                .getLetzteAbgerechneteAbrechnung(sachKontoProvider(), new MonatJahr(3,2018),AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
         assertTrue(abgerechneteAbrechnung.isPresent());
@@ -134,13 +133,13 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
         SachKontoProvider provider = sachKontoProvider();
         
         Mandant mandant = mandantRepository.save(erzeugeMandant());
-        Abrechnung neueAbrechnung = mandant.createNeueAbrechnung(provider, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
+        Abrechnung neueAbrechnung = mandant.createNeueAbrechnung(provider, new MonatJahr(3,2018),AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
         assertTrue(neueAbrechnung != null);
         assertEquals(1, neueAbrechnung.getNummer());
         
-        neueAbrechnung = mandant.createNeueAbrechnung(provider, 3,2018,AbrechnungsTyp.TEILABRECHNUNG);
+        neueAbrechnung = mandant.createNeueAbrechnung(provider, new MonatJahr(3,2018),AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());
         assertTrue(neueAbrechnung!=null);

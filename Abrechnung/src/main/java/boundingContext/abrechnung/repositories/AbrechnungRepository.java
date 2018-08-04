@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.entities.Abrechnung;
+import boundingContext.zahlungen.values.MonatJahr;
 
 public interface AbrechnungRepository extends CrudRepository<Abrechnung, Long> {
 
@@ -16,16 +17,15 @@ public interface AbrechnungRepository extends CrudRepository<Abrechnung, Long> {
             @Param("mand") boundingContext.abrechnung.entities.Mandant mand,
             @Param("n") int n);
 
-    @Query("select max(abr.nummer) from boundingContext.abrechnung.entities.Abrechnung abr where abr.mandant = :mand and abr.status = :s and abr.monat =:m and abr.jahr = :j")
+    @Query("select max(abr.nummer) from boundingContext.abrechnung.entities.Abrechnung abr where abr.mandant = :mand and abr.status = :s and abr.mj =:mj ")
     public Integer getLetzteAbgerechneteAbrechnung(
             @Param("mand") boundingContext.abrechnung.entities.Mandant mand,
-            @Param("s") AbrechnungsStatus status, @Param("m") int monat,
-            @Param("j") int jahr);
+            @Param("s") AbrechnungsStatus status, @Param("mj") MonatJahr mj);
 
-    @Query("select max(abr.nummer) from boundingContext.abrechnung.entities.Abrechnung abr where abr.mandant = :mand  and abr.monat =:m and abr.jahr = :j ")
+    @Query("select max(abr.nummer) from boundingContext.abrechnung.entities.Abrechnung abr where abr.mandant = :mand  and abr.mj =:mj ")
     public Integer getLetzteAbrechnung(
             @Param("mand") boundingContext.abrechnung.entities.Mandant mand,
-            @Param("m") int monat, @Param("j") int jahr);
+            @Param("mj") MonatJahr mj);
 
     @Query("select max(abr.nummer) from boundingContext.abrechnung.entities.Abrechnung abr where abr.mandant = :mand ")
     public Integer getLetzteAbrechnung(

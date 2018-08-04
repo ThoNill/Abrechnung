@@ -56,7 +56,7 @@ public class HoleAbrechnung extends
         Abrechnung abrechnung = abrechnungRepository.findOne(payload
                 .getAbrechnungId());
         prüfeAbrechnungPasstZumMandanten(payload, abrechnung);
-        if (payload.getMonat() != abrechnung.getMonat() || payload.getJahr() != abrechnung.getJahr()) {
+        if (!payload.getMj().equals(abrechnung.getMj())) {
             throw new IllegalArgumentException("Monat oder Jahr passen nicht zur Abrechnung");
         }
         return abrechnung;
@@ -78,8 +78,7 @@ public class HoleAbrechnung extends
     private Abrechnung ohneAbrechnungsId(AufrufPayload payload) {
         Mandant mandant = sucheMandant(payload);
         AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
-        Optional<Abrechnung> oAbrechnung = mandant.getLetzteAbgerechneteAbrechnung(provider, payload.getMonat(),
-                        payload.getJahr(), payload.getTyp());
+        Optional<Abrechnung> oAbrechnung = mandant.getLetzteAbgerechneteAbrechnung(provider, payload.getMj(), payload.getTyp());
         if (oAbrechnung.isPresent()) {
             return fallsEineAbrechnungSchonAbgerechnetWurde(payload,
                     oAbrechnung.get());
@@ -106,11 +105,10 @@ public class HoleAbrechnung extends
     private Abrechnung ohneBereitsAbgerechneteAbrechnungen(
             AufrufPayload payload, Mandant mandant) {
         Integer n = provider.getAbrechnungRepository().getLetzteAbrechnung(mandant,
-                payload.getMonat(), payload.getJahr());
+                payload.getMj());
         if (n == null) {
             keineNeueAbrechnung(payload);
-            return mandant.createNeueAbrechnung(provider, payload.getMonat(),
-                    payload.getJahr(), payload.getTyp());
+            return mandant.createNeueAbrechnung(provider, payload.getMj(), payload.getTyp());
         } else {
             return provider.getAbrechnungRepository().getAbrechnung(mandant, n.intValue())
                     .get(0);

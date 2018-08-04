@@ -21,6 +21,7 @@ import boundingContext.zahlungen.actions.ZahlungsAufträgeErzeugen;
 import boundingContext.zahlungen.values.BIC;
 import boundingContext.zahlungen.values.BankVerbindung;
 import boundingContext.zahlungen.values.IBAN;
+import boundingContext.zahlungen.values.MonatJahr;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
@@ -46,8 +47,7 @@ public class ZahlungenTest extends AbrechnungBasisTest{
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setNummer(3);
-        abrechnung.setJahr(2018);
-        abrechnung.setMonat(4);
+        abrechnung.setMj(new MonatJahr(4,2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung.setMandant(mandant);

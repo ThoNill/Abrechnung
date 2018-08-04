@@ -5,6 +5,8 @@ import javax.persistence.Embeddable;
 import ddd.Value;
 
 public @Embeddable class TypeReference implements Value {
+    public static final TypeReference ALLE = new TypeReference(0,0);
+    
     private int art;
     private long id;
 

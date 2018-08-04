@@ -25,6 +25,7 @@ import boundingContext.abrechnung.entities.GebuehrDefinition;
 import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.flow.payloads.AbrechnungsArt;
 import boundingContext.abrechnung.flow.payloads.AufrufPayload;
+import boundingContext.zahlungen.values.MonatJahr;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableIntegration
@@ -92,7 +93,7 @@ public class IntegrationTest extends AbrechnungBasisTest{
         Mandant mandant = erzeugeMandant();
      
         AufrufPayload aufruf = new AufrufPayload(AbrechnungsArt.NEU,
-                mandant.getMandantId(), 0, 2, 2018,
+                mandant.getMandantId(), 0, new MonatJahr(2, 2018),
                 AbrechnungsTyp.TEILABRECHNUNG);
 
         Message<AufrufPayload> message = MessageBuilder.withPayload(aufruf)
