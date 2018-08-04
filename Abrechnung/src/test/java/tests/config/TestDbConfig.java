@@ -38,6 +38,7 @@ public class TestDbConfig {
 
     @Value("${hibernate.dialect}")
     private String dialect;
+
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClassName);

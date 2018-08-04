@@ -12,5 +12,4 @@ public class AufrufPayload {
     private MonatJahr mj;
     private AbrechnungsTyp typ;
 
- 
 }

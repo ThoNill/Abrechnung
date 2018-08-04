@@ -27,7 +27,7 @@ import boundingContext.abrechnung.repositories.ÜberweisungRepository;
         tests.config.TestDbConfig.class,
         boundingContext.abrechnung.flow.AuszahlungFlow.class })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class AuszahlungTest extends MitÜberweisungenTest{
+public class AuszahlungTest extends MitÜberweisungenTest {
 
     @Autowired
     private MandantRepository mandantRepository;
@@ -56,15 +56,17 @@ public class AuszahlungTest extends MitÜberweisungenTest{
     StandardIntegrationFlow flow;
 
     @Test
-    public void normalerAblauf()  {
+    public void normalerAblauf() {
 
         flow.start();
-        
+
         Mandant mandant = erzeugeMandant();
 
-        createÜberweisung("DE02500105170137075030", 5, mandant,überweisungRepository);
-        createÜberweisung("DE02200505501015871393", 20, mandant,überweisungRepository);
-   
+        createÜberweisung("DE02500105170137075030", 5, mandant,
+                überweisungRepository);
+        createÜberweisung("DE02200505501015871393", 20, mandant,
+                überweisungRepository);
+
         AuszahlungPayload aufruf = new AuszahlungPayload();
 
         Message<AuszahlungPayload> message = MessageBuilder.withPayload(aufruf)

@@ -5,8 +5,7 @@ import org.springframework.integration.transformer.AbstractPayloadTransformer;
 import boundingContext.abrechnung.flow.payloads.AuszahlungPayload;
 import boundingContext.zahlungen.actions.ÜberweisungsDatei;
 
-public class DateienMarkierenUndErstellen
-        extends
+public class DateienMarkierenUndErstellen extends
         AbstractPayloadTransformer<AuszahlungPayload, AuszahlungPayload> {
 
     protected ÜberweisungsDatei manager;
@@ -17,8 +16,8 @@ public class DateienMarkierenUndErstellen
     }
 
     @Override
-    protected AuszahlungPayload transformPayload(
-            AuszahlungPayload payload) throws Exception {
+    protected AuszahlungPayload transformPayload(AuszahlungPayload payload)
+            throws Exception {
         manager.dateienMarkierenUndErstellen();
         return payload;
     }

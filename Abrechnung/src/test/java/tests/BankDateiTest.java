@@ -48,14 +48,14 @@ import boundingContext.zahlungen.vorlagen.BankExportVorlage;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class BankDateiTest {
-    protected static final Logger log = LoggerFactory.getLogger(BankDateiTest.class);
-    
+    protected static final Logger log = LoggerFactory
+            .getLogger(BankDateiTest.class);
+
     @Autowired
     private MandantRepository mandantRepository;
 
     @Autowired
     private AbrechnungRepository abrechnungRepository;
-
 
     @Autowired
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
@@ -100,7 +100,7 @@ public class BankDateiTest {
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setNummer(3);
-        abrechnung.setMj(new MonatJahr(4,2018));
+        abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung = abrechnungRepository.save(abrechnung);
@@ -117,10 +117,11 @@ public class BankDateiTest {
         createÜberweisung(überweisungen, 1.2, 1);
         createÜberweisung(überweisungen, 2.2, 2);
         createÜberweisung(überweisungen, 3.2, 3);
-        BankExportModell model = new BankExportModell(123, "Test Name", überweisungen);
+        BankExportModell model = new BankExportModell(123, "Test Name",
+                überweisungen);
 
-        BankExportVorlage<BankExportModell> vorlage = new BankExportVorlage<>("pain.001.003.03", ".",
-                Charset.defaultCharset(), model);
+        BankExportVorlage<BankExportModell> vorlage = new BankExportVorlage<>(
+                "pain.001.003.03", ".", Charset.defaultCharset(), model);
         try {
             XmlValidator validator = XmlValidatorFactory.createValidator(
                     überweisungsXmlSchema, XmlValidatorFactory.SCHEMA_W3C_XML);
@@ -129,7 +130,7 @@ public class BankDateiTest {
             SAXParseException[] r = validator.validate(source);
             assertTrue(r == null || r.length == 0);
         } catch (Exception e) {
-            log.error("Unerwartete Ausnahme",e);
+            log.error("Unerwartete Ausnahme", e);
             fail(e.getMessage());
         }
 

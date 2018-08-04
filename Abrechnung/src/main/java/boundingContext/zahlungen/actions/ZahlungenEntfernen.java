@@ -36,27 +36,28 @@ public class ZahlungenEntfernen extends EinBucher {
     public void entferneZahlungsaufträge(Abrechnung abrechnung) {
         ZahlungsAuftragRepository zahlungsAuftragRepository = getZahlungsAuftragRepository();
         List<ZahlungsAuftrag> aufträge = zahlungsAuftragRepository
-                .getOffeneZahlungen(abrechnung,ABGLEICH_GUTHABEN());
+                .getOffeneZahlungen(abrechnung, ABGLEICH_GUTHABEN());
         for (ZahlungsAuftrag a : aufträge) {
             entferneZahlungsauftrag(a);
         }
     }
 
     private void entferneRestGuthaben(Abrechnung abrechnung) {
-        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,ABGLEICH_GUTHABEN(),GUTHABEN().ordinal());
+        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,
+                ABGLEICH_GUTHABEN(), GUTHABEN().ordinal());
         if (betrag != null && !betrag.isZero()) {
-            bucheStorno(abrechnung,betrag,ABGLEICH_GUTHABEN(),GUTHABEN());
+            bucheStorno(abrechnung, betrag, ABGLEICH_GUTHABEN(), GUTHABEN());
         }
     }
 
     private void entferneRestSchulden(Abrechnung abrechnung) {
-        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,ABGLEICH_SCHULDEN(),SCHULDEN().ordinal());
+        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,
+                ABGLEICH_SCHULDEN(), SCHULDEN().ordinal());
         if (betrag != null && !betrag.isZero()) {
-            bucheStorno(abrechnung,betrag,ABGLEICH_SCHULDEN(),SCHULDEN());
+            bucheStorno(abrechnung, betrag, ABGLEICH_SCHULDEN(), SCHULDEN());
         }
     }
 
-    
     private void entferneZahlungsauftrag(ZahlungsAuftrag a) {
         a.setStorniert(new Date());
         bucheStorno(a.getAbrechnung(), a.getBetrag(), a.getBuchungsart(),

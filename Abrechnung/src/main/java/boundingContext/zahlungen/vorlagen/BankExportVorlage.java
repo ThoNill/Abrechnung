@@ -20,8 +20,8 @@ public class BankExportVorlage<VORLAGEN_MODELL> {
     private Charset charSet;
     private VORLAGEN_MODELL model;
 
-    public BankExportVorlage(String dateiName, String zielVerzeichnis, Charset charSet,
-            VORLAGEN_MODELL model) {
+    public BankExportVorlage(String dateiName, String zielVerzeichnis,
+            Charset charSet, VORLAGEN_MODELL model) {
         super();
         this.zielVerzeichnis = zielVerzeichnis;
         this.charSet = charSet;
@@ -50,7 +50,7 @@ public class BankExportVorlage<VORLAGEN_MODELL> {
         return apply("dateiName");
     }
 
-    public String erzeugeAusgabe() throws IOException  {
+    public String erzeugeAusgabe() throws IOException {
         String dateiName = getZielVerzeichnis() + File.separatorChar
                 + getPfadMitDateiName();
         erzeugeEventuellFehlendeVerzeichnisse(dateiName);

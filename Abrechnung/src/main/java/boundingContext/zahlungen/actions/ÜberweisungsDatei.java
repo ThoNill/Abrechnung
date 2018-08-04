@@ -25,8 +25,7 @@ public class ÜberweisungsDatei {
     private int fileArt;
     private TypeReference protokoll;
 
-    public ÜberweisungsDatei(
-            AusgangsDateiRepository ausgangsDateiRepository,
+    public ÜberweisungsDatei(AusgangsDateiRepository ausgangsDateiRepository,
             ÜberweisungRepository überweisungsRepository,
             String ausgangsVerzeichnis, String name, int fileArt,
             TypeReference protokoll) {
@@ -95,7 +94,7 @@ public class ÜberweisungsDatei {
         }
     }
 
-    public void dateienMarkierenUndErstellen() throws IOException  {
+    public void dateienMarkierenUndErstellen() throws IOException {
         List<AusgangsDatei> dateien = ausgangsDateiRepository
                 .getNichVersendeteDateien(1);
         for (AusgangsDatei d : dateien) {
@@ -104,20 +103,22 @@ public class ÜberweisungsDatei {
     }
 
     @Transactional("dbATransactionManager")
-    private void markierenUndErstellen(AusgangsDatei d) throws IOException  {
+    private void markierenUndErstellen(AusgangsDatei d) throws IOException {
         d.setGesendet(new Date());
         ausgangsDateiRepository.save(d);
         dateiErstellen(d);
     }
 
-    private String dateiErstellen(AusgangsDatei d) throws IOException{
+    private String dateiErstellen(AusgangsDatei d) throws IOException {
         List<Überweisung> überweisungen = überweisungsRepository
                 .getÜberweisungen(d);
 
-        BankExportModell model = new BankExportModell(d.getAusgangsDateiId(), name, überweisungen);
+        BankExportModell model = new BankExportModell(d.getAusgangsDateiId(),
+                name, überweisungen);
 
-        BankExportVorlage<BankExportModell> vorlage = new BankExportVorlage<>("pain.001.003.03",
-                ausgangsVerzeichnis, Charset.defaultCharset(), model);
+        BankExportVorlage<BankExportModell> vorlage = new BankExportVorlage<>(
+                "pain.001.003.03", ausgangsVerzeichnis,
+                Charset.defaultCharset(), model);
         return vorlage.erzeugeAusgabe();
 
     }

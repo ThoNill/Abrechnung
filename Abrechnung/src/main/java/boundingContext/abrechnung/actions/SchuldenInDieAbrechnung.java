@@ -16,8 +16,7 @@ import boundingContext.gemeinsam.BetragsBündelMap;
 public class SchuldenInDieAbrechnung extends EinBucher {
 
     public SchuldenInDieAbrechnung(SachKontoProvider sachKontoProvider,
-             String text,
-            double zinssatz,double mwstsatz) {
+            String text, double zinssatz, double mwstsatz) {
         super(sachKontoProvider);
         this.text = text;
         this.zinssatz = zinssatz;
@@ -29,7 +28,8 @@ public class SchuldenInDieAbrechnung extends EinBucher {
     private double mwstsatz;
 
     public void übertragen(Abrechnung abrechnung, int zinsDauer) {
-        Optional<Abrechnung> oAbrechnung = abrechnung.getVorherigeAbrechnung(this);
+        Optional<Abrechnung> oAbrechnung = abrechnung
+                .getVorherigeAbrechnung(this);
         if (oAbrechnung.isPresent()) {
             MonetaryAmount saldo = getBuchungRepository().getSumKonto(
                     oAbrechnung.get(), ABGLEICH_SCHULDEN(),
@@ -55,7 +55,7 @@ public class SchuldenInDieAbrechnung extends EinBucher {
         beträge.put(ZINS(), zins);
         MonetaryAmount mwst = berechneMwst(zins);
         beträge.put(MWST(), mwst);
-     
+
         Beschreibung beschreibung = new Beschreibung(ÜBERNAHME_SCHULDEN(), text);
         return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
     }
@@ -64,7 +64,7 @@ public class SchuldenInDieAbrechnung extends EinBucher {
         return Geld.round(betrag.multiply(zinsDauer).multiply(zinssatz)
                 .divide(360));
     }
-    
+
     private MonetaryAmount berechneMwst(MonetaryAmount betrag) {
         return Geld.round(betrag.multiply(mwstsatz));
     }

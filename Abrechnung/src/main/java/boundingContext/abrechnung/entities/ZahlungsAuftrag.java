@@ -21,10 +21,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import boundingContext.zahlungen.values.BankVerbindung;
+
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-
 @Entity
 @Table(name = "ZAHLUNGSAUFTRAG")
 @SequenceGenerator(name = "ZAHLUNGSAUFTRAG_SEQ", sequenceName = "ZAHLUNGSAUFTRAG_SEQ")
@@ -77,7 +77,5 @@ public class ZahlungsAuftrag {
 
     @Embedded
     private BankVerbindung bank;
-    
-
 
 }

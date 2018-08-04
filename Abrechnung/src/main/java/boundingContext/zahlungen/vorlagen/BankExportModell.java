@@ -17,7 +17,8 @@ public class BankExportModell {
     private List<Überweisung> überweisungen;
     private MonetaryAmount summe;
 
-    public BankExportModell(long referenz, String name, List<Überweisung> überweisungen) {
+    public BankExportModell(long referenz, String name,
+            List<Überweisung> überweisungen) {
         super();
         this.anzahl = überweisungen.size();
         this.referenz = referenz;

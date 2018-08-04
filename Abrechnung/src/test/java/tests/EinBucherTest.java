@@ -45,7 +45,7 @@ public class EinBucherTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setMandant(mandant);
         abrechnung.setNummer(3);
-        abrechnung.setMj(new MonatJahr(4,2018));
+        abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung = abrechnungRepository.save(abrechnung);
@@ -81,8 +81,6 @@ public class EinBucherTest extends AbrechnungBasisTest {
         }
     }
 
-  
-    
     private EinBucher erzeugeEinbucher() {
         return new EinBucher(sachKontoProvider());
     }

@@ -1,14 +1,10 @@
 package boundingContext.abrechnung.repositories;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import boundingContext.abrechnung.aufzählungen.AbrechnungsStatus;
 import boundingContext.abrechnung.aufzählungen.ParameterKey;
-import boundingContext.abrechnung.entities.Abrechnung;
 import boundingContext.abrechnung.entities.Parameter;
 import boundingContext.zahlungen.values.MonatJahr;
 import boundingContext.zahlungen.values.TypeReference;

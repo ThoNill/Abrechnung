@@ -1,6 +1,5 @@
 package boundingContext.abrechnung.entities;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,15 +22,13 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-
 @Entity
 @Table(name = "GEBUEHRDEFINITION")
 @SequenceGenerator(name = "GEBUEHRDEFINITION_SEQ", sequenceName = "GEBUEHRDEFINITION_SEQ")
-public class GebuehrDefinition { 
-    
+public class GebuehrDefinition {
+
     @EqualsAndHashCode.Include
     @ToString.Include
-  
     @Column(name = "GEBUEHRDEFINITIONID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEBUEHRDEFINITION_SEQ")
@@ -76,7 +73,7 @@ public class GebuehrDefinition {
     @Basic
     @Column(name = "MWSTKONTO")
     private int mwstKonto;
- 
+
     @Basic
     @Column(name = "BUCHUNGSTEXT")
     private String buchungstext;

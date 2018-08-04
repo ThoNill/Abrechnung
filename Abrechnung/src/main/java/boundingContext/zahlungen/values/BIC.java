@@ -9,12 +9,12 @@ public class BIC {
     public BIC() {
         this("");
     }
-    
+
     public BIC(String bic) {
         super();
         this.bic = bic;
     }
-    
+
     @Override
     public String toString() {
         return bic;

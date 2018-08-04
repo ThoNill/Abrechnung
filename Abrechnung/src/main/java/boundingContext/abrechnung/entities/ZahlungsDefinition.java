@@ -25,16 +25,13 @@ import boundingContext.zahlungen.values.BankVerbindung;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-
-
 @Entity
 @Table(name = "ZAHLUNGDEFINITION")
 @SequenceGenerator(name = "ZAHLUNGDEFINITION_SEQ", sequenceName = "ZAHLUNGDEFINITION_SEQ")
 public class ZahlungsDefinition {
-    
+
     @EqualsAndHashCode.Include
     @ToString.Include
-
     @Basic
     @Column(name = "ZAHLUNGDEFINITIONID")
     @Id
@@ -54,21 +51,18 @@ public class ZahlungsDefinition {
     private double prozentSatz;
 
     @ToString.Include
-
     @Basic
     @Column(name = "ZEITART")
     private int zeitArt;
 
     @ToString.Include
-
     @Basic
     @Column(name = "TAG")
     private int tag;
-   
+
     @Embedded
     private BankVerbindung bank;
 
-   
     public Date berechneAuszahlungsTernin(Date ausgangsTermin) {
         int tage = getTag();
         Instant instant = ausgangsTermin.toInstant();
@@ -76,5 +70,4 @@ public class ZahlungsDefinition {
         return new Date(instant.toEpochMilli());
     }
 
-    
 }

@@ -1,6 +1,5 @@
 package boundingContext.buchhaltung.eingang;
 
-
 import boundingContext.abrechnung.aufz‰hlungen.SachKonto;
 import boundingContext.abrechnung.aufz‰hlungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
@@ -10,7 +9,6 @@ import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ParameterRepository;
 import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
 import boundingContext.abrechnung.repositories.‹berweisungRepository;
-
 
 public class SachKontoDelegate implements SachKontoProvider {
     private SachKontoProvider sachKontoProvider;
@@ -35,7 +33,6 @@ public class SachKontoDelegate implements SachKontoProvider {
         return sachKontoProvider.AUSZUZAHLEN();
     }
 
-    
     @Override
     public SachKonto AUSBEZAHLT() {
         return sachKontoProvider.AUSBEZAHLT();
@@ -76,13 +73,11 @@ public class SachKontoDelegate implements SachKontoProvider {
         return sachKontoProvider.getBuchungRepository();
     }
 
-
     @Override
     public ZahlungsAuftragRepository getZahlungsAuftragRepository() {
         return sachKontoProvider.getZahlungsAuftragRepository();
     }
 
- 
     @Override
     public ‹berweisungRepository get‹berweisungRepository() {
         return sachKontoProvider.get‹berweisungRepository();
@@ -90,12 +85,12 @@ public class SachKontoDelegate implements SachKontoProvider {
 
     @Override
     public ParameterRepository getParameterRepository() {
-       return sachKontoProvider.getParameterRepository();
+        return sachKontoProvider.getParameterRepository();
     }
 
     @Override
     public AusgangsDateiRepository getAusgangsDateiRepository() {
-       return sachKontoProvider.getAusgangsDateiRepository();
+        return sachKontoProvider.getAusgangsDateiRepository();
     }
 
 }

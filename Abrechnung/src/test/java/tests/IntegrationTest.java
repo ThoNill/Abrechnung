@@ -33,9 +33,8 @@ import boundingContext.zahlungen.values.MonatJahr;
         tests.config.TestDbConfig.class,
         boundingContext.abrechnung.flow.AbrechnungFlow.class })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class IntegrationTest extends AbrechnungBasisTest{
+public class IntegrationTest extends AbrechnungBasisTest {
 
-    
     @Override
     @Before
     @After
@@ -47,7 +46,7 @@ public class IntegrationTest extends AbrechnungBasisTest{
     public Mandant erzeugeMandant() {
         Mandant mandant = mandantRepository.save(new Mandant());
         SachKontoProvider sachKontoProvider = sachKontoProvider();
-        
+
         GebuehrDefinition gebührDefinition = new GebuehrDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setKontoNr(sachKontoProvider.GEBÜHR().ordinal());
@@ -75,10 +74,9 @@ public class IntegrationTest extends AbrechnungBasisTest{
     @Qualifier("abrechnungFlow")
     StandardIntegrationFlow flow;
 
-    
     @Test
     @Transactional("dbATransactionManager")
-    public void normalerAblauf()  {
+    public void normalerAblauf() {
 
         mandantChannel.addInterceptor(new ChannelInterceptorAdapter() {
             @Override
@@ -91,7 +89,7 @@ public class IntegrationTest extends AbrechnungBasisTest{
         flow.start();
 
         Mandant mandant = erzeugeMandant();
-     
+
         AufrufPayload aufruf = new AufrufPayload(AbrechnungsArt.NEU,
                 mandant.getMandantId(), 0, new MonatJahr(2, 2018),
                 AbrechnungsTyp.TEILABRECHNUNG);

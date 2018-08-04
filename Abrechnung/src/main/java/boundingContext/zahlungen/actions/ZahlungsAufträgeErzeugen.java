@@ -15,10 +15,6 @@ import boundingContext.abrechnung.entities.Mandant;
 import boundingContext.abrechnung.entities.ZahlungsAuftrag;
 import boundingContext.abrechnung.entities.ZahlungsDefinition;
 import boundingContext.abrechnung.entities.Überweisung;
-import boundingContext.abrechnung.repositories.AbrechnungRepository;
-import boundingContext.abrechnung.repositories.BuchungRepository;
-import boundingContext.abrechnung.repositories.ZahlungsAuftragRepository;
-import boundingContext.abrechnung.repositories.ÜberweisungRepository;
 import boundingContext.buchhaltung.eingang.Beschreibung;
 import boundingContext.buchhaltung.eingang.BuchungsAuftrag;
 import boundingContext.buchhaltung.eingang.EinBucher;
@@ -28,9 +24,9 @@ import boundingContext.gemeinsam.ProzentBündelMap;
 import boundingContext.zahlungen.values.BankVerbindung;
 
 public class ZahlungsAufträgeErzeugen extends EinBucher {
-  
+
     public ZahlungsAufträgeErzeugen(SachKontoProvider sachKontoProvider) {
-        super(sachKontoProvider); 
+        super(sachKontoProvider);
     }
 
     public List<ZahlungsAuftrag> erzeugeAufträge(Abrechnung abrechnung,
@@ -52,18 +48,21 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
             zahlungsAuftrag.setBank(d.getBank());
             zahlungsAuftrag.setBuchungsart(d.getBuchungsart());
             zahlungsAuftrag.setVerwendungszweck(verwendungszweck);
-            zahlungsAuftrag.setZuZahlenAm(d.berechneAuszahlungsTernin(new Date()));
+            zahlungsAuftrag.setZuZahlenAm(d
+                    .berechneAuszahlungsTernin(new Date()));
             zahlungsAuftrag.setAbrechnung(abrechnung);
             zahlungsAuftrag.setMandant(mandant);
-            zahlungsAuftrag = getZahlungsAuftragRepository().save(zahlungsAuftrag);
+            zahlungsAuftrag = getZahlungsAuftragRepository().save(
+                    zahlungsAuftrag);
             aufträge.add(zahlungsAuftrag);
-            erzeugeBuchung(GUTHABEN(),AUSZUZAHLEN(),"Zahlungsauftrag erzeugt", abrechnung,zahlungsAuftrag);
+            erzeugeBuchung(GUTHABEN(), AUSZUZAHLEN(),
+                    "Zahlungsauftrag erzeugt", abrechnung, zahlungsAuftrag);
         }
         return aufträge;
     }
 
-    public void erzeugeÜberweisungen(
-            List<ZahlungsAuftrag> zahlungsAufträge, BankVerbindung vonBank) {
+    public void erzeugeÜberweisungen(List<ZahlungsAuftrag> zahlungsAufträge,
+            BankVerbindung vonBank) {
         for (ZahlungsAuftrag auftrag : zahlungsAufträge) {
             auftrag = getZahlungsAuftragRepository().save(auftrag);
             Überweisung überweisung = new Überweisung();
@@ -75,53 +74,53 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
             überweisung.setAuftrag(auftrag);
             überweisung.setMandant(auftrag.getMandant());
             überweisung = getÜberweisungRepository().save(überweisung);
-            erzeugeBuchung(AUSZUZAHLEN(),AUSBEZAHLT(),"Überweisung erzeugt", auftrag.getAbrechnung(),überweisung);
+            erzeugeBuchung(AUSZUZAHLEN(), AUSBEZAHLT(), "Überweisung erzeugt",
+                    auftrag.getAbrechnung(), überweisung);
         }
     }
 
-    private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(
-            SachKonto von,
-            SachKonto nach, String buchungstext,Überweisung überweisung) {
+    private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(SachKonto von,
+            SachKonto nach, String buchungstext, Überweisung überweisung) {
         MonetaryAmount betrag = überweisung.getBetrag();
         int buchungsart = überweisung.getBuchungsart();
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         beträge.put(von, betrag.negate());
         beträge.put(nach, betrag);
         Beschreibung beschreibung = new Beschreibung(buchungsart, buchungstext);
-        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
-        auftrag.verbinde(2,überweisung.getUeberweisungsId());
+        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(
+                beschreibung, beträge);
+        auftrag.verbinde(2, überweisung.getUeberweisungsId());
         return auftrag;
     }
 
-    private Buchung erzeugeBuchung(SachKonto von, SachKonto nach, String buchungstext,
-            Abrechnung abrechnung,Überweisung überweisung) {
+    private Buchung erzeugeBuchung(SachKonto von, SachKonto nach,
+            String buchungstext, Abrechnung abrechnung, Überweisung überweisung) {
 
         return erzeugeBuchung(
-                erzeugeBuchungsAuftrag(von, nach,
-                        buchungstext,überweisung), abrechnung);
+                erzeugeBuchungsAuftrag(von, nach, buchungstext, überweisung),
+                abrechnung);
     }
 
-
-    private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(
-            SachKonto von,
-            SachKonto nach, String buchungstext,ZahlungsAuftrag zahlungsAuftrag) {
+    private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(SachKonto von,
+            SachKonto nach, String buchungstext, ZahlungsAuftrag zahlungsAuftrag) {
         MonetaryAmount betrag = zahlungsAuftrag.getBetrag();
         int buchungsart = zahlungsAuftrag.getBuchungsart();
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         beträge.put(von, betrag.negate());
         beträge.put(nach, betrag);
         Beschreibung beschreibung = new Beschreibung(buchungsart, buchungstext);
-        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
-        auftrag.verbinde(1,zahlungsAuftrag.getZahlungsAuftragsId());
+        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(
+                beschreibung, beträge);
+        auftrag.verbinde(1, zahlungsAuftrag.getZahlungsAuftragsId());
         return auftrag;
     }
 
-    private Buchung erzeugeBuchung(SachKonto von, SachKonto nach, String buchungstext,
-            Abrechnung abrechnung,ZahlungsAuftrag auftrag) {
+    private Buchung erzeugeBuchung(SachKonto von, SachKonto nach,
+            String buchungstext, Abrechnung abrechnung, ZahlungsAuftrag auftrag) {
 
         return erzeugeBuchung(
-                erzeugeBuchungsAuftrag(von, nach,
-                        buchungstext,auftrag), abrechnung);
+                erzeugeBuchungsAuftrag(von, nach, buchungstext, auftrag),
+                abrechnung);
     }
 
 }

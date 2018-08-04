@@ -36,7 +36,7 @@ import boundingContext.zahlungen.values.MonatJahr;
 @Entity
 @Table(name = "MANDANT")
 @SequenceGenerator(name = "MANDANT_SEQ", sequenceName = "MANDANT_SEQ")
-public class Mandant { 
+public class Mandant {
     @EqualsAndHashCode.Include
     @ToString.Include
     @Basic
@@ -51,14 +51,14 @@ public class Mandant {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mandant",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mandant", fetch = FetchType.LAZY)
     private Set<Abrechnung> abrechnung = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL },fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(name = "mandant_gebuehrdefinition", joinColumns = { @JoinColumn(name = "mandantId") }, inverseJoinColumns = { @JoinColumn(name = "gebuehrDefinitionId") })
     private Set<GebuehrDefinition> gebuehrDefinitionen = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mandant",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mandant", fetch = FetchType.LAZY)
     private Set<ZahlungsDefinition> zahlungsDefinitionen = new HashSet<>();
 
     public void addAbrechnung(Abrechnung a) {
@@ -74,24 +74,27 @@ public class Mandant {
 
     }
 
+    public Optional<Abrechnung> getLetzteAbgerechneteAbrechnung(
+            @NotNull SachKontoProvider provider, MonatJahr mj,
+            AbrechnungsTyp typ) {
+        AbrechnungRepository abrechnungRepository = provider
+                .getAbrechnungRepository();
 
-    public Optional<Abrechnung> getLetzteAbgerechneteAbrechnung(@NotNull SachKontoProvider provider,
-            MonatJahr mj, AbrechnungsTyp typ) {
-        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
-            
-           
-        Integer n = abrechnungRepository.getLetzteAbgerechneteAbrechnung(
-                this, AbrechnungsStatus.ABGERECHNET, mj);
+        Integer n = abrechnungRepository.getLetzteAbgerechneteAbrechnung(this,
+                AbrechnungsStatus.ABGERECHNET, mj);
         if (n != null && n > 0) {
-            List<Abrechnung> liste = abrechnungRepository.getAbrechnung(this, n);
+            List<Abrechnung> liste = abrechnungRepository
+                    .getAbrechnung(this, n);
             return Optional.of(liste.get(0));
         }
         return Optional.empty();
     }
 
-    public Abrechnung createNeueAbrechnung(@NotNull SachKontoProvider provider, MonatJahr mj, AbrechnungsTyp typ) {
-        AbrechnungRepository abrechnungRepository = provider.getAbrechnungRepository();
-        
+    public Abrechnung createNeueAbrechnung(@NotNull SachKontoProvider provider,
+            MonatJahr mj, AbrechnungsTyp typ) {
+        AbrechnungRepository abrechnungRepository = provider
+                .getAbrechnungRepository();
+
         Integer n = abrechnungRepository.getLetzteAbrechnung(this);
         Abrechnung neu = new Abrechnung();
         neu.setNummer((n == null) ? 1 : n.intValue() + 1);

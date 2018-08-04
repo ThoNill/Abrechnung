@@ -19,9 +19,8 @@ interface RepositoryProvider {
     ZahlungsAuftragRepository getZahlungsAuftragRepository();
 
     ‹berweisungRepository get‹berweisungRepository();
-    
+
     ParameterRepository getParameterRepository();
-    
 
     AusgangsDateiRepository getAusgangsDateiRepository();
 

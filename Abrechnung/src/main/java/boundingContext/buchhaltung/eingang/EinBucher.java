@@ -33,9 +33,9 @@ public class EinBucher extends SachKontoDelegate {
                 MonetaryAmount betrag = beträge.getValue(p);
                 bewegungHinzufügen(buchung, p, betrag);
             }
-            HashMap<Integer,Long> bezüge = auftrag.getVerbundenMit();
+            HashMap<Integer, Long> bezüge = auftrag.getVerbundenMit();
             for (Integer rolle : bezüge.keySet()) {
-                bezugHinzufügen(buchung,rolle,bezüge.get(rolle));
+                bezugHinzufügen(buchung, rolle, bezüge.get(rolle));
             }
             return getBuchungRepository().save(buchung);
         }
@@ -63,7 +63,8 @@ public class EinBucher extends SachKontoDelegate {
     public BetragsBündel<SachKonto> beträgeEinerBuchungsartHolen(
             Abrechnung abrechnung, int art) {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
-        for (Object o : getBuchungRepository().getSumBewegungen(abrechnung, art)) {
+        for (Object o : getBuchungRepository()
+                .getSumBewegungen(abrechnung, art)) {
             Object[] werte = (Object[]) o;
             SachKonto p = sachKontoFrom((int) werte[0]);
             beträge.put(p, (MonetaryAmount) werte[1]);

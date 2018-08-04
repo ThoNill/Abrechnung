@@ -15,5 +15,4 @@ public class SimpleKonto {
         this.bezeichnung = bezeichnung;
     }
 
-
 }

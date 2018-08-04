@@ -33,10 +33,11 @@ public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
 
     @Override
     public GebührenBerechnung erzeugeGebührenBerechner(
-            GebuehrDefinition definition,SachKontoProvider sachKontoProvider,AbrechnungsArt abrechnungsArt) {
+            GebuehrDefinition definition, SachKontoProvider sachKontoProvider,
+            AbrechnungsArt abrechnungsArt) {
         return new GebührenBerechnung(sachKontoProvider, definition,
                 erzeugeGebührRepository(definition.getDatenArt()),
-                erzeugeGebührFabrik(definition.getGebührArt()),abrechnungsArt);
+                erzeugeGebührFabrik(definition.getGebührArt()), abrechnungsArt);
     }
 
 }

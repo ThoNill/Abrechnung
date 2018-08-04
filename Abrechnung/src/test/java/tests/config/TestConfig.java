@@ -35,21 +35,18 @@ public class TestConfig {
     @Autowired
     protected AusgangsDateiRepository ausgangsDateiRepository;
 
-    
     @Bean
     public AbrechnungsKonfigurator configurator(
             LeistungRepository leistungRepository) {
         return new TestAbrechnungsKonfigurator(leistungRepository);
     }
 
-
     @Bean
     protected SachKontoProvider sachKontoProvider() {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
-                zahlungsAuftragRepository,
-                überweisungRepository,parameterRepository,ausgangsDateiRepository);
+                zahlungsAuftragRepository, überweisungRepository,
+                parameterRepository, ausgangsDateiRepository);
     }
-
 
 }

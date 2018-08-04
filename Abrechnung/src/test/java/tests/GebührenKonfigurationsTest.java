@@ -53,7 +53,6 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         leistungRepository.deleteAll();
     }
 
-    
     public Mandant erzeugeMandant() {
         return mandantRepository.save(new Mandant());
     }
@@ -96,7 +95,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         d.setGebührArt(1);
         d.setDatenArt(1);
         d.setParameter(0.05);
-        return d; 
+        return d;
     }
 
     public Leistung erzeugeEineLeistung(Mandant mandant, int art, double betrag) {
@@ -127,7 +126,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setMandant(mandant);
         abrechnung.setNummer(3);
-        abrechnung.setMj(new MonatJahr(4,2018));
+        abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung = abrechnungRepository.save(abrechnung);
@@ -176,8 +175,8 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
 
         AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(
                 leistungRepository);
-        GebührenBerechnung berechnung = konfigurator
-                .erzeugeGebührenBerechner(gebührDefinition,sachKontoProvider(),AbrechnungsArt.NEU);
+        GebührenBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
+                gebührDefinition, sachKontoProvider(), AbrechnungsArt.NEU);
         BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(abrechnung);
         BetragsBündel<SachKonto> auftragBündel = auftrag.getPositionen();

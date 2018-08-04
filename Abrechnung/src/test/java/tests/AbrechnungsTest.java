@@ -43,7 +43,7 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setMandant(mandant);
         abrechnung.setNummer(3);
-        abrechnung.setMj(new MonatJahr(4,2018));
+        abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         mandant.addAbrechnung(abrechnung);
@@ -59,10 +59,9 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
         assertEquals(2, abrechnungRepository.count());
     }
 
-   
     public Abrechnung naechsteAbrechnung() {
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
-         return abrechnung.createOrGetNächsteAbrechnung(sachKontoProvider());
+        return abrechnung.createOrGetNächsteAbrechnung(sachKontoProvider());
     }
 
     public Abrechnung naechsteAbrechnungMerfacherAufruf() {
@@ -103,48 +102,52 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
         Abrechnung nächsteAbrechnung = abrechnung
                 .createOrGetNächsteAbrechnung(provider);
-        Optional<Abrechnung> vorkerigeDerNächstenAbrechnung = nächsteAbrechnung.getVorherigeAbrechnung(provider);
+        Optional<Abrechnung> vorkerigeDerNächstenAbrechnung = nächsteAbrechnung
+                .getVorherigeAbrechnung(provider);
         assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());
         assertTrue(vorkerigeDerNächstenAbrechnung.isPresent());
         assertEquals(abrechnung.getAbrechnungId(),
                 vorkerigeDerNächstenAbrechnung.get().getAbrechnungId());
     }
-    
+
     @Test
     @Transactional("dbATransactionManager")
     public void abgerechneteAbrechnung() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        abrechnung.setMj(new MonatJahr(3,2018));
+        abrechnung.setMj(new MonatJahr(3, 2018));
         abrechnung.setStatus(AbrechnungsStatus.ABGERECHNET);
         abrechnung.setTyp(AbrechnungsTyp.TEILABRECHNUNG);
         abrechnung = abrechnungRepository.save(abrechnung);
         Optional<Abrechnung> abgerechneteAbrechnung = mandant
-                .getLetzteAbgerechneteAbrechnung(sachKontoProvider(), new MonatJahr(3,2018),AbrechnungsTyp.TEILABRECHNUNG);
+                .getLetzteAbgerechneteAbrechnung(sachKontoProvider(),
+                        new MonatJahr(3, 2018), AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
         assertTrue(abgerechneteAbrechnung.isPresent());
     }
-    
+
     @Test
     @Transactional("dbATransactionManager")
     public void neueAbrechnung() {
         SachKontoProvider provider = sachKontoProvider();
-        
+
         Mandant mandant = mandantRepository.save(erzeugeMandant());
-        Abrechnung neueAbrechnung = mandant.createNeueAbrechnung(provider, new MonatJahr(3,2018),AbrechnungsTyp.TEILABRECHNUNG);
+        Abrechnung neueAbrechnung = mandant.createNeueAbrechnung(provider,
+                new MonatJahr(3, 2018), AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
         assertTrue(neueAbrechnung != null);
         assertEquals(1, neueAbrechnung.getNummer());
-        
-        neueAbrechnung = mandant.createNeueAbrechnung(provider, new MonatJahr(3,2018),AbrechnungsTyp.TEILABRECHNUNG);
+
+        neueAbrechnung = mandant.createNeueAbrechnung(provider, new MonatJahr(
+                3, 2018), AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());
-        assertTrue(neueAbrechnung!=null);
+        assertTrue(neueAbrechnung != null);
         assertEquals(2, neueAbrechnung.getNummer());
-        
+
     }
 
 }

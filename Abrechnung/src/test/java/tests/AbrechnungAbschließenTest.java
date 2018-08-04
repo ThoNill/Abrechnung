@@ -55,8 +55,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setMandant(mandant);
         abrechnung.setNummer(3);
-        abrechnung.setMj(new MonatJahr(4,2018));
-     
+        abrechnung.setMj(new MonatJahr(4, 2018));
+
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung = abrechnungRepository.save(abrechnung);
@@ -86,7 +86,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     @Transactional("dbATransactionManager")
     public void schulden‹benehmen360() {
         Abrechnung abrechnung = saldoAbgleichen(-100);
-        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06, 0.19,360);
+        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06,
+                0.19, 360);
         checkAnzahlen();
         check‹bernahme(n‰chsteAbrechnung, -100, -6);
     }
@@ -95,7 +96,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     @Transactional("dbATransactionManager")
     public void schulden‹benehmen180() {
         Abrechnung abrechnung = saldoAbgleichen(-100);
-        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06, 0.19,180);
+        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06,
+                0.19, 180);
         checkAnzahlen();
         check‹bernahme(n‰chsteAbrechnung, -100, -3);
     }
@@ -112,7 +114,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     }
 
     private Abrechnung abschlieﬂen(Abrechnung abrechnung) {
-        Abrechnung n‰chsteAbrechnung = abrechnung.abschleiﬂen(sachKontoProvider(), 180,0.06,0.19);
+        Abrechnung n‰chsteAbrechnung = abrechnung.abschleiﬂen(
+                sachKontoProvider(), 180, 0.06, 0.19);
         return n‰chsteAbrechnung;
     }
 
@@ -132,7 +135,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         erzeugeBuchung(abrechnung, betrag);
 
-        SaldoAusgleichen abschluss = new SaldoAusgleichen(sachKontoProvider(), "Guthaben", "Schulden");
+        SaldoAusgleichen abschluss = new SaldoAusgleichen(sachKontoProvider(),
+                "Guthaben", "Schulden");
         abschluss.saldoAusgleichen(abrechnung);
         return abrechnung;
     }
@@ -169,15 +173,14 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         assertEquals(Geld.createAmount(betrag), dbBetrag);
     }
 
-    public Abrechnung schulden‹bernahme(Abrechnung abrechnung, double zinssatz,double mwstsatz,
-            int tage) {
+    public Abrechnung schulden‹bernahme(Abrechnung abrechnung, double zinssatz,
+            double mwstsatz, int tage) {
         SachKontoProvider provider = sachKontoProvider();
         Abrechnung n‰chsteAbrechnung = abrechnung
                 .createOrGetN‰chsteAbrechnung(provider);
 
         SchuldenInDieAbrechnung ¸bernehmen = new SchuldenInDieAbrechnung(
-                sachKontoProvider(),
-                "Schulden ¸bernehmen", zinssatz,mwstsatz);
+                sachKontoProvider(), "Schulden ¸bernehmen", zinssatz, mwstsatz);
         ¸bernehmen.¸bertragen(n‰chsteAbrechnung, tage);
         return n‰chsteAbrechnung;
     }
@@ -196,7 +199,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         assertEquals(Geld.createAmount(zins), dbZins);
         assertEquals(Geld.createAmount(mwst), dbMwst);
         MonetaryAmount saldo = buchungRepository.getSaldo(abrechnung);
-        assertEquals(Geld.createAmount(betrag + zins+mwst), saldo);
+        assertEquals(Geld.createAmount(betrag + zins + mwst), saldo);
 
     }
 

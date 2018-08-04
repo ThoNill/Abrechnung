@@ -19,7 +19,8 @@ public class GebührenTest {
         ProzentualeGebühr g = new ProzentualeGebühr(0.05);
 
         assertEquals(Geld.createAmount(5), g.getGebühr(Geld.createAmount(100)));
-        assertEquals(Geld.createAmount(-5), g.getGebühr(Geld.createAmount(-100)));
+        assertEquals(Geld.createAmount(-5),
+                g.getGebühr(Geld.createAmount(-100)));
     }
 
     @Test
@@ -30,7 +31,7 @@ public class GebührenTest {
         } catch (Exception ex) {
         }
     }
-    
+
     @Test
     public void testeMindestGebühr() {
         Gebühr g = new MindestGebühr(Geld.createAmount(25));
@@ -38,8 +39,9 @@ public class GebührenTest {
         assertEquals(Geld.createAmount(0), g.getGebühr(Geld.createAmount(100)));
         assertEquals(Geld.createAmount(25), g.getGebühr(Geld.createAmount(20)));
         assertEquals(Geld.createAmount(0), g.getGebühr(Geld.createAmount(-100)));
-        assertEquals(Geld.createAmount(-25), g.getGebühr(Geld.createAmount(-20)));
-   
+        assertEquals(Geld.createAmount(-25),
+                g.getGebühr(Geld.createAmount(-20)));
+
     }
 
     @Test
@@ -77,7 +79,6 @@ public class GebührenTest {
         } catch (Exception ex) {
         }
     }
-
 
     @Test
     public void testeAnzahlGebühr() {

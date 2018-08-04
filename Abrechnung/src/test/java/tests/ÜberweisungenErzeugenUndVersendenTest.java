@@ -26,8 +26,8 @@ import boundingContext.zahlungen.values.TypeReference;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
 public class ÜberweisungenErzeugenUndVersendenTest extends MitÜberweisungenTest {
-    protected static final Logger log = LoggerFactory.getLogger(ÜberweisungenErzeugenUndVersendenTest.class);
-    
+    protected static final Logger log = LoggerFactory
+            .getLogger(ÜberweisungenErzeugenUndVersendenTest.class);
 
     @Autowired
     private MandantRepository mandantRepository;
@@ -45,7 +45,7 @@ public class ÜberweisungenErzeugenUndVersendenTest extends MitÜberweisungenTest 
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
-        
+
         überweisungRepository.deleteAll();
         ausgangsDateiRepository.deleteAll();
         mandantRepository.deleteAll();
@@ -59,8 +59,10 @@ public class ÜberweisungenErzeugenUndVersendenTest extends MitÜberweisungenTest 
     public void aufträgeErzeugen() {
         Mandant mandant = erzeugeMandant();
 
-        createÜberweisung("DE02500105170137075030", 5, mandant,überweisungRepository);
-        createÜberweisung("DE02200505501015871393", 20, mandant,überweisungRepository);
+        createÜberweisung("DE02500105170137075030", 5, mandant,
+                überweisungRepository);
+        createÜberweisung("DE02200505501015871393", 20, mandant,
+                überweisungRepository);
 
         assertEquals(25, überweisungRepository.count());
 
@@ -71,13 +73,12 @@ public class ÜberweisungenErzeugenUndVersendenTest extends MitÜberweisungenTest 
             manager.markiereÜberweisungsDateien(10);
             manager.dateienMarkierenUndErstellen();
         } catch (Exception e) {
-            log.error("Unerwarteter Fehler ",e);
+            log.error("Unerwarteter Fehler ", e);
             fail(e.getMessage());
         }
 
         assertEquals(3, ausgangsDateiRepository.count());
 
     }
-
 
 }

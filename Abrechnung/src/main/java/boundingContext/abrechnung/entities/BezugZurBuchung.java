@@ -23,16 +23,13 @@ import boundingContext.zahlungen.values.TypeReference;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-
-
 @Entity
 @Table(name = "BEZUG_ZUR_BUCHUNG")
 @SequenceGenerator(name = "BEZUG_ZUR_BUCHUNG_SEQ", sequenceName = "BEZUG_ZUR_BUCHUNG_SEQ")
 public class BezugZurBuchung {
-    
+
     @EqualsAndHashCode.Include
     @ToString.Include
-
     @Basic
     @Column(name = "BEZUGID")
     @Id
@@ -42,13 +39,11 @@ public class BezugZurBuchung {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "buchungsId")
     private Buchung buchung;
-    
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "art", column = @Column(name = "referenz_art")),
             @AttributeOverride(name = "id", column = @Column(name = "referenz_id")) })
     TypeReference referenz;
 
-
-    
 }

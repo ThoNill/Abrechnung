@@ -22,7 +22,6 @@ import boundingContext.zahlungen.values.TypeReference;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-
 @Entity
 @Table(name = "AUSGANGSDATEI")
 @SequenceGenerator(name = "AUSGANGSDATEI_SEQ", sequenceName = "AUSGANGSDATEI_SEQ")
@@ -30,25 +29,24 @@ public class AusgangsDatei {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-
     @Basic
     @Column(name = "AUSGANGSDATEIID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUSGANGSDATEI_SEQ")
     private long ausgangsDateiId;
-    
+
     @Basic
     private String filename;
 
     @Basic
     private int fileArt;
-  
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "art", column = @Column(name = "protokoll_art")),
             @AttributeOverride(name = "id", column = @Column(name = "protokoll_id")) })
     TypeReference protokoll;
-  
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "art", column = @Column(name = "quelle_art")),
@@ -61,5 +59,4 @@ public class AusgangsDatei {
     @Basic
     private Date gesendet;
 
-    
 }

@@ -20,16 +20,13 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-
 @Entity
 @Table(name = "KONTOBEWEGUNG")
 @SequenceGenerator(name = "KONTOBEWEGUNG_SEQ", sequenceName = "KONTOBEWEGUNG_SEQ")
-public class KontoBewegung  {
-
+public class KontoBewegung {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-
     @Basic
     @Column(name = "KONTOBEWEGUNGID")
     @Id
@@ -38,29 +35,20 @@ public class KontoBewegung  {
 
     @Basic
     @Column(name = "ART")
-
-
     @EqualsAndHashCode.Include
     @ToString.Include
-
     private int art;
     @Basic
     @Column(name = "KONTONR")
-
-
     @EqualsAndHashCode.Include
     @ToString.Include
-
     private int kontoNr;
-    
+
     @Basic
     @Column(name = "BETRAG")
     @Convert(converter = betrag.GeldKonverter.class)
-    
     private javax.money.MonetaryAmount betrag;
-    
-    
-    
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "BuchungId")
     private Buchung buchung;

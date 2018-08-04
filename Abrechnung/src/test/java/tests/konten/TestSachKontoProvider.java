@@ -20,11 +20,10 @@ public class TestSachKontoProvider implements SachKontoProvider {
     private ZahlungsAuftragRepository zahlungsAuftragRepository;
 
     private ÜberweisungRepository überweisungRepository;
-    
+
     private ParameterRepository parameterRepository;
-    
+
     private AusgangsDateiRepository ausgangsDateiRepository;
-    
 
     public TestSachKontoProvider(MandantRepository mandantRepository,
             AbrechnungRepository abrechnungRepository,
@@ -42,7 +41,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
         this.überweisungRepository = überweisungRepository;
         this.parameterRepository = parameterRepository;
     }
-
 
     @Override
     public SachKonto GEBÜHR() {
@@ -114,7 +112,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
         return buchungRepository;
     }
 
-
     /*
      * (non-Javadoc)
      * 
@@ -125,7 +122,6 @@ public class TestSachKontoProvider implements SachKontoProvider {
         return zahlungsAuftragRepository;
     }
 
-
     /*
      * (non-Javadoc)
      * 
@@ -135,12 +131,11 @@ public class TestSachKontoProvider implements SachKontoProvider {
     public ÜberweisungRepository getÜberweisungRepository() {
         return überweisungRepository;
     }
-    
+
     @Override
     public ParameterRepository getParameterRepository() {
         return parameterRepository;
     }
-
 
     @Override
     public AusgangsDateiRepository getAusgangsDateiRepository() {

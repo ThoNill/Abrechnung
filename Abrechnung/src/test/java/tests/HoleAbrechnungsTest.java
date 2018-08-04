@@ -28,7 +28,7 @@ import boundingContext.zahlungen.values.MonatJahr;
 @Log
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
-public class HoleAbrechnungsTest extends AbrechnungBasisTest{
+public class HoleAbrechnungsTest extends AbrechnungBasisTest {
 
     @Override
     @Before
@@ -43,11 +43,11 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest{
         return new Mandant();
     }
 
-    public Abrechnung erzeugeAbrechnung(Mandant mandant,int nummer) {
+    public Abrechnung erzeugeAbrechnung(Mandant mandant, int nummer) {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setMandant(mandant);
         abrechnung.setNummer(nummer);
-        abrechnung.setMj(new MonatJahr(4,2018));
+        abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         mandant.addAbrechnung(abrechnung);
@@ -58,30 +58,34 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest{
     @Transactional("dbATransactionManager")
     public void holeEineBestimmteAbrechnung() {
         Mandant mandant = erzeugeMandant();
-        Abrechnung abrechnung = erzeugeAbrechnung(mandant,1);
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NACHBERCHNEN,mandant.getMandantId(),abrechnung.getAbrechnungId(),new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
-        
+        Abrechnung abrechnung = erzeugeAbrechnung(mandant, 1);
+        AufrufPayload parameter = new AufrufPayload(
+                AbrechnungsArt.NACHBERCHNEN, mandant.getMandantId(),
+                abrechnung.getAbrechnungId(), new MonatJahr(4, 2018),
+                AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufruf(parameter);
-        
+
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
     }
 
-    
     @Test
     @Transactional("dbATransactionManager")
     public void ohneAbrechnungNachberechnenOderErgänzen() {
         Mandant mandant = mandantRepository.save(erzeugeMandant());
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NACHBERCHNEN,mandant.getMandantId(),0,new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
+        AufrufPayload parameter = new AufrufPayload(
+                AbrechnungsArt.NACHBERCHNEN, mandant.getMandantId(), 0,
+                new MonatJahr(4, 2018), AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufrufMitException(parameter);
-    
-        parameter = new AufrufPayload(AbrechnungsArt.ERGÄNZEN,mandant.getMandantId(),0,new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
+
+        parameter = new AufrufPayload(AbrechnungsArt.ERGÄNZEN,
+                mandant.getMandantId(), 0, new MonatJahr(4, 2018),
+                AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufrufMitException(parameter);
-    
-        
+
         assertEquals(1, mandantRepository.count());
         assertEquals(0, abrechnungRepository.count());
     }
@@ -90,48 +94,54 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest{
     @Transactional("dbATransactionManager")
     public void ohneAbrechnungNachberechnenOderErgänzen2() {
         Mandant mandant = mandantRepository.save(erzeugeMandant());
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NACHBERCHNEN,mandant.getMandantId(),3,new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
+        AufrufPayload parameter = new AufrufPayload(
+                AbrechnungsArt.NACHBERCHNEN, mandant.getMandantId(), 3,
+                new MonatJahr(4, 2018), AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufrufMitException(parameter);
-    
-        parameter = new AufrufPayload(AbrechnungsArt.ERGÄNZEN,mandant.getMandantId(),3,new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
+
+        parameter = new AufrufPayload(AbrechnungsArt.ERGÄNZEN,
+                mandant.getMandantId(), 3, new MonatJahr(4, 2018),
+                AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufrufMitException(parameter);
-    
-        
+
         assertEquals(1, mandantRepository.count());
         assertEquals(0, abrechnungRepository.count());
     }
-
 
     @Test
     @Transactional("dbATransactionManager")
     public void ohneAbrechnungNachberechnenOderErgänzen3() {
         Mandant mandant = mandantRepository.save(erzeugeMandant());
-        Abrechnung abrechnung = erzeugeAbrechnung(mandant,1);
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NACHBERCHNEN,mandant.getMandantId(),abrechnung.getAbrechnungId(),new MonatJahr(5,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
+        Abrechnung abrechnung = erzeugeAbrechnung(mandant, 1);
+        AufrufPayload parameter = new AufrufPayload(
+                AbrechnungsArt.NACHBERCHNEN, mandant.getMandantId(),
+                abrechnung.getAbrechnungId(), new MonatJahr(5, 2018),
+                AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufrufMitException(parameter);
-    
-        parameter = new AufrufPayload(AbrechnungsArt.ERGÄNZEN,mandant.getMandantId(),abrechnung.getAbrechnungId(),new MonatJahr(5,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
+
+        parameter = new AufrufPayload(AbrechnungsArt.ERGÄNZEN,
+                mandant.getMandantId(), abrechnung.getAbrechnungId(),
+                new MonatJahr(5, 2018), AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufrufMitException(parameter);
-    
-        
+
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
     }
 
-
-    
     @Test
     @Transactional("dbATransactionManager")
     public void ohneAbrechnung() {
         Mandant mandant = mandantRepository.save(erzeugeMandant());
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NEU,mandant.getMandantId(),0,new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
+        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NEU,
+                mandant.getMandantId(), 0, new MonatJahr(4, 2018),
+                AbrechnungsTyp.MONATSABRECHNUNG);
+
         AbrechnungPayload testErgebnis = aufruf(parameter);
-        
+
         assertEquals(1, testErgebnis.getAbrechnung().getNummer());
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
@@ -141,12 +151,13 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest{
     @Transactional("dbATransactionManager")
     public void rechneLetzteAbrechnungAb() {
         Mandant mandant = erzeugeMandant();
-        Abrechnung abrechnung = erzeugeAbrechnung(mandant,1);
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NEU,mandant.getMandantId(),0,new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
-        
+        Abrechnung abrechnung = erzeugeAbrechnung(mandant, 1);
+        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NEU,
+                mandant.getMandantId(), 0, new MonatJahr(4, 2018),
+                AbrechnungsTyp.MONATSABRECHNUNG);
+
         AbrechnungPayload testErgebnis = aufruf(parameter);
-        
+
         assertEquals(1, testErgebnis.getAbrechnung().getNummer());
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
@@ -156,13 +167,14 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest{
     @Transactional("dbATransactionManager")
     public void rechneNeueAbrechnungAb() {
         Mandant mandant = erzeugeMandant();
-        Abrechnung abrechnung = erzeugeAbrechnung(mandant,1);
+        Abrechnung abrechnung = erzeugeAbrechnung(mandant, 1);
         abrechnung.setStatus(AbrechnungsStatus.ABGERECHNET);
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NEU,mandant.getMandantId(),0,new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
-        
+        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NEU,
+                mandant.getMandantId(), 0, new MonatJahr(4, 2018),
+                AbrechnungsTyp.MONATSABRECHNUNG);
+
         AbrechnungPayload testErgebnis = aufruf(parameter);
-        
+
         assertEquals(2, testErgebnis.getAbrechnung().getNummer());
         assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());
@@ -172,65 +184,65 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest{
     @Transactional("dbATransactionManager")
     public void rechneNeueAbrechnungAbAusnahme() {
         Mandant mandant = erzeugeMandant();
-        Abrechnung abrechnung = erzeugeAbrechnung(mandant,1);
+        Abrechnung abrechnung = erzeugeAbrechnung(mandant, 1);
         abrechnung.setStatus(AbrechnungsStatus.ABGERECHNET);
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NEU,mandant.getMandantId(),abrechnung.getAbrechnungId(),new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
-        
+        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NEU,
+                mandant.getMandantId(), abrechnung.getAbrechnungId(),
+                new MonatJahr(4, 2018), AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufrufMitException(parameter);
-        
+
     }
 
-    
     @Test
     @Transactional("dbATransactionManager")
     public void falscherMandant() {
         Mandant mandant1 = mandantRepository.save(erzeugeMandant());
         Mandant mandant2 = mandantRepository.save(erzeugeMandant());
-        Abrechnung abrechnung = erzeugeAbrechnung(mandant2,1);
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NACHBERCHNEN,mandant1.getMandantId(),abrechnung.getAbrechnungId(),new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
-        
+        Abrechnung abrechnung = erzeugeAbrechnung(mandant2, 1);
+        AufrufPayload parameter = new AufrufPayload(
+                AbrechnungsArt.NACHBERCHNEN, mandant1.getMandantId(),
+                abrechnung.getAbrechnungId(), new MonatJahr(4, 2018),
+                AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufrufMitException(parameter);
     }
-
 
     @Test
     @Transactional("dbATransactionManager")
     public void keinMandant() {
         Mandant mandant = erzeugeMandant();
-        Abrechnung abrechnung = erzeugeAbrechnung(mandant,1);
-        AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NACHBERCHNEN,0,abrechnung.getAbrechnungId(),new MonatJahr(4,2018),AbrechnungsTyp.MONATSABRECHNUNG);        
-        
-        
+        Abrechnung abrechnung = erzeugeAbrechnung(mandant, 1);
+        AufrufPayload parameter = new AufrufPayload(
+                AbrechnungsArt.NACHBERCHNEN, 0, abrechnung.getAbrechnungId(),
+                new MonatJahr(4, 2018), AbrechnungsTyp.MONATSABRECHNUNG);
+
         aufrufMitException(parameter);
     }
 
-    
     private AbrechnungPayload aufruf(AufrufPayload parameter) {
         HoleAbrechnung handler = new HoleAbrechnung(sachKontoProvider());
         AbrechnungPayload testErgebnis;
         try {
             return handler.testTransformPayload(parameter);
-            
+
         } catch (Exception e) {
-          fail("Unerwertete Ausnahme");
-          log.severe(e.getMessage());
+            fail("Unerwertete Ausnahme");
+            log.severe(e.getMessage());
         }
         return null;
     }
-    
+
     private void aufrufMitException(AufrufPayload parameter) {
         HoleAbrechnung handler = new HoleAbrechnung(sachKontoProvider());
-        
+
         try {
             handler.testTransformPayload(parameter);
-            
+
             fail("Ausnahme erwartet");
         } catch (Exception e) {
             log.severe(e.getMessage());
         }
     }
 
-   
 }

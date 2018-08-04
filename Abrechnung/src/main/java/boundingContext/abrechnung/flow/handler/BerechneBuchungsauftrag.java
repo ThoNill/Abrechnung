@@ -23,14 +23,11 @@ public class BerechneBuchungsauftrag
         this.sachKontoProvider = sachKontoProvider;
     }
 
-
-
-
     @Override
     protected BuchungAuftragPayload transformPayload(
             GebührDefinitionPayload payload) throws Exception {
-        GebührenBerechnung berechnung = konfigurator
-                .erzeugeGebührenBerechner(payload.getDefinition(),sachKontoProvider,payload.getArt());
+        GebührenBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
+                payload.getDefinition(), sachKontoProvider, payload.getArt());
         BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(payload.getAbrechnung());
         return new BuchungAuftragPayload(payload.getAbrechnung(),

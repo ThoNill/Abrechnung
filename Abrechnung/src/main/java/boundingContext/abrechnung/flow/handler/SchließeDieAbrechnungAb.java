@@ -18,8 +18,8 @@ public class SchlieﬂeDieAbrechnungAb extends
     @Override
     protected AbrechnungPayload transformPayload(AbrechnungPayload payload)
             throws Exception {
-        Abrechnung n‰chsteAbrechnung = payload.getAbrechnung().abschleiﬂen(sachKontoProvider
-                , 30,0.06,0.19);
+        Abrechnung n‰chsteAbrechnung = payload.getAbrechnung().abschleiﬂen(
+                sachKontoProvider, 30, 0.06, 0.19);
         return payload;
     }
 }

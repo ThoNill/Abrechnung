@@ -13,9 +13,9 @@ public class MitÜberweisungenTest {
     public MitÜberweisungenTest() {
         super();
     }
-    
+
     protected void createÜberweisung(String von, double betrag, int nummer,
-            Mandant mandant,ÜberweisungRepository überweisungRepository) {
+            Mandant mandant, ÜberweisungRepository überweisungRepository) {
         Überweisung ü = new Überweisung();
 
         ü.setVon(new BankVerbindung(new IBAN(von), new BIC("INGDDEFF")));
@@ -27,12 +27,12 @@ public class MitÜberweisungenTest {
         ü.setMandant(mandant);
     }
 
-    protected void createÜberweisung(String von, int anz, Mandant mandant,ÜberweisungRepository überweisungRepository) {
+    protected void createÜberweisung(String von, int anz, Mandant mandant,
+            ÜberweisungRepository überweisungRepository) {
         for (int i = 0; i < anz; i++) {
-            createÜberweisung(von, 1.2 * i, i, mandant,überweisungRepository);
+            createÜberweisung(von, 1.2 * i, i, mandant, überweisungRepository);
         }
 
     }
-
 
 }

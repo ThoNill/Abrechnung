@@ -15,7 +15,7 @@ public class SaldoAusgleichen extends EinBucher {
     private String textSchulden;
 
     public SaldoAusgleichen(SachKontoProvider sachKontoProvider,
-            String textGuthaben,  String textSchulden) {
+            String textGuthaben, String textSchulden) {
         super(sachKontoProvider);
         this.textGuthaben = textGuthaben;
         this.textSchulden = textSchulden;
@@ -24,11 +24,11 @@ public class SaldoAusgleichen extends EinBucher {
     public void saldoAusgleichen(Abrechnung abrechnung) {
         MonetaryAmount saldo = getBuchungRepository().getSaldo(abrechnung);
         if (saldo.isNegative()) {
-            buche(abrechnung, ABGLEICH_SCHULDEN(), SCHULDEN(),
-                    textSchulden, saldo.negate());
+            buche(abrechnung, ABGLEICH_SCHULDEN(), SCHULDEN(), textSchulden,
+                    saldo.negate());
         } else {
-            buche(abrechnung, ABGLEICH_GUTHABEN(), GUTHABEN(),
-                    textGuthaben, saldo.negate());
+            buche(abrechnung, ABGLEICH_GUTHABEN(), GUTHABEN(), textGuthaben,
+                    saldo.negate());
         }
     }
 

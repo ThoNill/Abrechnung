@@ -27,7 +27,6 @@ import boundingContext.zahlungen.values.BankVerbindung;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-
 @Entity
 @Table(name = "UEBERWEISUNG")
 @SequenceGenerator(name = "UEBERWEISUNG_SEQ", sequenceName = "UEBERWEISUNG_SEQ")
@@ -35,7 +34,6 @@ public class Überweisung {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-
     @Basic
     @Column(name = "UEBERWEISUNGID")
     @Id
@@ -67,20 +65,20 @@ public class Überweisung {
             @AttributeOverride(name = "bic", column = @Column(name = "an_bic")),
             @AttributeOverride(name = "name", column = @Column(name = "an_name")) })
     private BankVerbindung an;
-    
+
     @Basic
     private Date ausbezahlt;
-    
+
     @Basic
     private Date bestätigt;
-    
+
     @Basic
     private String verwendungszweck;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AusgangsDateiId")
     private AusgangsDatei ausgangsDatei;
-  
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "MandantId")
     private Mandant mandant;
@@ -88,6 +86,5 @@ public class Überweisung {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ZahlungsAuftragId")
     private ZahlungsAuftrag auftrag;
-
 
 }

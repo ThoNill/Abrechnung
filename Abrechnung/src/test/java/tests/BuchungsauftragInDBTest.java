@@ -44,7 +44,7 @@ public class BuchungsauftragInDBTest {
 
     @Autowired
     private BuchungRepository buchungRepository;
-    
+
     @Before
     @After
     @Transactional("dbATransactionManager")
@@ -71,7 +71,7 @@ public class BuchungsauftragInDBTest {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setMandant(mandant);
         abrechnung.setNummer(3);
-        abrechnung.setMj(new MonatJahr(4,2018));
+        abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         mandant.addAbrechnung(abrechnung);
@@ -133,7 +133,7 @@ public class BuchungsauftragInDBTest {
         for (Buchung buchung : buchungRepository.findAll()) {
             assertEquals(1, buchung.getBewegungen().size());
         }
-        
+
     }
 
     @Test

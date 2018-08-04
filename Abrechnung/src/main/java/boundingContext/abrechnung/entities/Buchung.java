@@ -25,15 +25,13 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-
 @Entity
 @Table(name = "BUCHUNG")
 @SequenceGenerator(name = "BUCHUNG_SEQ", sequenceName = "BUCHUNG_SEQ")
-public class Buchung  {
+public class Buchung {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-  
     @Basic
     @Column(name = "BUCHUNGID")
     @Id
@@ -42,21 +40,17 @@ public class Buchung  {
 
     @Basic
     @Column(name = "BUCHUNGSDATUM")
-
     private Date buchungsDatum;
 
     @ToString.Include
     @Basic
     @Column(name = "TEXT")
-
     private String text;
 
     @EqualsAndHashCode.Include
     @ToString.Include
-  
     @Basic
     @Column(name = "ART")
-
     private int art;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "buchung")
@@ -81,7 +75,6 @@ public class Buchung  {
         this.bezüge.remove(bezug);
     };
 
-    
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AbrechnungId")
     private Abrechnung abrechnung;

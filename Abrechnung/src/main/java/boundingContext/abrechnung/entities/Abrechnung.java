@@ -143,7 +143,7 @@ public class Abrechnung {
     }
 
     public Abrechnung abschleißen(SachKontoProvider provider, int zinsDauer,
-            double zinssatz,double mwstsatz) {
+            double zinssatz, double mwstsatz) {
 
         ZahlungenEntfernen zahlungenEntfernen = new ZahlungenEntfernen(provider);
 
@@ -151,7 +151,7 @@ public class Abrechnung {
                 "Guthaben", "Schulden");
 
         SchuldenInDieAbrechnung schuldenÜbertragen = new SchuldenInDieAbrechnung(
-                provider, "Schulden übernehmen", zinssatz,mwstsatz);
+                provider, "Schulden übernehmen", zinssatz, mwstsatz);
         zahlungenEntfernen.entferneZahlungsaufträgeFallsRestguthaben(this);
         ausgleichen.saldoAusgleichen(this);
         Abrechnung nächsteAbrechnung = this
@@ -191,13 +191,13 @@ public class Abrechnung {
                 ParameterKey.ZINS_ÜBERZAHLUNGEN, TypeReference.ALLE, getMj());
 
     }
-    
+
     double getGanzeMwst(SachKontoProvider provider) {
         return provider.getParameterRepository().getDoubleZeitWert(
                 ParameterKey.MWST_GANZ, TypeReference.ALLE, getMj());
 
     }
-    
+
     double getHalbeMwst(SachKontoProvider provider) {
         return provider.getParameterRepository().getDoubleZeitWert(
                 ParameterKey.MWST_HALB, TypeReference.ALLE, getMj());

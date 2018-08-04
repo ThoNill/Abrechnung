@@ -4,16 +4,16 @@ import javax.persistence.AttributeConverter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class MonatJahrAdapter extends XmlAdapter<Integer, MonatJahr> implements
-        AttributeConverter<MonatJahr,Integer> {
+        AttributeConverter<MonatJahr, Integer> {
 
     @Override
     public Integer convertToDatabaseColumn(MonatJahr attribute) {
-       return attribute.getMJ();
+        return attribute.getMJ();
     }
 
     @Override
     public MonatJahr convertToEntityAttribute(Integer dbData) {
-      return new MonatJahr(dbData.intValue());
+        return new MonatJahr(dbData.intValue());
     }
 
     @Override

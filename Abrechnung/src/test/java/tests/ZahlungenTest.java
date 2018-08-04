@@ -25,7 +25,7 @@ import boundingContext.zahlungen.values.MonatJahr;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { tests.config.TestDbConfig.class })
-public class ZahlungenTest extends AbrechnungBasisTest{
+public class ZahlungenTest extends AbrechnungBasisTest {
 
     public Mandant erzeugeMandant() {
         Mandant mandant = mandantRepository.save(new Mandant());
@@ -43,19 +43,16 @@ public class ZahlungenTest extends AbrechnungBasisTest{
         return mandantRepository.save(mandant);
     }
 
-    
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setNummer(3);
-        abrechnung.setMj(new MonatJahr(4,2018));
+        abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung.setMandant(mandant);
         mandant.addAbrechnung(abrechnung);
         return abrechnungRepository.save(abrechnung);
     }
-
- 
 
     @Test
     @Transactional("dbATransactionManager")

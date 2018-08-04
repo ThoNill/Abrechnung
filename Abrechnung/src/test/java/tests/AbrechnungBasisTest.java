@@ -32,7 +32,6 @@ public class AbrechnungBasisTest {
     @Autowired
     protected AusgangsDateiRepository ausgangsDateiRepository;
 
-    
     public AbrechnungBasisTest() {
         super();
     }
@@ -50,12 +49,11 @@ public class AbrechnungBasisTest {
         parameterRepository.deleteAll();
     }
 
-    
     protected SachKontoProvider sachKontoProvider() {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
-                zahlungsAuftragRepository,
-                überweisungRepository,parameterRepository,ausgangsDateiRepository);
+                zahlungsAuftragRepository, überweisungRepository,
+                parameterRepository, ausgangsDateiRepository);
     }
 
 }

@@ -26,10 +26,9 @@ public class AuszahlungFlow {
         return new DirectChannel();
     };
 
-    
     @Value("${maxEntryInDatei}")
     int count;
-    
+
     @Bean
     @Qualifier("auszahlungFlow")
     public StandardIntegrationFlow processFileFlowBuilder(
@@ -38,13 +37,14 @@ public class AuszahlungFlow {
             ApplicationContext applicationContext) {
         return IntegrationFlows
                 .from("auszahlungChannel")
-                 .transform(
-                        createMarkiereÜberweiungsDateien(ausgangsDateiRepository, überweisungRepository, count))
+                .transform(
+                        createMarkiereÜberweiungsDateien(
+                                ausgangsDateiRepository, überweisungRepository,
+                                count))
                 .transform(
                         createMarkierenUndDateiErstellen(
                                 ausgangsDateiRepository, überweisungRepository))
-                .handle(x -> log.info("im Handler: " + x.toString()))
-                .get();
+                .handle(x -> log.info("im Handler: " + x.toString())).get();
     }
 
     private DateienMarkierenUndErstellen createMarkierenUndDateiErstellen(
@@ -56,12 +56,11 @@ public class AuszahlungFlow {
 
     private MarkiereÜberweiungsDateien createMarkiereÜberweiungsDateien(
             AusgangsDateiRepository ausgangsDateiRepository,
-            ÜberweisungRepository überweisungRepository,int count) {
+            ÜberweisungRepository überweisungRepository, int count) {
         return new MarkiereÜberweiungsDateien(createManager(
-                ausgangsDateiRepository, überweisungRepository),count);
+                ausgangsDateiRepository, überweisungRepository), count);
     }
 
-    
     ÜberweisungsDatei createManager(
             AusgangsDateiRepository ausgangsDateiRepository,
             ÜberweisungRepository überweisungRepository) {
