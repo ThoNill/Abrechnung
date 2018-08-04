@@ -4,6 +4,7 @@ package boundingContext.buchhaltung.eingang;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.AusgangsDateiRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ParameterRepository;
@@ -92,5 +93,9 @@ public class SachKontoDelegate implements SachKontoProvider {
        return sachKontoProvider.getParameterRepository();
     }
 
+    @Override
+    public AusgangsDateiRepository getAusgangsDateiRepository() {
+       return sachKontoProvider.getAusgangsDateiRepository();
+    }
 
 }

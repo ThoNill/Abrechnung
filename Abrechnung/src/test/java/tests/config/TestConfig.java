@@ -9,6 +9,7 @@ import tests.konten.TestSachKontoProvider;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.AusgangsDateiRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.LeistungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
@@ -31,6 +32,8 @@ public class TestConfig {
     protected ÜberweisungRepository überweisungRepository;
     @Autowired
     protected ParameterRepository parameterRepository;
+    @Autowired
+    protected AusgangsDateiRepository ausgangsDateiRepository;
 
     
     @Bean
@@ -45,7 +48,7 @@ public class TestConfig {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
                 zahlungsAuftragRepository,
-                überweisungRepository,parameterRepository);
+                überweisungRepository,parameterRepository,ausgangsDateiRepository);
     }
 
 

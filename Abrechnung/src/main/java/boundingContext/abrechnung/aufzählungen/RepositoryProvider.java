@@ -1,6 +1,7 @@
 package boundingContext.abrechnung.aufz‰hlungen;
 
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.AusgangsDateiRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ParameterRepository;
@@ -20,5 +21,8 @@ interface RepositoryProvider {
     ‹berweisungRepository get‹berweisungRepository();
     
     ParameterRepository getParameterRepository();
+    
+
+    AusgangsDateiRepository getAusgangsDateiRepository();
 
 }

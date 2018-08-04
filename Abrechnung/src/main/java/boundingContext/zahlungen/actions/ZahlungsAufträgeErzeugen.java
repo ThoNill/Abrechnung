@@ -28,17 +28,9 @@ import boundingContext.gemeinsam.ProzentBündelMap;
 import boundingContext.zahlungen.values.BankVerbindung;
 
 public class ZahlungsAufträgeErzeugen extends EinBucher {
-    private ZahlungsAuftragRepository zahlungsAuftragRepository;
-    private ÜberweisungRepository überweisungsRepository;
   
-    public ZahlungsAufträgeErzeugen(SachKontoProvider sachKontoProvider,
-            BuchungRepository buchungRepository,
-            ZahlungsAuftragRepository zahlungsAuftragRepository,
-            ÜberweisungRepository überweisungsRepository,
-            AbrechnungRepository abrechnungRepository) {
-        super(sachKontoProvider);
-        this.zahlungsAuftragRepository = zahlungsAuftragRepository;
-        this.überweisungsRepository = überweisungsRepository;
+    public ZahlungsAufträgeErzeugen(SachKontoProvider sachKontoProvider) {
+        super(sachKontoProvider); 
     }
 
     public List<ZahlungsAuftrag> erzeugeAufträge(Abrechnung abrechnung,
@@ -63,7 +55,7 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
             zahlungsAuftrag.setZuZahlenAm(d.berechneAuszahlungsTernin(new Date()));
             zahlungsAuftrag.setAbrechnung(abrechnung);
             zahlungsAuftrag.setMandant(mandant);
-            zahlungsAuftrag = zahlungsAuftragRepository.save(zahlungsAuftrag);
+            zahlungsAuftrag = getZahlungsAuftragRepository().save(zahlungsAuftrag);
             aufträge.add(zahlungsAuftrag);
             erzeugeBuchung(GUTHABEN(),AUSZUZAHLEN(),"Zahlungsauftrag erzeugt", abrechnung,zahlungsAuftrag);
         }
@@ -73,7 +65,7 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
     public void erzeugeÜberweisungen(
             List<ZahlungsAuftrag> zahlungsAufträge, BankVerbindung vonBank) {
         for (ZahlungsAuftrag auftrag : zahlungsAufträge) {
-            auftrag = zahlungsAuftragRepository.save(auftrag);
+            auftrag = getZahlungsAuftragRepository().save(auftrag);
             Überweisung überweisung = new Überweisung();
             überweisung.setBetrag(auftrag.getBetrag());
             überweisung.setAn(auftrag.getBank());
@@ -82,7 +74,7 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
             überweisung.setErstellt(new Date());
             überweisung.setAuftrag(auftrag);
             überweisung.setMandant(auftrag.getMandant());
-            überweisung = überweisungsRepository.save(überweisung);
+            überweisung = getÜberweisungRepository().save(überweisung);
             erzeugeBuchung(AUSZUZAHLEN(),AUSBEZAHLT(),"Überweisung erzeugt", auftrag.getAbrechnung(),überweisung);
         }
     }

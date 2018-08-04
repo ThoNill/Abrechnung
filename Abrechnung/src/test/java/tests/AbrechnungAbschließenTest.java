@@ -235,9 +235,7 @@ public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
         Abrechnung nächsteAbrechnung = abschließen(abrechnung);
 
         ZahlungsAufträgeErzeugen zahlungenManager = new ZahlungsAufträgeErzeugen(
-                sachKontoProvider(), buchungRepository,
-                zahlungsAuftragRepository,
-                überweisungRepository, abrechnungRepository);
+                sachKontoProvider());
 
         checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,
                 TestSachKonto.GUTHABEN, -100);

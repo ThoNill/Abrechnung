@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tests.konten.TestSachKontoProvider;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.AusgangsDateiRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ParameterRepository;
@@ -28,6 +29,8 @@ public class AbrechnungBasisTest {
     protected ÜberweisungRepository überweisungRepository;
     @Autowired
     protected ParameterRepository parameterRepository;
+    @Autowired
+    protected AusgangsDateiRepository ausgangsDateiRepository;
 
     
     public AbrechnungBasisTest() {
@@ -38,6 +41,7 @@ public class AbrechnungBasisTest {
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
+        ausgangsDateiRepository.deleteAll();
         buchungRepository.deleteAll();
         überweisungRepository.deleteAll();
         zahlungsAuftragRepository.deleteAll();
@@ -51,7 +55,7 @@ public class AbrechnungBasisTest {
         return new TestSachKontoProvider(mandantRepository,
                 abrechnungRepository, buchungRepository,
                 zahlungsAuftragRepository,
-                überweisungRepository,parameterRepository);
+                überweisungRepository,parameterRepository,ausgangsDateiRepository);
     }
 
 }

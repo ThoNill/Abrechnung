@@ -3,6 +3,7 @@ package tests.konten;
 import boundingContext.abrechnung.aufzählungen.SachKonto;
 import boundingContext.abrechnung.aufzählungen.SachKontoProvider;
 import boundingContext.abrechnung.repositories.AbrechnungRepository;
+import boundingContext.abrechnung.repositories.AusgangsDateiRepository;
 import boundingContext.abrechnung.repositories.BuchungRepository;
 import boundingContext.abrechnung.repositories.MandantRepository;
 import boundingContext.abrechnung.repositories.ParameterRepository;
@@ -21,18 +22,23 @@ public class TestSachKontoProvider implements SachKontoProvider {
     private ÜberweisungRepository überweisungRepository;
     
     private ParameterRepository parameterRepository;
+    
+    private AusgangsDateiRepository ausgangsDateiRepository;
+    
 
     public TestSachKontoProvider(MandantRepository mandantRepository,
             AbrechnungRepository abrechnungRepository,
             BuchungRepository buchungRepository,
             ZahlungsAuftragRepository zahlungsAuftragRepository,
             ÜberweisungRepository überweisungRepository,
-            ParameterRepository parameterRepository) {
+            ParameterRepository parameterRepository,
+            AusgangsDateiRepository ausgangsDateiRepository) {
         super();
         this.mandantRepository = mandantRepository;
         this.abrechnungRepository = abrechnungRepository;
         this.buchungRepository = buchungRepository;
         this.zahlungsAuftragRepository = zahlungsAuftragRepository;
+        this.ausgangsDateiRepository = ausgangsDateiRepository;
         this.überweisungRepository = überweisungRepository;
         this.parameterRepository = parameterRepository;
     }
@@ -133,6 +139,12 @@ public class TestSachKontoProvider implements SachKontoProvider {
     @Override
     public ParameterRepository getParameterRepository() {
         return parameterRepository;
+    }
+
+
+    @Override
+    public AusgangsDateiRepository getAusgangsDateiRepository() {
+        return ausgangsDateiRepository;
     }
 
 }
