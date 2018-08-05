@@ -21,15 +21,15 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.nill.abrechnung.aufzählungen.AbrechnungsStatus;
 import org.nill.abrechnung.aufzählungen.AbrechnungsTyp;
 import org.nill.abrechnung.aufzählungen.SachKontoProvider;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
 import org.nill.zahlungen.values.MonatJahr;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

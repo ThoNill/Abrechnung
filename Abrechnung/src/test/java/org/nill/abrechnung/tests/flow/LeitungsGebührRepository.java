@@ -5,10 +5,9 @@ import javax.money.MonetaryAmount;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.repositories.LeistungRepository;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.daten.GebührRepository;
-
-import boundingContext.gemeinsam.BetragsBündel;
-import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class LeitungsGebührRepository implements GebührRepository<SachKonto> {
 

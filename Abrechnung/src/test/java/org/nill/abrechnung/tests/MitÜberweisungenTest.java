@@ -3,11 +3,10 @@ package org.nill.abrechnung.tests;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.entities.‹berweisung;
 import org.nill.abrechnung.repositories.‹berweisungRepository;
+import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.zahlungen.values.BIC;
 import org.nill.zahlungen.values.BankVerbindung;
 import org.nill.zahlungen.values.IBAN;
-
-import betrag.Geld;
 
 public class Mit‹berweisungenTest {
 

@@ -34,7 +34,7 @@ public class Leistung {
 
     @Basic
     @Column(name = "BETRAG")
-    @Convert(converter = betrag.GeldKonverter.class)
+    @Convert(converter = org.nill.basiskomponenten.betrag.GeldKonverter.class)
     private MonetaryAmount betrag;
 
     @Basic

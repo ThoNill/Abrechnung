@@ -3,8 +3,7 @@ package org.nill.daten;
 import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.entities.Abrechnung;
-
-import boundingContext.gemeinsam.BetragsBündel;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 
 public interface GebührRepository<KEY> {
     void markieren(Abrechnung abrechnung);

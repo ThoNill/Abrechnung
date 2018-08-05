@@ -10,12 +10,11 @@ import org.nill.abrechnung.aufzählungen.SachKontoProvider;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.ZahlungsAuftrag;
 import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.buchhaltung.eingang.EinBucher;
 import org.springframework.transaction.annotation.Transactional;
-
-import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class ZahlungenEntfernen extends EinBucher {
     public ZahlungenEntfernen(SachKontoProvider sachKontoProvider) {

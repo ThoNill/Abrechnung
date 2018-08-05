@@ -15,14 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.nill.abrechnung.aufzählungen.ParameterKey;
 import org.nill.zahlungen.values.MonatJahr;
 import org.nill.zahlungen.values.MonatJahrAdapter;
 import org.nill.zahlungen.values.TypeReference;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

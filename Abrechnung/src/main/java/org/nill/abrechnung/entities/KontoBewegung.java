@@ -46,7 +46,7 @@ public class KontoBewegung {
 
     @Basic
     @Column(name = "BETRAG")
-    @Convert(converter = betrag.GeldKonverter.class)
+    @Convert(converter = org.nill.basiskomponenten.betrag.GeldKonverter.class)
     private javax.money.MonetaryAmount betrag;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

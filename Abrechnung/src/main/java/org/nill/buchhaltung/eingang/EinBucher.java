@@ -10,9 +10,8 @@ import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.BezugZurBuchung;
 import org.nill.abrechnung.entities.Buchung;
 import org.nill.abrechnung.entities.KontoBewegung;
-
-import boundingContext.gemeinsam.BetragsBündel;
-import boundingContext.gemeinsam.BetragsBündelMap;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 
 public class EinBucher extends SachKontoDelegate {
 

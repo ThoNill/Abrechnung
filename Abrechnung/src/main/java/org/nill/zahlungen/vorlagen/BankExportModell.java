@@ -7,9 +7,8 @@ import java.util.List;
 import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.entities.Überweisung;
+import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.zahlungen.values.BankVerbindung;
-
-import betrag.Geld;
 
 public class BankExportModell {
     private int anzahl;

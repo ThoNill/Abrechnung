@@ -2,7 +2,7 @@ package org.nill.abrechnung.gebühren;
 
 import javax.money.MonetaryAmount;
 
-import betrag.Geld;
+import org.nill.basiskomponenten.betrag.Geld;
 
 public class MindestGebühr implements Gebühr {
     private MonetaryAmount minimum;

@@ -5,11 +5,10 @@ import javax.money.MonetaryAmount;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.aufzählungen.SachKontoProvider;
 import org.nill.abrechnung.entities.Abrechnung;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.buchhaltung.eingang.EinBucher;
-
-import boundingContext.gemeinsam.BetragsBündelMap;
 
 public class SaldoAusgleichen extends EinBucher {
     private String textGuthaben;

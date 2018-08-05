@@ -2,7 +2,8 @@ package org.nill.buchhaltung.eingang;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ddd.Value;
+
+import org.nill.basiskomponenten.ddd.Value;
 
 @Getter
 @AllArgsConstructor

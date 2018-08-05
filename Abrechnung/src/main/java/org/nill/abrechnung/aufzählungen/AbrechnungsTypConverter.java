@@ -1,6 +1,6 @@
 package org.nill.abrechnung.aufzählungen;
 
-import ordinal.OrdinalConverter;
+import org.nill.basiskomponenten.ordinal.OrdinalConverter;
 
 public class AbrechnungsTypConverter extends OrdinalConverter<AbrechnungsTyp> {
     public AbrechnungsTypConverter() {

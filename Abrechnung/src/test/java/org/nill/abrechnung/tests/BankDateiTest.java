@@ -25,6 +25,7 @@ import org.nill.abrechnung.repositories.BuchungRepository;
 import org.nill.abrechnung.repositories.MandantRepository;
 import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
 import org.nill.abrechnung.repositories.ÜberweisungRepository;
+import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.zahlungen.values.BIC;
 import org.nill.zahlungen.values.BankVerbindung;
 import org.nill.zahlungen.values.IBAN;
@@ -42,8 +43,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.xml.validation.XmlValidator;
 import org.springframework.xml.validation.XmlValidatorFactory;
 import org.xml.sax.SAXParseException;
-
-import betrag.Geld;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })

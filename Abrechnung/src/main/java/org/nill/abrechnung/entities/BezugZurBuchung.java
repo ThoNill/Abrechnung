@@ -15,11 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.nill.zahlungen.values.TypeReference;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import org.nill.zahlungen.values.TypeReference;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

@@ -2,7 +2,7 @@ package org.nill.zahlungen.values;
 
 import javax.persistence.Embeddable;
 
-import ddd.Value;
+import org.nill.basiskomponenten.ddd.Value;
 
 public @Embeddable class TypeReference implements Value {
     public static final TypeReference ALLE = new TypeReference(0, 0);

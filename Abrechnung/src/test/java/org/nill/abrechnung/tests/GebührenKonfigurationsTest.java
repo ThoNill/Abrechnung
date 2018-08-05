@@ -24,6 +24,8 @@ import org.nill.abrechnung.repositories.LeistungRepository;
 import org.nill.abrechnung.tests.flow.TestAbrechnungsKonfigurator;
 import org.nill.abrechnung.tests.flow.TestLeistungsRepository;
 import org.nill.abrechnung.tests.konten.TestSachKonto;
+import org.nill.basiskomponenten.betrag.Geld;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.buchhaltung.eingang.EinBucher;
 import org.nill.zahlungen.values.MonatJahr;
@@ -32,9 +34,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import betrag.Geld;
-import boundingContext.gemeinsam.BetragsBündel;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })

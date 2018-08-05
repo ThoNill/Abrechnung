@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import javax.money.MonetaryAmount;
 
-import mathe.kopfpos.KopfMitPositionen;
-import boundingContext.gemeinsam.BetragsBündel;
-import ddd.Value;
+import org.nill.basiskomponenten.ddd.Value;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
+import org.nill.basiskomponenten.mathe.kopfpos.KopfMitPositionen;
 
 public class BuchungsAuftrag<KEY>
         extends

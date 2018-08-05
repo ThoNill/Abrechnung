@@ -9,8 +9,7 @@ import org.nill.abrechnung.gebühren.FestGebühr;
 import org.nill.abrechnung.gebühren.Gebühr;
 import org.nill.abrechnung.gebühren.MindestGebühr;
 import org.nill.abrechnung.gebühren.ProzentualeGebühr;
-
-import betrag.Geld;
+import org.nill.basiskomponenten.betrag.Geld;
 
 public class GebührenTest {
 

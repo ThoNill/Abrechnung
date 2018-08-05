@@ -5,7 +5,8 @@ import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 
 import lombok.Data;
-import ddd.Value;
+
+import org.nill.basiskomponenten.ddd.Value;
 
 @Data
 public @Embeddable class BankVerbindung implements Value {

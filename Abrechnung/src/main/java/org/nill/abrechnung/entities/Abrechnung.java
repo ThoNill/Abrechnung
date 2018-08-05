@@ -24,6 +24,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.nill.abrechnung.actions.GebührenBerechnung;
 import org.nill.abrechnung.actions.SaldoAusgleichen;
 import org.nill.abrechnung.actions.SchuldenInDieAbrechnung;
@@ -42,10 +46,6 @@ import org.nill.zahlungen.actions.ZahlungenEntfernen;
 import org.nill.zahlungen.values.MonatJahr;
 import org.nill.zahlungen.values.MonatJahrAdapter;
 import org.nill.zahlungen.values.TypeReference;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

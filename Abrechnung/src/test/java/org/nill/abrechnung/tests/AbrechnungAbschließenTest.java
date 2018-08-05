@@ -19,6 +19,8 @@ import org.nill.abrechnung.entities.Buchung;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.entities.ZahlungsDefinition;
 import org.nill.abrechnung.tests.konten.TestSachKonto;
+import org.nill.basiskomponenten.betrag.Geld;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.buchhaltung.eingang.EinBucher;
@@ -30,9 +32,6 @@ import org.nill.zahlungen.values.MonatJahr;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import betrag.Geld;
-import boundingContext.gemeinsam.BetragsBündelMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })

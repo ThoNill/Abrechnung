@@ -12,6 +12,7 @@ import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.entities.ZahlungsAuftrag;
 import org.nill.abrechnung.entities.ZahlungsDefinition;
+import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.zahlungen.actions.ZahlungsAufträgeErzeugen;
 import org.nill.zahlungen.values.BIC;
 import org.nill.zahlungen.values.BankVerbindung;
@@ -20,8 +21,6 @@ import org.nill.zahlungen.values.MonatJahr;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import betrag.Geld;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })

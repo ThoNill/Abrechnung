@@ -9,13 +9,12 @@ import org.nill.abrechnung.entities.GebuehrDefinition;
 import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
 import org.nill.abrechnung.gebühren.Gebühr;
 import org.nill.abrechnung.gebühren.GebührFabrik;
+import org.nill.basiskomponenten.betrag.Geld;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.buchhaltung.eingang.SachKontoDelegate;
 import org.nill.daten.GebührRepository;
-
-import betrag.Geld;
-import boundingContext.gemeinsam.BetragsBündel;
 
 public class GebührenBerechnung extends SachKontoDelegate {
     private GebuehrDefinition definition;

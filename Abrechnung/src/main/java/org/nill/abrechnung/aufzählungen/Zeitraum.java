@@ -2,7 +2,7 @@ package org.nill.abrechnung.aufzählungen;
 
 import java.util.Date;
 
-import ddd.Value;
+import org.nill.basiskomponenten.ddd.Value;
 
 public class Zeitraum implements Value {
     private int monat;

@@ -2,10 +2,10 @@ package org.nill.abrechnung.flow.payloads;
 
 import javax.validation.constraints.NotNull;
 
+import lombok.Getter;
+
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Mandant;
-
-import lombok.Getter;
 
 @Getter
 public class AbrechnungPayload {

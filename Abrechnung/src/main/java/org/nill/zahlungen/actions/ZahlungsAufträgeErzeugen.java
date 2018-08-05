@@ -15,14 +15,13 @@ import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.entities.ZahlungsAuftrag;
 import org.nill.abrechnung.entities.ZahlungsDefinition;
 import org.nill.abrechnung.entities.Überweisung;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
+import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
+import org.nill.basiskomponenten.gemeinsam.ProzentBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.buchhaltung.eingang.EinBucher;
 import org.nill.zahlungen.values.BankVerbindung;
-
-import boundingContext.gemeinsam.BetragsBündel;
-import boundingContext.gemeinsam.BetragsBündelMap;
-import boundingContext.gemeinsam.ProzentBündelMap;
 
 public class ZahlungsAufträgeErzeugen extends EinBucher {
 

@@ -1,12 +1,12 @@
 package org.nill.abrechnung.flow.payloads;
 
+import lombok.Getter;
+
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.GebuehrDefinition;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
-
-import lombok.Getter;
 
 @Getter
 public class BuchungAuftragPayload extends GebührDefinitionPayload {

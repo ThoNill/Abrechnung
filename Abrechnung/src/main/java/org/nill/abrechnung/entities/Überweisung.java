@@ -19,11 +19,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.nill.zahlungen.values.BankVerbindung;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import org.nill.zahlungen.values.BankVerbindung;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -47,7 +47,7 @@ public class Überweisung {
 
     @Basic
     @Column(name = "BETRAG")
-    @Convert(converter = betrag.GeldKonverter.class)
+    @Convert(converter = org.nill.basiskomponenten.betrag.GeldKonverter.class)
     private MonetaryAmount betrag;
 
     @Basic
