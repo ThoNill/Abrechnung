@@ -14,7 +14,6 @@ import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.buchhaltung.eingang.SachKontoDelegate;
-import org.nill.daten.GebührRepository;
 
 public class GebührenBerechnung extends SachKontoDelegate {
     private GebuehrDefinition definition;

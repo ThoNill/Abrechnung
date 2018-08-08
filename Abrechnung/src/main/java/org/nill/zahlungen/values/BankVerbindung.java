@@ -1,14 +1,10 @@
 package org.nill.zahlungen.values;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.Transient;
 
 import lombok.Data;
 
-import org.hibernate.annotations.Type;
 import org.nill.basiskomponenten.ddd.Value;
 
 @Data

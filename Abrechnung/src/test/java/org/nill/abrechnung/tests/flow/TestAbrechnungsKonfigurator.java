@@ -1,5 +1,6 @@
 package org.nill.abrechnung.tests.flow;
 
+import org.nill.abrechnung.actions.GebührRepository;
 import org.nill.abrechnung.actions.GebührenBerechnung;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.aufzählungen.SachKontoProvider;
@@ -8,7 +9,6 @@ import org.nill.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
 import org.nill.abrechnung.gebühren.GebührFabrik;
 import org.nill.abrechnung.repositories.LeistungRepository;
-import org.nill.daten.GebührRepository;
 
 public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
 

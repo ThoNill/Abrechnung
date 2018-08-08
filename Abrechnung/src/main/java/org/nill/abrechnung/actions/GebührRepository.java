@@ -1,4 +1,4 @@
-package org.nill.daten;
+package org.nill.abrechnung.actions;
 
 import javax.money.MonetaryAmount;
 

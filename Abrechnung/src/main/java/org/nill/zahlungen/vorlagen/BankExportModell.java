@@ -3,9 +3,7 @@ package org.nill.zahlungen.vorlagen;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import javax.money.MonetaryAmount;
-
 import org.nill.abrechnung.entities.Überweisung;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.zahlungen.values.BankVerbindung;

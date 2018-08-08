@@ -2,12 +2,12 @@ package org.nill.abrechnung.tests.flow;
 
 import javax.money.MonetaryAmount;
 
+import org.nill.abrechnung.actions.GebührRepository;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.repositories.LeistungRepository;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
-import org.nill.daten.GebührRepository;
 
 public class LeitungsGebührRepository implements GebührRepository<SachKonto> {
 
