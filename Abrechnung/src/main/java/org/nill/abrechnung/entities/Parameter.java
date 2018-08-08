@@ -20,9 +20,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import org.nill.abrechnung.aufzählungen.ParameterKey;
-import org.nill.zahlungen.values.MonatJahr;
-import org.nill.zahlungen.values.MonatJahrAdapter;
-import org.nill.zahlungen.values.TypeReference;
+import org.nill.allgemein.values.MonatJahr;
+import org.nill.allgemein.values.MonatJahrAdapter;
+import org.nill.allgemein.values.TypeReference;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

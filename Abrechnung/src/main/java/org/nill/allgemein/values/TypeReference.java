@@ -1,4 +1,4 @@
-package org.nill.zahlungen.values;
+package org.nill.allgemein.values;
 
 import javax.persistence.Embeddable;
 

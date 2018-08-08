@@ -18,7 +18,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.nill.zahlungen.values.TypeReference;
+import org.nill.allgemein.values.TypeReference;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

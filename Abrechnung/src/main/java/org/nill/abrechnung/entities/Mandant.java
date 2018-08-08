@@ -7,7 +7,9 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,7 +31,8 @@ import org.nill.abrechnung.aufzählungen.AbrechnungsStatus;
 import org.nill.abrechnung.aufzählungen.AbrechnungsTyp;
 import org.nill.abrechnung.aufzählungen.SachKontoProvider;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
-import org.nill.zahlungen.values.MonatJahr;
+import org.nill.abrechnung.values.ZahlungsDefinition;
+import org.nill.allgemein.values.MonatJahr;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -59,13 +62,14 @@ public class Mandant {
     @JoinTable(name = "mandant_gebuehrdefinition", joinColumns = { @JoinColumn(name = "mandantId") }, inverseJoinColumns = { @JoinColumn(name = "gebuehrDefinitionId") })
     private Set<GebuehrDefinition> gebuehrDefinitionen = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mandant", fetch = FetchType.LAZY)
+    
+    @ElementCollection(targetClass=ZahlungsDefinition.class)
+    @CollectionTable(name="mandant_zahlungsDefinitionen", joinColumns=@JoinColumn(name="MANDANTID"))
     private Set<ZahlungsDefinition> zahlungsDefinitionen = new HashSet<>();
-
+    
     public void addAbrechnung(Abrechnung a) {
         abrechnung.add(a);
     }
-
     public void addZahlungsDefinitionen(ZahlungsDefinition d) {
         zahlungsDefinitionen.add(d);
     }

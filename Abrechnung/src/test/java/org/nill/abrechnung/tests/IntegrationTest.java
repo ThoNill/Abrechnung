@@ -11,7 +11,7 @@ import org.nill.abrechnung.entities.GebuehrDefinition;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
 import org.nill.abrechnung.flow.payloads.AufrufPayload;
-import org.nill.zahlungen.values.MonatJahr;
+import org.nill.allgemein.values.MonatJahr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;

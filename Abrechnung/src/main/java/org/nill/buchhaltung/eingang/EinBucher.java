@@ -7,9 +7,9 @@ import javax.money.MonetaryAmount;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.aufzählungen.SachKontoProvider;
 import org.nill.abrechnung.entities.Abrechnung;
-import org.nill.abrechnung.entities.BezugZurBuchung;
 import org.nill.abrechnung.entities.Buchung;
-import org.nill.abrechnung.entities.KontoBewegung;
+import org.nill.abrechnung.values.KontoBewegung;
+import org.nill.allgemein.values.TypeReference;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 
@@ -49,15 +49,12 @@ public class EinBucher extends SachKontoDelegate {
             bew.setBetrag(betrag);
             bew.setArt(1);
             bew.setKontoNr(p.ordinal());
-            bew.setBuchung(buchung);
             buchung.addBewegungen(bew);
         }
     }
 
     private void bezugHinzufügen(Buchung buchung, int rolle, Long refernzid) {
-        BezugZurBuchung bezug = new BezugZurBuchung();
-        bezug.setBuchung(buchung);
-        buchung.addBezug(bezug);
+        buchung.addBezug(new TypeReference(rolle,refernzid));
     }
 
     public BetragsBündel<SachKonto> beträgeEinerBuchungsartHolen(

@@ -1,9 +1,11 @@
 package org.nill.zahlungen.values;
 
+import javax.persistence.Embeddable;
+
 import lombok.Data;
 
 @Data
-public class BIC {
+public @Embeddable class BIC {
     private String bic;
 
     public BIC() {

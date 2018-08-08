@@ -1,8 +1,10 @@
-package org.nill.zahlungen.values;
+package org.nill.allgemein.values;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+@Converter
 public class MonatJahrAdapter extends XmlAdapter<Integer, MonatJahr> implements
         AttributeConverter<MonatJahr, Integer> {
 

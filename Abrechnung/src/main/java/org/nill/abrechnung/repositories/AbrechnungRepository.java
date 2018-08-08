@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.nill.abrechnung.aufzählungen.AbrechnungsStatus;
 import org.nill.abrechnung.entities.Abrechnung;
-import org.nill.zahlungen.values.MonatJahr;
+import org.nill.allgemein.values.MonatJahr;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

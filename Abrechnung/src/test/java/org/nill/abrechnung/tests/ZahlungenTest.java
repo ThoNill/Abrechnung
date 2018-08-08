@@ -11,13 +11,13 @@ import org.nill.abrechnung.aufzählungen.SachKontoProvider;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.entities.ZahlungsAuftrag;
-import org.nill.abrechnung.entities.ZahlungsDefinition;
+import org.nill.abrechnung.values.ZahlungsDefinition;
+import org.nill.allgemein.values.MonatJahr;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.zahlungen.actions.ZahlungsAufträgeErzeugen;
 import org.nill.zahlungen.values.BIC;
 import org.nill.zahlungen.values.BankVerbindung;
 import org.nill.zahlungen.values.IBAN;
-import org.nill.zahlungen.values.MonatJahr;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +37,6 @@ public class ZahlungenTest extends AbrechnungBasisTest {
         d.setBank(new BankVerbindung(new IBAN("123"), new BIC("999")));
         d.setProzentSatz(prozentSatz);
         d.setTag(1);
-        d.setMandant(mandant);
         mandant.addZahlungsDefinitionen(d);
         return mandantRepository.save(mandant);
     }

@@ -55,16 +55,16 @@ public class Überweisung {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "iban", column = @Column(name = "von_iban")),
-            @AttributeOverride(name = "bic", column = @Column(name = "von_bic")),
+            @AttributeOverride(name = "iban.iban", column = @Column(name = "von_iban")),
+            @AttributeOverride(name = "bic.bic", column = @Column(name = "von_bic")),
             @AttributeOverride(name = "name", column = @Column(name = "von_name")) })
     private BankVerbindung von;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "iban", column = @Column(name = "an_iban")),
-            @AttributeOverride(name = "bic", column = @Column(name = "an_bic")),
-            @AttributeOverride(name = "name", column = @Column(name = "an_name")) })
+            @AttributeOverride(name = "iban.iban", column = @Column(name = "an_iban")),
+            @AttributeOverride(name = "bic.bic", column = @Column(name = "an_bic")),
+            @AttributeOverride(name = "sname", column = @Column(name = "an_name")) })
     private BankVerbindung an;
 
     @Basic

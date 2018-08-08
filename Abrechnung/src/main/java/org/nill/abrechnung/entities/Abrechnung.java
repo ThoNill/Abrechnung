@@ -40,12 +40,12 @@ import org.nill.abrechnung.aufzählungen.SachKontoProvider;
 import org.nill.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
+import org.nill.allgemein.values.MonatJahr;
+import org.nill.allgemein.values.MonatJahrAdapter;
+import org.nill.allgemein.values.TypeReference;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.buchhaltung.eingang.EinBucher;
 import org.nill.zahlungen.actions.ZahlungenEntfernen;
-import org.nill.zahlungen.values.MonatJahr;
-import org.nill.zahlungen.values.MonatJahrAdapter;
-import org.nill.zahlungen.values.TypeReference;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

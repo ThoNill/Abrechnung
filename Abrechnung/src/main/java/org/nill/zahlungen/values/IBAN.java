@@ -1,9 +1,11 @@
 package org.nill.zahlungen.values;
 
+import javax.persistence.Embeddable;
+
 import lombok.Data;
 
 @Data
-public class IBAN {
+public @Embeddable class IBAN {
     private String iban;
 
     public IBAN() {

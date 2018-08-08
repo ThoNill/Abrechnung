@@ -3,7 +3,7 @@ package org.nill.abrechnung.flow.payloads;
 import lombok.Value;
 
 import org.nill.abrechnung.aufzählungen.AbrechnungsTyp;
-import org.nill.zahlungen.values.MonatJahr;
+import org.nill.allgemein.values.MonatJahr;
 
 @Value
 public class AufrufPayload {

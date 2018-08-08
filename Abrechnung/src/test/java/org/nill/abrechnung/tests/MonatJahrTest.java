@@ -3,7 +3,7 @@ package org.nill.abrechnung.tests;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nill.zahlungen.values.MonatJahr;
+import org.nill.allgemein.values.MonatJahr;
 
 public class MonatJahrTest {
     @Test

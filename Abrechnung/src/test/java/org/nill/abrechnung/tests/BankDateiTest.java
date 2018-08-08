@@ -18,18 +18,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Mandant;
-import org.nill.abrechnung.entities.ZahlungsDefinition;
 import org.nill.abrechnung.entities.Überweisung;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
 import org.nill.abrechnung.repositories.BuchungRepository;
 import org.nill.abrechnung.repositories.MandantRepository;
 import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
 import org.nill.abrechnung.repositories.ÜberweisungRepository;
+import org.nill.abrechnung.values.ZahlungsDefinition;
+import org.nill.allgemein.values.MonatJahr;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.zahlungen.values.BIC;
 import org.nill.zahlungen.values.BankVerbindung;
 import org.nill.zahlungen.values.IBAN;
-import org.nill.zahlungen.values.MonatJahr;
 import org.nill.zahlungen.vorlagen.BankExportModell;
 import org.nill.zahlungen.vorlagen.BankExportVorlage;
 import org.slf4j.Logger;
@@ -91,7 +91,6 @@ public class BankDateiTest {
                 new BIC("BYLADEM1001")));
         d.setProzentSatz(prozentSatz);
         d.setTag(1);
-        d.setMandant(mandant);
         mandant.addZahlungsDefinitionen(d);
         return mandantRepository.save(mandant);
     }

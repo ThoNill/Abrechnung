@@ -1,12 +1,15 @@
-package org.nill.abrechnung.entities;
+package org.nill.abrechnung.values;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,29 +23,17 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
 
 import org.nill.zahlungen.values.BankVerbindung;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(onlyExplicitlyIncluded = true)
-@Entity
-@Table(name = "ZAHLUNGDEFINITION")
-@SequenceGenerator(name = "ZAHLUNGDEFINITION_SEQ", sequenceName = "ZAHLUNGDEFINITION_SEQ")
+@EqualsAndHashCode
+@ToString
+@Embeddable
 public class ZahlungsDefinition {
-
-    @EqualsAndHashCode.Include
-    @ToString.Include
-    @Basic
-    @Column(name = "ZAHLUNGDEFINITIONID")
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ZAHLUNGDEFINITION_SEQ")
-    private long zahlungsDefinitionId;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "MandantId")
-    private Mandant mandant;
-
+    
+    
     @Basic
     @Column(name = "BUCHUNGSART")
     private int buchungsart;
@@ -51,18 +42,20 @@ public class ZahlungsDefinition {
     @Column(name = "PROZENTSATZ")
     private double prozentSatz;
 
-    @ToString.Include
     @Basic
     @Column(name = "ZEITART")
     private int zeitArt;
 
-    @ToString.Include
     @Basic
     @Column(name = "TAG")
     private int tag;
 
     @Embedded
-    private BankVerbindung bank;
+    @AttributeOverrides({
+        @AttributeOverride(name = "iban.iban", column = @Column(name = "bank_iban")),
+        @AttributeOverride(name = "iban.bic", column = @Column(name = "bank_bic")),
+        @AttributeOverride(name = "name", column = @Column(name = "bank_name")) })
+    public BankVerbindung bank;
 
     public Date berechneAuszahlungsTernin(Date ausgangsTermin) {
         int tage = getTag();

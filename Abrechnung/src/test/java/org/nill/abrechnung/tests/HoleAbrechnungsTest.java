@@ -19,7 +19,7 @@ import org.nill.abrechnung.flow.handler.HoleAbrechnung;
 import org.nill.abrechnung.flow.payloads.AbrechnungPayload;
 import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
 import org.nill.abrechnung.flow.payloads.AufrufPayload;
-import org.nill.zahlungen.values.MonatJahr;
+import org.nill.allgemein.values.MonatJahr;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;

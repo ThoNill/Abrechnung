@@ -3,8 +3,8 @@ package org.nill.abrechnung.repositories;
 
 import org.nill.abrechnung.aufzählungen.ParameterKey;
 import org.nill.abrechnung.entities.Parameter;
-import org.nill.zahlungen.values.MonatJahr;
-import org.nill.zahlungen.values.TypeReference;
+import org.nill.allgemein.values.MonatJahr;
+import org.nill.allgemein.values.TypeReference;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

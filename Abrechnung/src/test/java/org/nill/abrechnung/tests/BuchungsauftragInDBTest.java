@@ -14,18 +14,18 @@ import org.nill.abrechnung.aufzählungen.BuchungsArt;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Buchung;
-import org.nill.abrechnung.entities.KontoBewegung;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
 import org.nill.abrechnung.repositories.BuchungRepository;
 import org.nill.abrechnung.repositories.MandantRepository;
 import org.nill.abrechnung.tests.konten.TestSachKonto;
+import org.nill.abrechnung.values.KontoBewegung;
+import org.nill.allgemein.values.MonatJahr;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
-import org.nill.zahlungen.values.MonatJahr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -89,7 +89,6 @@ public class BuchungsauftragInDBTest {
             bew.setBetrag(beträge.getValue(p));
             bew.setArt(1);
             bew.setKontoNr(p.ordinal());
-            bew.setBuchung(buchung);
             buchung.addBewegungen(bew);
         }
         return buchung;
