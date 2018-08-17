@@ -18,12 +18,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EntityScan(basePackageClasses = {
-        org.nill.abrechnung.entities.Abrechnung.class,
-        org.nill.abrechnung.entities.ZahlungsAuftrag.class,
-        org.nill.abrechnung.entities.Überweisung.class,
-        org.nill.abrechnung.entities.AusgangsDatei.class})
-@EnableJpaRepositories(basePackageClasses = { org.nill.abrechnung.repositories.BuchungRepository.class, 
-        org.nill.abrechnung.repositories.ZahlungsAuftragRepository.class}
+        org.nill.abrechnung.entities.Parameter.class})
+@EnableJpaRepositories(basePackageClasses = { 
+        org.nill.abrechnung.repositories.BuchungRepository.class}
 , transactionManagerRef = "dbATransactionManager" // Name des
 )
 public class TestDbConfig {

@@ -4,7 +4,6 @@ import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.entities.Leistung;
 import org.nill.abrechnung.interfaces.IAbrechnung;
-import org.nill.abrechnung.interfaces.ILeistungRepository;
 import org.nill.abrechnung.interfaces.IMandant;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

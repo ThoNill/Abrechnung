@@ -5,7 +5,7 @@ import javax.money.MonetaryAmount;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.interfaces.GebührRepository;
 import org.nill.abrechnung.interfaces.IAbrechnung;
-import org.nill.abrechnung.interfaces.ILeistungRepository;
+import org.nill.abrechnung.repositories.ILeistungRepository;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 

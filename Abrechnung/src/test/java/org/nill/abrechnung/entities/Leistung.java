@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.nill.abrechnung.entities.Abrechnung;
+import org.nill.abrechnung.entities.Mandant;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

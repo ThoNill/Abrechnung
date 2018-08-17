@@ -1,6 +1,9 @@
-package org.nill.abrechnung.interfaces;
+package org.nill.abrechnung.repositories;
 
 import javax.money.MonetaryAmount;
+
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IMandant;
 
 public interface ILeistungRepository {
 

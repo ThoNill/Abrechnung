@@ -11,11 +11,7 @@ import org.springframework.integration.config.EnableIntegration;
 @EnableIntegration
 @IntegrationComponentScan(basePackages = { "org.nill" })
 @ComponentScan(basePackages = { "org.nill" })
-@EntityScan(basePackageClasses = {
-        org.nill.abrechnung.entities.Abrechnung.class,
-        org.nill.abrechnung.entities.ZahlungsAuftrag.class,
-        org.nill.abrechnung.entities.Überweisung.class,
-        org.nill.abrechnung.entities.AusgangsDatei.class})
+@EntityScan(basePackages = { "org.nill"})
 public class Application {
 
     public static void main(String[] args) {

@@ -16,8 +16,17 @@ import org.nill.abrechnung.tests.konten.TestSachKontoProvider;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.allgemein.values.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.Transactional;
 
+@EntityScan(basePackageClasses = {org.nill.abrechnung.entities.Leistung.class,
+        org.nill.abrechnung.entities.Abrechnung.class})
+@EnableJpaRepositories(basePackageClasses = { 
+        org.nill.abrechnung.repositories.BuchungRepository.class, 
+        org.nill.abrechnung.repositories.LeistungRepository.class}
+, transactionManagerRef = "dbATransactionManager" // Name des
+)
 public class AbrechnungBasisTest {
 
     @Autowired

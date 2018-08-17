@@ -19,7 +19,9 @@ import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.allgemein.values.MonatJahr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.StandardIntegrationFlow;
@@ -33,8 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableIntegration
-@SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestConfig.class,
-        org.nill.abrechnung.tests.config.TestDbConfig.class,
+@SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class,
+        org.nill.abrechnung.tests.config.LeistungConfig.class,
+        org.nill.abrechnung.tests.config.TestConfig.class,
         org.nill.abrechnung.flow.AbrechnungFlow.class })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class IntegrationTest extends AbrechnungBasisTest {
