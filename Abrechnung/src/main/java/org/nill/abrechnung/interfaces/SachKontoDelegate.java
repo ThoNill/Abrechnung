@@ -1,14 +1,6 @@
-package org.nill.buchhaltung.eingang;
+package org.nill.abrechnung.interfaces;
 
 import org.nill.abrechnung.aufz‰hlungen.SachKonto;
-import org.nill.abrechnung.aufz‰hlungen.SachKontoProvider;
-import org.nill.abrechnung.repositories.AbrechnungRepository;
-import org.nill.abrechnung.repositories.AusgangsDateiRepository;
-import org.nill.abrechnung.repositories.BuchungRepository;
-import org.nill.abrechnung.repositories.MandantRepository;
-import org.nill.abrechnung.repositories.ParameterRepository;
-import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
-import org.nill.abrechnung.repositories.‹berweisungRepository;
 
 public class SachKontoDelegate implements SachKontoProvider {
     private SachKontoProvider sachKontoProvider;
@@ -59,38 +51,58 @@ public class SachKontoDelegate implements SachKontoProvider {
     }
 
     @Override
-    public MandantRepository getMandantRepository() {
+    public IMandantRepository getMandantRepository() {
         return sachKontoProvider.getMandantRepository();
     }
 
     @Override
-    public AbrechnungRepository getAbrechnungRepository() {
+    public IAbrechnungRepository getAbrechnungRepository() {
         return sachKontoProvider.getAbrechnungRepository();
     }
 
     @Override
-    public BuchungRepository getBuchungRepository() {
+    public IBuchungsRepository getBuchungRepository() {
         return sachKontoProvider.getBuchungRepository();
     }
 
     @Override
-    public ZahlungsAuftragRepository getZahlungsAuftragRepository() {
+    public IZahlungsAuftragRepository getZahlungsAuftragRepository() {
         return sachKontoProvider.getZahlungsAuftragRepository();
     }
 
     @Override
-    public ‹berweisungRepository get‹berweisungRepository() {
+    public I‹berweisungRepository get‹berweisungRepository() {
         return sachKontoProvider.get‹berweisungRepository();
     }
 
     @Override
-    public ParameterRepository getParameterRepository() {
+    public IParameterRepository getParameterRepository() {
         return sachKontoProvider.getParameterRepository();
     }
 
     @Override
-    public AusgangsDateiRepository getAusgangsDateiRepository() {
+    public IAusgangsDateiRepository getAusgangsDateiRepository() {
         return sachKontoProvider.getAusgangsDateiRepository();
+    }
+
+    @Override
+    public IBuchung createBuchung() {
+       return sachKontoProvider.createBuchung();
+    }
+
+    @Override
+    public IAusgangsDatei createAusgangsDatei() {
+        return sachKontoProvider.createAusgangsDatei();
+    }
+
+    @Override
+    public IZahlungsAuftrag createZahlungsAuftrag() {
+      return sachKontoProvider.createZahlungsAuftrag();
+    }
+
+    @Override
+    public I‹berweisung create‹berweisung() {
+        return sachKontoProvider.create‹berweisung();
     }
 
 }

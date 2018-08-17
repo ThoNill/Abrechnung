@@ -3,8 +3,10 @@ package org.nill.zahlungen.vorlagen;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import javax.money.MonetaryAmount;
-import org.nill.abrechnung.entities.Überweisung;
+
+import org.nill.abrechnung.interfaces.IÜberweisung;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.zahlungen.values.BankVerbindung;
 
@@ -12,11 +14,11 @@ public class BankExportModell {
     private int anzahl;
     private long referenz;
     private String name;
-    private List<Überweisung> überweisungen;
+    private List<IÜberweisung> überweisungen;
     private MonetaryAmount summe;
 
     public BankExportModell(long referenz, String name,
-            List<Überweisung> überweisungen) {
+            List<IÜberweisung> überweisungen) {
         super();
         this.anzahl = überweisungen.size();
         this.referenz = referenz;
@@ -25,9 +27,9 @@ public class BankExportModell {
         this.name = name;
     }
 
-    private MonetaryAmount berechneSumme(List<Überweisung> überweisungen) {
+    private MonetaryAmount berechneSumme(List<IÜberweisung> überweisungen) {
         MonetaryAmount summe = Geld.getNull();
-        for (Überweisung ü : überweisungen) {
+        for (IÜberweisung ü : überweisungen) {
             summe = summe.add(ü.getBetrag());
         }
         return summe;
@@ -49,7 +51,7 @@ public class BankExportModell {
         return referenz;
     }
 
-    public List<Überweisung> getUeberweisungen() {
+    public List<IÜberweisung> getUeberweisungen() {
         return überweisungen;
     }
 

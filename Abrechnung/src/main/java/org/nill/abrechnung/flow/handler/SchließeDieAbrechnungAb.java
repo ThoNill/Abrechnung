@@ -1,8 +1,8 @@
 package org.nill.abrechnung.flow.handler;
 
-import org.nill.abrechnung.aufz‰hlungen.SachKontoProvider;
-import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.flow.payloads.AbrechnungPayload;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
 public class SchlieﬂeDieAbrechnungAb extends
@@ -17,8 +17,8 @@ public class SchlieﬂeDieAbrechnungAb extends
     @Override
     protected AbrechnungPayload transformPayload(AbrechnungPayload payload)
             throws Exception {
-        Abrechnung n‰chsteAbrechnung = payload.getAbrechnung().abschleiﬂen(
-                sachKontoProvider, 30, 0.06, 0.19);
+        IAbrechnung abrechnung = payload.getAbrechnung();
+        abrechnung.abschleiﬂen(sachKontoProvider);
         return payload;
     }
 }

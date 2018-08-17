@@ -1,37 +1,45 @@
 package org.nill.abrechnung.tests.konten;
 
 import org.nill.abrechnung.aufzählungen.SachKonto;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.repositories.AbrechnungRepository;
-import org.nill.abrechnung.repositories.AusgangsDateiRepository;
-import org.nill.abrechnung.repositories.BuchungRepository;
-import org.nill.abrechnung.repositories.MandantRepository;
-import org.nill.abrechnung.repositories.ParameterRepository;
-import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
-import org.nill.abrechnung.repositories.ÜberweisungRepository;
+import org.nill.abrechnung.entities.AusgangsDatei;
+import org.nill.abrechnung.entities.Buchung;
+import org.nill.abrechnung.entities.ZahlungsAuftrag;
+import org.nill.abrechnung.entities.Überweisung;
+import org.nill.abrechnung.interfaces.IAbrechnungRepository;
+import org.nill.abrechnung.interfaces.IAusgangsDatei;
+import org.nill.abrechnung.interfaces.IAusgangsDateiRepository;
+import org.nill.abrechnung.interfaces.IBuchung;
+import org.nill.abrechnung.interfaces.IBuchungsRepository;
+import org.nill.abrechnung.interfaces.IMandantRepository;
+import org.nill.abrechnung.interfaces.IParameterRepository;
+import org.nill.abrechnung.interfaces.IZahlungsAuftrag;
+import org.nill.abrechnung.interfaces.IZahlungsAuftragRepository;
+import org.nill.abrechnung.interfaces.IÜberweisung;
+import org.nill.abrechnung.interfaces.IÜberweisungRepository;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 
 public class TestSachKontoProvider implements SachKontoProvider {
 
-    private MandantRepository mandantRepository;
-    private AbrechnungRepository abrechnungRepository;
+    private IMandantRepository mandantRepository;
+    private IAbrechnungRepository abrechnungRepository;
 
-    private BuchungRepository buchungRepository;
+    private IBuchungsRepository buchungRepository;
 
-    private ZahlungsAuftragRepository zahlungsAuftragRepository;
+    private IZahlungsAuftragRepository zahlungsAuftragRepository;
 
-    private ÜberweisungRepository überweisungRepository;
+    private IÜberweisungRepository überweisungRepository;
 
-    private ParameterRepository parameterRepository;
+    private IParameterRepository parameterRepository;
 
-    private AusgangsDateiRepository ausgangsDateiRepository;
+    private IAusgangsDateiRepository ausgangsDateiRepository;
 
-    public TestSachKontoProvider(MandantRepository mandantRepository,
-            AbrechnungRepository abrechnungRepository,
-            BuchungRepository buchungRepository,
-            ZahlungsAuftragRepository zahlungsAuftragRepository,
-            ÜberweisungRepository überweisungRepository,
-            ParameterRepository parameterRepository,
-            AusgangsDateiRepository ausgangsDateiRepository) {
+    public TestSachKontoProvider(IMandantRepository mandantRepository,
+            IAbrechnungRepository abrechnungRepository,
+            IBuchungsRepository buchungRepository,
+            IZahlungsAuftragRepository zahlungsAuftragRepository,
+            IÜberweisungRepository überweisungRepository,
+            IParameterRepository parameterRepository,
+            IAusgangsDateiRepository ausgangsDateiRepository) {
         super();
         this.mandantRepository = mandantRepository;
         this.abrechnungRepository = abrechnungRepository;
@@ -88,7 +96,7 @@ public class TestSachKontoProvider implements SachKontoProvider {
      * @see org.nill.abrechnung.tests.konten.RepositoryProvider#getMandantRepository()
      */
     @Override
-    public MandantRepository getMandantRepository() {
+    public IMandantRepository getMandantRepository() {
         return mandantRepository;
     }
 
@@ -98,7 +106,7 @@ public class TestSachKontoProvider implements SachKontoProvider {
      * @see org.nill.abrechnung.tests.konten.RepositoryProvider#getAbrechnungRepository()
      */
     @Override
-    public AbrechnungRepository getAbrechnungRepository() {
+    public IAbrechnungRepository getAbrechnungRepository() {
         return abrechnungRepository;
     }
 
@@ -108,7 +116,7 @@ public class TestSachKontoProvider implements SachKontoProvider {
      * @see org.nill.abrechnung.tests.konten.RepositoryProvider#getBuchungRepository()
      */
     @Override
-    public BuchungRepository getBuchungRepository() {
+    public IBuchungsRepository getBuchungRepository() {
         return buchungRepository;
     }
 
@@ -118,7 +126,7 @@ public class TestSachKontoProvider implements SachKontoProvider {
      * @see org.nill.abrechnung.tests.konten.RepositoryProvider#getZahlungsAuftragRepository()
      */
     @Override
-    public ZahlungsAuftragRepository getZahlungsAuftragRepository() {
+    public IZahlungsAuftragRepository getZahlungsAuftragRepository() {
         return zahlungsAuftragRepository;
     }
 
@@ -128,18 +136,38 @@ public class TestSachKontoProvider implements SachKontoProvider {
      * @see org.nill.abrechnung.tests.konten.RepositoryProvider#getÜberweisungRepository()
      */
     @Override
-    public ÜberweisungRepository getÜberweisungRepository() {
+    public IÜberweisungRepository getÜberweisungRepository() {
         return überweisungRepository;
     }
 
     @Override
-    public ParameterRepository getParameterRepository() {
+    public IParameterRepository getParameterRepository() {
         return parameterRepository;
     }
 
     @Override
-    public AusgangsDateiRepository getAusgangsDateiRepository() {
+    public IAusgangsDateiRepository getAusgangsDateiRepository() {
         return ausgangsDateiRepository;
+    }
+
+    @Override
+    public IBuchung createBuchung() {
+        return new Buchung();
+    }
+
+    @Override
+    public IAusgangsDatei createAusgangsDatei() {
+      return new AusgangsDatei();
+    }
+
+    @Override
+    public IZahlungsAuftrag createZahlungsAuftrag() {
+       return new ZahlungsAuftrag();
+    }
+
+    @Override
+    public IÜberweisung createÜberweisung() {
+        return new Überweisung();
     }
 
 }

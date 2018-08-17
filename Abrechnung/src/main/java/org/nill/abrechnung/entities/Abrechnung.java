@@ -22,29 +22,32 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import org.nill.abrechnung.actions.GebührenBerechnung;
+import org.nill.abrechnung.actions.EinBucher;
 import org.nill.abrechnung.actions.SaldoAusgleichen;
 import org.nill.abrechnung.actions.SchuldenInDieAbrechnung;
+import org.nill.abrechnung.aufzählungen.AbrechnungsArt;
 import org.nill.abrechnung.aufzählungen.AbrechnungsStatus;
 import org.nill.abrechnung.aufzählungen.AbrechnungsTyp;
 import org.nill.abrechnung.aufzählungen.ParameterKey;
 import org.nill.abrechnung.aufzählungen.RunStatus;
 import org.nill.abrechnung.aufzählungen.SachKonto;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.flow.handler.AbrechnungsKonfigurator;
-import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
-import org.nill.abrechnung.repositories.AbrechnungRepository;
+import org.nill.abrechnung.interfaces.AbrechnungsKonfigurator;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IAbrechnungRepository;
+import org.nill.abrechnung.interfaces.IBuchung;
+import org.nill.abrechnung.interfaces.IGebührBerechnung;
+import org.nill.abrechnung.interfaces.IGebührDefinition;
+import org.nill.abrechnung.interfaces.IMandant;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.allgemein.values.MonatJahrAdapter;
 import org.nill.allgemein.values.TypeReference;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
-import org.nill.buchhaltung.eingang.EinBucher;
 import org.nill.zahlungen.actions.ZahlungenEntfernen;
 
 @Data
@@ -53,8 +56,9 @@ import org.nill.zahlungen.actions.ZahlungenEntfernen;
 @Entity
 @Table(name = "ABRECHNUNG")
 @SequenceGenerator(name = "ABRECHNUNG_SEQ", sequenceName = "ABRECHNUNG_SEQ")
-public class Abrechnung {
+public class Abrechnung implements IAbrechnung {
 
+   
     @EqualsAndHashCode.Include
     @ToString.Include
     @Basic
@@ -63,6 +67,8 @@ public class Abrechnung {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ABRECHNUNG_SEQ")
     private java.lang.Long AbrechnungId;
 
+    @ToString.Include
+    @EqualsAndHashCode.Include
     @Basic
     @Column(name = "MJ")
     @Convert(converter = MonatJahrAdapter.class)
@@ -84,6 +90,7 @@ public class Abrechnung {
     @Column(name = "BEZEICHNUNG")
     private String bezeichnung;
 
+    
     @EqualsAndHashCode.Include
     @ToString.Include
     @Basic
@@ -103,39 +110,45 @@ public class Abrechnung {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "abrechnung", fetch = FetchType.LAZY)
     private Set<Buchung> buchung = new HashSet<>();
 
-    public void addBuchung(Buchung buchung) {
-        this.buchung.add(buchung);
+    @Override
+    public void addBuchung(IBuchung buchung) {
+        this.buchung.add((Buchung)buchung);
     };
 
-    public void removeBuchung(Buchung buchung) {
+    public void removeBuchung(IBuchung buchung) {
         this.buchung.remove(buchung);
     };
 
-    public Abrechnung createOrGetNächsteAbrechnung(
-            @NotNull SachKontoProvider provider) {
-        AbrechnungRepository abrechnungRepository = provider
+    @Override
+    public IAbrechnung createOrGetNächsteAbrechnung(
+            SachKontoProvider provider) {
+        IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
 
-        abrechnungRepository.save(this);
-        Mandant mandant = provider.getMandantRepository().save(getMandant());
-        List<Abrechnung> liste = abrechnungRepository.getAbrechnung(
+        IMandant mandant = provider.getMandantRepository().save(getMandant());
+        List<IAbrechnung> liste = abrechnungRepository.getAbrechnung(
                 getMandant(), getNummer() + 1);
         if (liste.isEmpty()) {
             Abrechnung neu = new Abrechnung();
             neu.setNummer(getNummer() + 1);
-            neu.setMandant(mandant);
+            neu.setIMandant(mandant);
             neu.setMj(getMj());
             neu.setTyp(getTyp());
-            return abrechnungRepository.save(neu);
+            return abrechnungRepository.saveIAbrechnung(neu);
         }
-        return abrechnungRepository.save(liste.get(0));
+        return abrechnungRepository.saveIAbrechnung(liste.get(0));
     }
 
-    public Optional<Abrechnung> getVorherigeAbrechnung(
-            @NotNull SachKontoProvider provider) {
-        AbrechnungRepository abrechnungRepository = provider
+    public void setIMandant(IMandant mandant) {
+        setMandant((Mandant)mandant);
+    }
+
+    @Override
+    public Optional<IAbrechnung> getVorherigeAbrechnung(
+            SachKontoProvider provider) {
+        IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
-        List<Abrechnung> liste = abrechnungRepository.getAbrechnung(
+        List<IAbrechnung> liste = abrechnungRepository.getAbrechnung(
                 getMandant(), getNummer() - 1);
         if (liste.isEmpty()) {
             return Optional.empty();
@@ -143,29 +156,41 @@ public class Abrechnung {
         return Optional.of(liste.get(0));
     }
 
-    public Abrechnung abschleißen(SachKontoProvider provider, int zinsDauer,
+    @Override
+    public IAbrechnung abschleißen(SachKontoProvider provider) {
+        int zinsDauer = provider.getParameterRepository().getIntZeitWert(ParameterKey.ÜBERZAHLUNGSTAGE,TypeReference.ALLE,getMj());
+        double zinssatz = provider.getParameterRepository().getDoubleZeitWert(ParameterKey.ZINS_ÜBERZAHLUNGEN,TypeReference.ALLE,getMj());
+        double mwstsatz = provider.getParameterRepository().getDoubleZeitWert(ParameterKey.MWST_GANZ,TypeReference.ALLE,getMj());
+        return abschleißen(provider, zinsDauer, zinssatz, mwstsatz);
+    }
+
+    public IAbrechnung abschleißen(SachKontoProvider provider, int zinsDauer,
             double zinssatz, double mwstsatz) {
 
+
+
         ZahlungenEntfernen zahlungenEntfernen = new ZahlungenEntfernen(provider);
+        zahlungenEntfernen.entferneZahlungsaufträgeFallsRestguthaben(this);
 
         SaldoAusgleichen ausgleichen = new SaldoAusgleichen(provider,
                 "Guthaben", "Schulden");
-
+        ausgleichen.saldoAusgleichen(this);
+        
+        IAbrechnung nächsteAbrechnung = createOrGetNächsteAbrechnung(provider);
+  
         SchuldenInDieAbrechnung schuldenÜbertragen = new SchuldenInDieAbrechnung(
                 provider, "Schulden übernehmen", zinssatz, mwstsatz);
-        zahlungenEntfernen.entferneZahlungsaufträgeFallsRestguthaben(this);
-        ausgleichen.saldoAusgleichen(this);
-        Abrechnung nächsteAbrechnung = this
-                .createOrGetNächsteAbrechnung(provider);
         schuldenÜbertragen.übertragen(nächsteAbrechnung, zinsDauer);
-        return nächsteAbrechnung;
+        return provider.getAbrechnungRepository().saveIAbrechnung(nächsteAbrechnung);
     }
 
+    
+    @Override
     public void berechneDieGebühren(SachKontoProvider provider,
             AbrechnungsKonfigurator konfigurator, AbrechnungsArt abrechnungsArt) {
-        Set<GebuehrDefinition> liste = getMandant().getGebuehrDefinitionen();
+        Set<GebührDefinition> liste = getMandant().getGebuehrDefinitionen();
 
-        for (GebuehrDefinition definition : liste) {
+        for (IGebührDefinition definition : liste) {
             bucheDenAuftrag(
                     provider,
                     berechneDenAuftrag(provider, konfigurator, abrechnungsArt,
@@ -175,9 +200,9 @@ public class Abrechnung {
 
     private BuchungsAuftrag<SachKonto> berechneDenAuftrag(
             SachKontoProvider provider, AbrechnungsKonfigurator konfigurator,
-            AbrechnungsArt abrechnungsArt, GebuehrDefinition definition) {
+            AbrechnungsArt abrechnungsArt, IGebührDefinition definition) {
 
-        GebührenBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
+        IGebührBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
                 definition, provider, abrechnungsArt);
         return berechnung.markierenUndberechnen(this);
     }

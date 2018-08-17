@@ -18,6 +18,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.nill.abrechnung.interfaces.IAusgangsDatei;
 import org.nill.allgemein.values.TypeReference;
 
 @Data
@@ -26,7 +27,7 @@ import org.nill.allgemein.values.TypeReference;
 @Entity
 @Table(name = "AUSGANGSDATEI")
 @SequenceGenerator(name = "AUSGANGSDATEI_SEQ", sequenceName = "AUSGANGSDATEI_SEQ")
-public class AusgangsDatei {
+public class AusgangsDatei implements IAusgangsDatei {
 
     @EqualsAndHashCode.Include
     @ToString.Include
@@ -59,5 +60,6 @@ public class AusgangsDatei {
 
     @Basic
     private Date gesendet;
+
 
 }

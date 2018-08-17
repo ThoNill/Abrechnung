@@ -2,19 +2,19 @@ package org.nill.abrechnung.flow;
 
 import lombok.extern.java.Log;
 
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.flow.handler.AbrechnungsKonfigurator;
 import org.nill.abrechnung.flow.handler.BerechneBuchungsauftrag;
 import org.nill.abrechnung.flow.handler.BucheDenBuchungsauftrag;
 import org.nill.abrechnung.flow.handler.GebührDefinitionAggregator;
 import org.nill.abrechnung.flow.handler.GebührDefinitionSplitter;
 import org.nill.abrechnung.flow.handler.HoleAbrechnung;
 import org.nill.abrechnung.flow.handler.SchließeDieAbrechnungAb;
-import org.nill.abrechnung.repositories.AbrechnungRepository;
-import org.nill.abrechnung.repositories.BuchungRepository;
-import org.nill.abrechnung.repositories.LeistungRepository;
-import org.nill.abrechnung.repositories.MandantRepository;
-import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
+import org.nill.abrechnung.interfaces.AbrechnungsKonfigurator;
+import org.nill.abrechnung.interfaces.IAbrechnungRepository;
+import org.nill.abrechnung.interfaces.IBuchungsRepository;
+import org.nill.abrechnung.interfaces.ILeistungRepository;
+import org.nill.abrechnung.interfaces.IMandantRepository;
+import org.nill.abrechnung.interfaces.IZahlungsAuftragRepository;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -38,41 +38,38 @@ public class AbrechnungFlow {
     };
 
     @Bean
+    @Qualifier("abrechnungsFlowEndChannel")
+    public DirectChannel abrechnungsFlowEndChannel() {
+        return new DirectChannel();
+    };
+
+    
+    @Bean
     @Qualifier("abrechnungFlow")
     public StandardIntegrationFlow processFileFlowBuilder(
             SachKontoProvider sachKontoProvider,
-            MandantRepository mandantRepository,
-            AbrechnungRepository abrechnungRepository,
-            LeistungRepository leistungRepository,
-            BuchungRepository buchungRepository,
-            ZahlungsAuftragRepository zahlungsAuftragRepository,
             AbrechnungsKonfigurator konfigurator,
             ApplicationContext applicationContext) {
         return IntegrationFlows
                 .from("parameterChannel")
                 .transform(holeAbrechnung(sachKontoProvider))
                 .channel("mandantChannel")
-                .split(gebührDefinitionSplitter())
+                .split(gebührDefinitionSplitter(sachKontoProvider))
                 .transform(
                         berechneBuchungsauftrag(konfigurator, sachKontoProvider))
                 .transform(
-                        bucheDenBuchungsauftrag(sachKontoProvider,
-                                buchungRepository, abrechnungRepository))
+                        bucheDenBuchungsauftrag(sachKontoProvider))
 
                 .aggregate(a -> a.processor(new GebührDefinitionAggregator()))
                 .transform(
-                        schließeDieAbrechnungAb(sachKontoProvider,
-                                abrechnungRepository, buchungRepository,
-                                zahlungsAuftragRepository))
+                        schließeDieAbrechnungAb(sachKontoProvider))
+                .channel("abrechnungsFlowEndChannel")        
                 .handle(x -> log.info("im Handler: " + x.toString())).get();
 
     }
 
     private SchließeDieAbrechnungAb schließeDieAbrechnungAb(
-            SachKontoProvider sachKontoProvider,
-            AbrechnungRepository abrechnungRepository,
-            BuchungRepository buchungRepository,
-            ZahlungsAuftragRepository zahlungsAuftragRepository) {
+            SachKontoProvider sachKontoProvider) {
         return new SchließeDieAbrechnungAb(sachKontoProvider);
     }
 
@@ -82,8 +79,8 @@ public class AbrechnungFlow {
     }
 
     @Bean
-    GebührDefinitionSplitter gebührDefinitionSplitter() {
-        return new GebührDefinitionSplitter();
+    GebührDefinitionSplitter gebührDefinitionSplitter(SachKontoProvider sachKontoProvider) {
+        return new GebührDefinitionSplitter(sachKontoProvider);
     }
 
     @Bean
@@ -95,10 +92,7 @@ public class AbrechnungFlow {
 
     @Bean
     BucheDenBuchungsauftrag bucheDenBuchungsauftrag(
-            SachKontoProvider sachKontoProvider,
-            BuchungRepository buchungRepository,
-            AbrechnungRepository abrechnungRepository) {
-        return new BucheDenBuchungsauftrag(sachKontoProvider,
-                buchungRepository, abrechnungRepository);
+            SachKontoProvider sachKontoProvider) {
+        return new BucheDenBuchungsauftrag(sachKontoProvider);
     }
 }

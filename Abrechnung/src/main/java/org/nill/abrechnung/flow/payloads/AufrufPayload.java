@@ -2,6 +2,7 @@ package org.nill.abrechnung.flow.payloads;
 
 import lombok.Value;
 
+import org.nill.abrechnung.aufzählungen.AbrechnungsArt;
 import org.nill.abrechnung.aufzählungen.AbrechnungsTyp;
 import org.nill.allgemein.values.MonatJahr;
 

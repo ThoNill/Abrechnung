@@ -6,11 +6,12 @@ import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nill.abrechnung.actions.EinBucher;
 import org.nill.abrechnung.aufzählungen.BuchungsArt;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.entities.Abrechnung;
-import org.nill.abrechnung.entities.Buchung;
 import org.nill.abrechnung.entities.Mandant;
+import org.nill.abrechnung.interfaces.IBuchung;
 import org.nill.abrechnung.tests.konten.TestSachKonto;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.basiskomponenten.betrag.Geld;
@@ -18,7 +19,6 @@ import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
-import org.nill.buchhaltung.eingang.EinBucher;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +42,7 @@ public class EinBucherTest extends AbrechnungBasisTest {
 
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
-        abrechnung.setMandant(mandant);
+        abrechnung.setIMandant(mandant);
         abrechnung.setNummer(3);
         abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
@@ -59,13 +59,13 @@ public class EinBucherTest extends AbrechnungBasisTest {
         check();
     }
 
-    public Buchung insertBuchung() {
+    public IBuchung insertBuchung() {
         Mandant mandant = erzeugeMandant();
 
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag();
         EinBucher bucher = erzeugeEinbucher();
-        Buchung buchung = bucher.erzeugeBuchung(auftrag, abrechnung);
+        IBuchung buchung = bucher.erzeugeBuchung(auftrag, abrechnung);
 
         return buchungRepository.save(buchung);
     }
@@ -75,7 +75,7 @@ public class EinBucherTest extends AbrechnungBasisTest {
         assertEquals(1, abrechnungRepository.count());
         assertEquals(1, buchungRepository.count());
 
-        for (Buchung buchung : buchungRepository.findAll()) {
+        for (IBuchung buchung : buchungRepository.findAll()) {
             assertEquals(1, buchung.getBewegungen().size());
         }
     }
@@ -87,7 +87,7 @@ public class EinBucherTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void insertAndLoadTest() {
-        Buchung buchung = insertBuchung();
+        IBuchung buchung = insertBuchung();
         EinBucher bucher = erzeugeEinbucher();
         BetragsBündel<SachKonto> beträge = bucher.beträgeEinerBuchungsartHolen(
                 buchung.getAbrechnung(), BuchungsArt.TESTBUCHUNG);
@@ -98,7 +98,7 @@ public class EinBucherTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void saldoTest() {
-        Buchung buchung = insertBuchung();
+        IBuchung buchung = insertBuchung();
         assertEquals(Geld.createAmount(1.12),
                 buchungRepository.getSaldo(buchung.getAbrechnung()));
     }
@@ -108,7 +108,7 @@ public class EinBucherTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag();
         EinBucher bucher = erzeugeEinbucher();
-        Buchung buchung = bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
+        IBuchung buchung = bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
 
     }
 

@@ -21,7 +21,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,8 +28,11 @@ import lombok.ToString;
 
 import org.nill.abrechnung.aufzählungen.AbrechnungsStatus;
 import org.nill.abrechnung.aufzählungen.AbrechnungsTyp;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.repositories.AbrechnungRepository;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IAbrechnungRepository;
+import org.nill.abrechnung.interfaces.IGebührDefinition;
+import org.nill.abrechnung.interfaces.IMandant;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.abrechnung.values.ZahlungsDefinition;
 import org.nill.allgemein.values.MonatJahr;
 
@@ -40,7 +42,7 @@ import org.nill.allgemein.values.MonatJahr;
 @Entity
 @Table(name = "MANDANT")
 @SequenceGenerator(name = "MANDANT_SEQ", sequenceName = "MANDANT_SEQ")
-public class Mandant {
+public class  Mandant implements IMandant {
     @EqualsAndHashCode.Include
     @ToString.Include
     @Basic
@@ -60,53 +62,59 @@ public class Mandant {
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(name = "mandant_gebuehrdefinition", joinColumns = { @JoinColumn(name = "mandantId") }, inverseJoinColumns = { @JoinColumn(name = "gebuehrDefinitionId") })
-    private Set<GebuehrDefinition> gebuehrDefinitionen = new HashSet<>();
+    private Set<GebührDefinition> gebuehrDefinitionen = new HashSet<>();
 
     
     @ElementCollection(targetClass=ZahlungsDefinition.class)
     @CollectionTable(name="mandant_zahlungsDefinitionen", joinColumns=@JoinColumn(name="MANDANTID"))
     private Set<ZahlungsDefinition> zahlungsDefinitionen = new HashSet<>();
     
-    public void addAbrechnung(Abrechnung a) {
-        abrechnung.add(a);
+    @Override
+    public void addAbrechnung(IAbrechnung a) {
+        abrechnung.add((Abrechnung)a);
     }
+    @Override
     public void addZahlungsDefinitionen(ZahlungsDefinition d) {
         zahlungsDefinitionen.add(d);
     }
 
-    public void addGebuehrDefinitionen(GebuehrDefinition d) {
-        gebuehrDefinitionen.add(d);
+    @Override
+    public void addGebuehrDefinitionen(IGebührDefinition d) {
+        gebuehrDefinitionen.add((GebührDefinition)d);
 
     }
+    
 
-    public Optional<Abrechnung> getLetzteAbgerechneteAbrechnung(
-            @NotNull SachKontoProvider provider, MonatJahr mj,
+    @Override
+    public Optional<IAbrechnung> getLetzteAbgerechneteAbrechnung(SachKontoProvider provider, MonatJahr mj,
             AbrechnungsTyp typ) {
-        AbrechnungRepository abrechnungRepository = provider
+                IAbrechnungRepository abrechnungRepository = provider
+                        .getAbrechnungRepository();
+            
+                Integer n = abrechnungRepository.getLetzteAbgerechneteAbrechnung(this,
+                        AbrechnungsStatus.ABGERECHNET, mj);
+                if (n != null && n > 0) {
+                    List<IAbrechnung> liste = abrechnungRepository
+                            .getAbrechnung(this, n);
+                    return Optional.of(liste.get(0));
+                }
+                return Optional.empty();
+            }
+
+    @Override
+    public IAbrechnung createNeueAbrechnung(SachKontoProvider provider, MonatJahr mj, AbrechnungsTyp typ) {
+        IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
-
-        Integer n = abrechnungRepository.getLetzteAbgerechneteAbrechnung(this,
-                AbrechnungsStatus.ABGERECHNET, mj);
-        if (n != null && n > 0) {
-            List<Abrechnung> liste = abrechnungRepository
-                    .getAbrechnung(this, n);
-            return Optional.of(liste.get(0));
-        }
-        return Optional.empty();
-    }
-
-    public Abrechnung createNeueAbrechnung(@NotNull SachKontoProvider provider,
-            MonatJahr mj, AbrechnungsTyp typ) {
-        AbrechnungRepository abrechnungRepository = provider
-                .getAbrechnungRepository();
-
+    
         Integer n = abrechnungRepository.getLetzteAbrechnung(this);
         Abrechnung neu = new Abrechnung();
         neu.setNummer((n == null) ? 1 : n.intValue() + 1);
-        neu.setMandant(this);
+        neu.setIMandant(this);
         neu.setMj(mj);
         neu.setTyp(typ);
-        return abrechnungRepository.save(neu);
+        return abrechnungRepository.saveIAbrechnung(neu);
     }
+   
+
 
 }

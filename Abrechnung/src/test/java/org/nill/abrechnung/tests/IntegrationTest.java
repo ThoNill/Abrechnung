@@ -1,16 +1,21 @@
 package org.nill.abrechnung.tests;
 
 import org.junit.After;
+
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nill.abrechnung.aufzählungen.AbrechnungsArt;
 import org.nill.abrechnung.aufzählungen.AbrechnungsTyp;
 import org.nill.abrechnung.aufzählungen.BuchungsArt;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.entities.GebuehrDefinition;
+import org.nill.abrechnung.entities.Abrechnung;
+import org.nill.abrechnung.entities.GebührDefinition;
 import org.nill.abrechnung.entities.Mandant;
-import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
 import org.nill.abrechnung.flow.payloads.AufrufPayload;
+import org.nill.abrechnung.interfaces.IMandant;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.allgemein.values.MonatJahr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,11 +47,11 @@ public class IntegrationTest extends AbrechnungBasisTest {
         super.clear();
     }
 
-    public Mandant erzeugeMandant() {
+    public IMandant erzeugeMandant() {
         Mandant mandant = mandantRepository.save(new Mandant());
         SachKontoProvider sachKontoProvider = sachKontoProvider();
 
-        GebuehrDefinition gebührDefinition = new GebuehrDefinition();
+        GebührDefinition gebührDefinition = new GebührDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setKontoNr(sachKontoProvider.GEBÜHR().ordinal());
         gebührDefinition.setGebührArt(1);
@@ -70,24 +75,29 @@ public class IntegrationTest extends AbrechnungBasisTest {
     public DirectChannel mandantChannel;
 
     @Autowired
+    @Qualifier("abrechnungsFlowEndChannel")
+    public DirectChannel abrechnungsFlowEndChannel;
+    
+    @Autowired
     @Qualifier("abrechnungFlow")
     StandardIntegrationFlow flow;
 
     @Test
     @Transactional("dbATransactionManager")
     public void normalerAblauf() {
-
-        mandantChannel.addInterceptor(new ChannelInterceptorAdapter() {
+       fülleParameter("30");
+       
+        abrechnungsFlowEndChannel.addInterceptor(new ChannelInterceptorAdapter() {
             @Override
             public void postSend(Message message, MessageChannel channel,
                     boolean sent) {
-                System.out.println("vor dem Splitten: " + message);
-                super.postSend(message, channel, sent);
+                assertEquals(1,mandantRepository.count());
+                assertEquals(2,abrechnungRepository.count());
             }
         });
         flow.start();
 
-        Mandant mandant = erzeugeMandant();
+        IMandant mandant = erzeugeMandant();
 
         AufrufPayload aufruf = new AufrufPayload(AbrechnungsArt.NEU,
                 mandant.getMandantId(), 0, new MonatJahr(2, 2018),
@@ -96,5 +106,7 @@ public class IntegrationTest extends AbrechnungBasisTest {
         Message<AufrufPayload> message = MessageBuilder.withPayload(aufruf)
                 .setHeader("foo", "foo").setHeader("bar", "bar").build();
         parameterChannel.send(message);
+        
+        
     }
 }

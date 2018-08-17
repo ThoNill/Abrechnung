@@ -22,6 +22,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IBuchung;
 import org.nill.abrechnung.values.KontoBewegung;
 import org.nill.allgemein.values.TypeReference;
 
@@ -31,7 +33,7 @@ import org.nill.allgemein.values.TypeReference;
 @Entity
 @Table(name = "BUCHUNG")
 @SequenceGenerator(name = "BUCHUNG_SEQ", sequenceName = "BUCHUNG_SEQ")
-public class Buchung {
+public class Buchung implements IBuchung {
 
     @EqualsAndHashCode.Include
     @ToString.Include
@@ -60,10 +62,12 @@ public class Buchung {
     @CollectionTable(name="Buchung_KontoBewegung", joinColumns=@JoinColumn(name="BUCHUNGID"))
     private Set<KontoBewegung> bewegungen = new HashSet<>();
 
+    @Override
     public void addBewegungen(KontoBewegung bewegungen) {
         this.bewegungen.add(bewegungen);
     };
 
+    @Override
     public void removeBewegungen(KontoBewegung bewegungen) {
         this.bewegungen.remove(bewegungen);
     };
@@ -72,10 +76,12 @@ public class Buchung {
     @CollectionTable(name="Buchung_TypeReference", joinColumns=@JoinColumn(name="BUCHUNGID"))
     private Set<TypeReference> bezüge = new HashSet<>();
 
+    @Override
     public void addBezug(TypeReference bezug) {
         this.bezüge.add(bezug);
     };
 
+    @Override
     public void removeBezug(TypeReference bezug) {
         this.bezüge.remove(bezug);
     };
@@ -83,5 +89,11 @@ public class Buchung {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AbrechnungId")
     private Abrechnung abrechnung;
+
+    @Override
+    public void setIAbrechnung(IAbrechnung abrechnung2) {
+        setAbrechnung((Abrechnung)abrechnung2);
+    }
+
 
 }

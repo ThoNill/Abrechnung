@@ -12,18 +12,14 @@ import java.util.List;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.entities.Überweisung;
-import org.nill.abrechnung.repositories.AbrechnungRepository;
-import org.nill.abrechnung.repositories.BuchungRepository;
-import org.nill.abrechnung.repositories.MandantRepository;
-import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
-import org.nill.abrechnung.repositories.ÜberweisungRepository;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IMandant;
+import org.nill.abrechnung.interfaces.IÜberweisung;
 import org.nill.abrechnung.values.ZahlungsDefinition;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.basiskomponenten.betrag.Geld;
@@ -34,52 +30,25 @@ import org.nill.zahlungen.vorlagen.BankExportModell;
 import org.nill.zahlungen.vorlagen.BankExportVorlage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.xml.validation.XmlValidator;
 import org.springframework.xml.validation.XmlValidatorFactory;
 import org.xml.sax.SAXParseException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })
-public class BankDateiTest {
+public class BankDateiTest extends AbrechnungBasisTest{
     protected static final Logger log = LoggerFactory
             .getLogger(BankDateiTest.class);
-
-    @Autowired
-    private MandantRepository mandantRepository;
-
-    @Autowired
-    private AbrechnungRepository abrechnungRepository;
-
-    @Autowired
-    private ZahlungsAuftragRepository zahlungsAuftragRepository;
-
-    @Autowired
-    private ÜberweisungRepository überweisungRepository;
-
-    @Autowired
-    private BuchungRepository buchungRepository;
 
     @Value("classpath:pain.001.003.03.xsd")
     Resource überweisungsXmlSchema;
 
-    @Before
-    @After
-    @Transactional("dbATransactionManager")
-    public void clear() {
-        buchungRepository.deleteAll();
-        überweisungRepository.deleteAll();
-        zahlungsAuftragRepository.deleteAll();
-        abrechnungRepository.deleteAll();
-        mandantRepository.deleteAll();
-    }
 
-    public Mandant erzeugeMandant() {
+    public IMandant erzeugeMandant() {
         Mandant mandant = mandantRepository.save(new Mandant());
         return addZahlungsDefinition(addZahlungsDefinition(mandant, 0.3), 0.7);
     }
@@ -95,14 +64,14 @@ public class BankDateiTest {
         return mandantRepository.save(mandant);
     }
 
-    public Abrechnung erzeugeAbrechnung(Mandant mandant) {
+    public IAbrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
         abrechnung.setNummer(3);
         abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
         abrechnung = abrechnungRepository.save(abrechnung);
-        abrechnung.setMandant(mandant);
+        abrechnung.setIMandant(mandant);
         abrechnung = abrechnungRepository.save(abrechnung);
         mandant.addAbrechnung(abrechnung);
         mandantRepository.save(mandant);
@@ -111,7 +80,7 @@ public class BankDateiTest {
 
     @Test
     public void aufträgeErzeugen() {
-        List<Überweisung> überweisungen = new ArrayList<>();
+        List<IÜberweisung> überweisungen = new ArrayList<>();
         createÜberweisung(überweisungen, 1.2, 1);
         createÜberweisung(überweisungen, 2.2, 2);
         createÜberweisung(überweisungen, 3.2, 3);
@@ -134,7 +103,7 @@ public class BankDateiTest {
 
     }
 
-    private void createÜberweisung(List<Überweisung> überweisungen,
+    private void createÜberweisung(List<IÜberweisung> überweisungen,
             double betrag, int nummer) {
         Überweisung ü = new Überweisung();
         ü.setVon(new BankVerbindung(new IBAN("DE02500105170137075030"),

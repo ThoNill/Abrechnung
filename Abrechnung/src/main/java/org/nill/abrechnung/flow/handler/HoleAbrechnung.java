@@ -2,13 +2,13 @@ package org.nill.abrechnung.flow.handler;
 
 import java.util.Optional;
 
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.entities.Abrechnung;
-import org.nill.abrechnung.entities.Mandant;
+import org.nill.abrechnung.aufzählungen.AbrechnungsArt;
 import org.nill.abrechnung.flow.payloads.AbrechnungPayload;
-import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
 import org.nill.abrechnung.flow.payloads.AufrufPayload;
-import org.nill.abrechnung.repositories.AbrechnungRepository;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IAbrechnungRepository;
+import org.nill.abrechnung.interfaces.IMandant;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
 public class HoleAbrechnung extends
@@ -25,7 +25,7 @@ public class HoleAbrechnung extends
     protected AbrechnungPayload transformPayload(AufrufPayload payload)
             throws Exception {
         checkPayload(payload);
-        Abrechnung abrechnung = holeAbrechnung(payload);
+        IAbrechnung abrechnung = holeAbrechnung(payload);
         return new AbrechnungPayload(abrechnung, provider
                 .getMandantRepository().save(abrechnung.getMandant()),
                 payload.getArt());
@@ -46,8 +46,8 @@ public class HoleAbrechnung extends
         prüfeObMandantInPayload(payload);
     }
 
-    private Abrechnung holeAbrechnung(AufrufPayload payload) {
-        Abrechnung abrechnung;
+    private IAbrechnung holeAbrechnung(AufrufPayload payload) {
+        IAbrechnung abrechnung;
         if (payload.getAbrechnungId() > 0) {
             abrechnung = mitAbrechnungsId(payload);
         } else {
@@ -56,10 +56,10 @@ public class HoleAbrechnung extends
         return abrechnung;
     }
 
-    private Abrechnung mitAbrechnungsId(AufrufPayload payload) {
-        AbrechnungRepository abrechnungRepository = provider
+    private IAbrechnung mitAbrechnungsId(AufrufPayload payload) {
+        IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
-        Abrechnung abrechnung = abrechnungRepository.findOne(payload
+        IAbrechnung abrechnung = abrechnungRepository.findOne(payload
                 .getAbrechnungId());
         prüfeAbrechnungPasstZumMandanten(payload, abrechnung);
         if (!payload.getMj().equals(abrechnung.getMj())) {
@@ -70,7 +70,7 @@ public class HoleAbrechnung extends
     }
 
     private void prüfeAbrechnungPasstZumMandanten(AufrufPayload payload,
-            Abrechnung abrechnung) {
+            IAbrechnung abrechnung) {
         if (abrechnung == null) {
             throw new IllegalArgumentException("Die Abrechnung "
                     + payload.getAbrechnungId() + " ist nicht vorhanden");
@@ -83,11 +83,11 @@ public class HoleAbrechnung extends
         }
     }
 
-    private Abrechnung ohneAbrechnungsId(AufrufPayload payload) {
-        Mandant mandant = sucheMandant(payload);
-        AbrechnungRepository abrechnungRepository = provider
+    private IAbrechnung ohneAbrechnungsId(AufrufPayload payload) {
+        IMandant mandant = sucheMandant(payload);
+        IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
-        Optional<Abrechnung> oAbrechnung = mandant
+        Optional<IAbrechnung> oAbrechnung = mandant
                 .getLetzteAbgerechneteAbrechnung(provider, payload.getMj(),
                         payload.getTyp());
         if (oAbrechnung.isPresent()) {
@@ -104,17 +104,17 @@ public class HoleAbrechnung extends
         }
     }
 
-    private Mandant sucheMandant(AufrufPayload payload) {
+    private IMandant sucheMandant(AufrufPayload payload) {
         return provider.getMandantRepository().findOne(payload.getMandantId());
     }
 
-    private Abrechnung fallsEineAbrechnungSchonAbgerechnetWurde(
-            AufrufPayload payload, Abrechnung abrechnung) {
+    private IAbrechnung fallsEineAbrechnungSchonAbgerechnetWurde(
+            AufrufPayload payload, IAbrechnung abrechnung) {
         return abrechnung.createOrGetNächsteAbrechnung(provider);
     }
 
-    private Abrechnung ohneBereitsAbgerechneteAbrechnungen(
-            AufrufPayload payload, Mandant mandant) {
+    private IAbrechnung ohneBereitsAbgerechneteAbrechnungen(
+            AufrufPayload payload, IMandant mandant) {
         Integer n = provider.getAbrechnungRepository().getLetzteAbrechnung(
                 mandant, payload.getMj());
         if (n == null) {

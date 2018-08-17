@@ -2,16 +2,16 @@ package org.nill.abrechnung.tests.flow;
 
 import javax.money.MonetaryAmount;
 
-import org.nill.abrechnung.actions.GebührRepository;
 import org.nill.abrechnung.aufzählungen.SachKonto;
-import org.nill.abrechnung.entities.Abrechnung;
-import org.nill.abrechnung.repositories.LeistungRepository;
+import org.nill.abrechnung.interfaces.GebührRepository;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.ILeistungRepository;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 
 public class LeitungsGebührRepository implements GebührRepository<SachKonto> {
 
-    private LeistungRepository leistungRepository;
+    private ILeistungRepository leistungRepository;
 
     private SachKonto sachKonto;
     private int art;
@@ -23,12 +23,12 @@ public class LeitungsGebührRepository implements GebührRepository<SachKonto> {
     }
 
     @Override
-    public void markieren(Abrechnung abrechnung) {
+    public void markieren(IAbrechnung abrechnung) {
         leistungRepository.markData(abrechnung, abrechnung.getMandant(), art);
     }
 
     @Override
-    public BetragsBündel<SachKonto> getBeträge(Abrechnung abrechnung) {
+    public BetragsBündel<SachKonto> getBeträge(IAbrechnung abrechnung) {
         MonetaryAmount betrag = getGebührenBasis(abrechnung);
         BetragsBündelMap<SachKonto> bündel = new BetragsBündelMap<>();
         bündel.put(sachKonto, betrag);
@@ -36,11 +36,11 @@ public class LeitungsGebührRepository implements GebührRepository<SachKonto> {
     }
 
     @Override
-    public MonetaryAmount getGebührenBasis(Abrechnung abrechnung) {
+    public MonetaryAmount getGebührenBasis(IAbrechnung abrechnung) {
         return leistungRepository.getBetrag(abrechnung, art);
     }
 
-    public void setLeistungsRepository(LeistungRepository leistungRepository) {
+    public void setLeistungsRepository(ILeistungRepository leistungRepository) {
         this.leistungRepository = leistungRepository;
     }
 

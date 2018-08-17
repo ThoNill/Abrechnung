@@ -1,4 +1,4 @@
-package org.nill.abrechnung.gebühren;
+package org.nill.abrechnung.interfaces;
 
 import java.util.function.Function;
 

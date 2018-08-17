@@ -5,15 +5,15 @@ import java.util.List;
 
 import javax.money.MonetaryAmount;
 
+import org.nill.abrechnung.actions.EinBucher;
 import org.nill.abrechnung.aufzählungen.SachKonto;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.entities.Abrechnung;
-import org.nill.abrechnung.entities.ZahlungsAuftrag;
-import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IZahlungsAuftrag;
+import org.nill.abrechnung.interfaces.IZahlungsAuftragRepository;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
-import org.nill.buchhaltung.eingang.EinBucher;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ZahlungenEntfernen extends EinBucher {
@@ -22,7 +22,7 @@ public class ZahlungenEntfernen extends EinBucher {
     }
 
     @Transactional("dbATransactionManager")
-    public void entferneZahlungsaufträgeFallsRestguthaben(Abrechnung abrechnung) {
+    public void entferneZahlungsaufträgeFallsRestguthaben(IAbrechnung abrechnung) {
         MonetaryAmount saldo = getBuchungRepository().getSaldo(abrechnung);
         if (!saldo.isZero()) {
             entferneZahlungsaufträge(abrechnung);
@@ -32,16 +32,16 @@ public class ZahlungenEntfernen extends EinBucher {
     }
 
     @Transactional("dbATransactionManager")
-    public void entferneZahlungsaufträge(Abrechnung abrechnung) {
-        ZahlungsAuftragRepository zahlungsAuftragRepository = getZahlungsAuftragRepository();
-        List<ZahlungsAuftrag> aufträge = zahlungsAuftragRepository
+    public void entferneZahlungsaufträge(IAbrechnung abrechnung) {
+        IZahlungsAuftragRepository zahlungsAuftragRepository = getZahlungsAuftragRepository();
+        List<IZahlungsAuftrag> aufträge = zahlungsAuftragRepository
                 .getOffeneZahlungen(abrechnung, ABGLEICH_GUTHABEN());
-        for (ZahlungsAuftrag a : aufträge) {
+        for (IZahlungsAuftrag a : aufträge) {
             entferneZahlungsauftrag(a);
         }
     }
 
-    private void entferneRestGuthaben(Abrechnung abrechnung) {
+    private void entferneRestGuthaben(IAbrechnung abrechnung) {
         MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,
                 ABGLEICH_GUTHABEN(), GUTHABEN().ordinal());
         if (betrag != null && !betrag.isZero()) {
@@ -49,7 +49,7 @@ public class ZahlungenEntfernen extends EinBucher {
         }
     }
 
-    private void entferneRestSchulden(Abrechnung abrechnung) {
+    private void entferneRestSchulden(IAbrechnung abrechnung) {
         MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,
                 ABGLEICH_SCHULDEN(), SCHULDEN().ordinal());
         if (betrag != null && !betrag.isZero()) {
@@ -57,13 +57,13 @@ public class ZahlungenEntfernen extends EinBucher {
         }
     }
 
-    private void entferneZahlungsauftrag(ZahlungsAuftrag a) {
+    private void entferneZahlungsauftrag(IZahlungsAuftrag a) {
         a.setStorniert(new Date());
         bucheStorno(a.getAbrechnung(), a.getBetrag(), a.getBuchungsart(),
                 AUSZUZAHLEN());
     }
 
-    private void bucheStorno(Abrechnung abrechnung, MonetaryAmount betrag,
+    private void bucheStorno(IAbrechnung abrechnung, MonetaryAmount betrag,
             int buchungsart, SachKonto sachKonto) {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         beträge.put(sachKonto, betrag.negate());

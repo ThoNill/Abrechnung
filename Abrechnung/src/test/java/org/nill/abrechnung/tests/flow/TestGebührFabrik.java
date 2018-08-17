@@ -1,8 +1,8 @@
 package org.nill.abrechnung.tests.flow;
 
-import org.nill.abrechnung.gebühren.Gebühr;
-import org.nill.abrechnung.gebühren.GebührFabrik;
 import org.nill.abrechnung.gebühren.ProzentualeGebühr;
+import org.nill.abrechnung.interfaces.Gebühr;
+import org.nill.abrechnung.interfaces.GebührFabrik;
 
 public class TestGebührFabrik implements GebührFabrik {
 

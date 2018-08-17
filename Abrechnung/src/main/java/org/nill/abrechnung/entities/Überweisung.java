@@ -23,6 +23,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.nill.abrechnung.interfaces.IAusgangsDatei;
+import org.nill.abrechnung.interfaces.IMandant;
+import org.nill.abrechnung.interfaces.IZahlungsAuftrag;
+import org.nill.abrechnung.interfaces.IÜberweisung;
 import org.nill.zahlungen.values.BankVerbindung;
 
 @Data
@@ -31,7 +35,7 @@ import org.nill.zahlungen.values.BankVerbindung;
 @Entity
 @Table(name = "UEBERWEISUNG")
 @SequenceGenerator(name = "UEBERWEISUNG_SEQ", sequenceName = "UEBERWEISUNG_SEQ")
-public class Überweisung {
+public class Überweisung implements IÜberweisung {
 
     @EqualsAndHashCode.Include
     @ToString.Include
@@ -86,6 +90,22 @@ public class Überweisung {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ZahlungsAuftragId")
-    private ZahlungsAuftrag auftrag;
+    private ZahlungsAuftrag zahlungsAuftrag;
+
+    @Override
+    public void setIAusgangsDatei(IAusgangsDatei ausgangsDatei) {
+       setAusgangsDatei((AusgangsDatei)ausgangsDatei);
+    }
+
+    @Override
+    public void setIMandat(IMandant mandant) {
+        setMandant((Mandant)mandant);
+    }
+
+    @Override
+    public void setIZahlungsAuftrag(IZahlungsAuftrag auftrag) {
+      setZahlungsAuftrag((ZahlungsAuftrag)auftrag); 
+    }
+
 
 }

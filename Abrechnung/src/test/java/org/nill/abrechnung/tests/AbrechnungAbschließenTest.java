@@ -9,31 +9,37 @@ import javax.money.MonetaryAmount;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nill.abrechnung.actions.EinBucher;
 import org.nill.abrechnung.actions.SaldoAusgleichen;
 import org.nill.abrechnung.actions.SchuldenInDieAbrechnung;
 import org.nill.abrechnung.aufz‰hlungen.BuchungsArt;
+import org.nill.abrechnung.aufz‰hlungen.ParameterKey;
 import org.nill.abrechnung.aufz‰hlungen.SachKonto;
-import org.nill.abrechnung.aufz‰hlungen.SachKontoProvider;
 import org.nill.abrechnung.entities.Abrechnung;
-import org.nill.abrechnung.entities.Buchung;
 import org.nill.abrechnung.entities.Mandant;
+import org.nill.abrechnung.entities.Parameter;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IBuchung;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.abrechnung.tests.konten.TestSachKonto;
 import org.nill.abrechnung.values.ZahlungsDefinition;
 import org.nill.allgemein.values.MonatJahr;
+import org.nill.allgemein.values.TypeReference;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.basiskomponenten.gemeinsam.BetragsB¸ndelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
-import org.nill.buchhaltung.eingang.EinBucher;
 import org.nill.zahlungen.actions.ZahlungsAuftr‰geErzeugen;
 import org.nill.zahlungen.values.BIC;
 import org.nill.zahlungen.values.BankVerbindung;
 import org.nill.zahlungen.values.IBAN;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
+@EntityScan(basePackageClasses= {org.nill.abrechnung.entities.Abrechnung.class,org.nill.abrechnung.entities.ZahlungsAuftrag.class })
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })
 public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
 
@@ -52,7 +58,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
 
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
-        abrechnung.setMandant(mandant);
+        abrechnung.setIMandant(mandant);
         abrechnung.setNummer(3);
         abrechnung.setMj(new MonatJahr(4, 2018));
 
@@ -84,8 +90,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void schulden‹benehmen360() {
-        Abrechnung abrechnung = saldoAbgleichen(-100);
-        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06,
+        IAbrechnung abrechnung = saldoAbgleichen(-100);
+        IAbrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06,
                 0.19, 360);
         checkAnzahlen();
         check‹bernahme(n‰chsteAbrechnung, -100, -6);
@@ -94,8 +100,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void schulden‹benehmen180() {
-        Abrechnung abrechnung = saldoAbgleichen(-100);
-        Abrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06,
+        IAbrechnung abrechnung = saldoAbgleichen(-100);
+        IAbrechnung n‰chsteAbrechnung = schulden‹bernahme(abrechnung, 0.06,
                 0.19, 180);
         checkAnzahlen();
         check‹bernahme(n‰chsteAbrechnung, -100, -3);
@@ -104,32 +110,34 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void abschluss180() {
+        f¸lleParameter();
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         erzeugeBuchung(abrechnung, -100);
-        Abrechnung n‰chsteAbrechnung = abschlieﬂen(abrechnung);
+        IAbrechnung n‰chsteAbrechnung = abschlieﬂen(abrechnung);
         checkAnzahlen();
         check‹bernahme(n‰chsteAbrechnung, -100, -3);
     }
 
-    private Abrechnung abschlieﬂen(Abrechnung abrechnung) {
-        Abrechnung n‰chsteAbrechnung = abrechnung.abschleiﬂen(
-                sachKontoProvider(), 180, 0.06, 0.19);
+    private IAbrechnung abschlieﬂen(IAbrechnung abrechnung) {
+        IAbrechnung n‰chsteAbrechnung = abrechnung.abschleiﬂen(
+                sachKontoProvider());
         return n‰chsteAbrechnung;
     }
 
     @Test
     @Transactional("dbATransactionManager")
     public void abschlussOhneWirkung180() {
+        f¸lleParameter();
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         erzeugeBuchung(abrechnung, 100);
 
-        Abrechnung n‰chsteAbrechnung = abschlieﬂen(abrechnung);
+        IAbrechnung n‰chsteAbrechnung = abschlieﬂen(abrechnung);
         check‹bernahmeOhneWirkung(n‰chsteAbrechnung);
     }
 
-    public Abrechnung saldoAbgleichen(double betrag) {
+    public IAbrechnung saldoAbgleichen(double betrag) {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         erzeugeBuchung(abrechnung, betrag);
@@ -143,16 +151,16 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     private void erzeugeBuchung(Abrechnung abrechnung, double betrag) {
         BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(betrag);
         EinBucher bucher = erzeugeEinbucher();
-        Buchung buchung = bucher.erzeugeBuchung(auftrag, abrechnung);
+        IBuchung buchung = bucher.erzeugeBuchung(auftrag, abrechnung);
     }
 
-    public void checkAbgleich(Abrechnung abrechnung, int art,
+    public void checkAbgleich(IAbrechnung abrechnung, int art,
             SachKonto kontonr, double betrag) {
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
         assertEquals(2, buchungRepository.count());
 
-        for (Buchung buchung : buchungRepository.findAll()) {
+        for (IBuchung buchung : buchungRepository.findAll()) {
             assertEquals(1, buchung.getBewegungen().size());
         }
 
@@ -162,7 +170,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
 
     }
 
-    private void checkKontoBetrag(Abrechnung abrechnung, int art,
+    private void checkKontoBetrag(IAbrechnung abrechnung, int art,
             SachKonto kontonr, double betrag) {
         MonetaryAmount dbBetrag = buchungRepository.getSumKonto(abrechnung,
                 art, kontonr.ordinal());
@@ -172,10 +180,10 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         assertEquals(Geld.createAmount(betrag), dbBetrag);
     }
 
-    public Abrechnung schulden‹bernahme(Abrechnung abrechnung, double zinssatz,
+    public IAbrechnung schulden‹bernahme(IAbrechnung abrechnung, double zinssatz,
             double mwstsatz, int tage) {
         SachKontoProvider provider = sachKontoProvider();
-        Abrechnung n‰chsteAbrechnung = abrechnung
+        IAbrechnung n‰chsteAbrechnung = abrechnung
                 .createOrGetN‰chsteAbrechnung(provider);
 
         SchuldenInDieAbrechnung ¸bernehmen = new SchuldenInDieAbrechnung(
@@ -184,7 +192,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         return n‰chsteAbrechnung;
     }
 
-    public void check‹bernahme(Abrechnung abrechnung, double betrag, double zins) {
+    public void check‹bernahme(IAbrechnung abrechnung, double betrag, double zins) {
 
         MonetaryAmount dbBetrag = buchungRepository.getSumKonto(abrechnung,
                 BuchungsArt.‹BERNAHME_SCHULDEN,
@@ -208,7 +216,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         assertEquals(3, buchungRepository.count());
     }
 
-    public void check‹bernahmeOhneWirkung(Abrechnung abrechnung) {
+    public void check‹bernahmeOhneWirkung(IAbrechnung abrechnung) {
         assertEquals(1, mandantRepository.count());
         assertEquals(2, abrechnungRepository.count());
         assertEquals(2, buchungRepository.count());
@@ -228,13 +236,14 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void mehrmaligerAbschluss() {
+        f¸lleParameter();
         Mandant mandant = erzeugeMandant();
         mandant = addZahlungsDefinition(mandant, 0.3);
         mandant = addZahlungsDefinition(mandant, 0.7);
 
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         erzeugeBuchung(abrechnung, 100);
-        Abrechnung n‰chsteAbrechnung = abschlieﬂen(abrechnung);
+        IAbrechnung n‰chsteAbrechnung = abschlieﬂen(abrechnung);
 
         ZahlungsAuftr‰geErzeugen zahlungenManager = new ZahlungsAuftr‰geErzeugen(
                 sachKontoProvider());
@@ -310,6 +319,10 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         d.setTag(1);
         mandant.addZahlungsDefinitionen(d);
         return mandantRepository.save(mandant);
+    }
+    
+    private void f¸lleParameter() {
+        f¸lleParameter("180");
     }
 
 }

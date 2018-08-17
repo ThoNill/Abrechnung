@@ -1,17 +1,19 @@
-package org.nill.buchhaltung.eingang;
+package org.nill.abrechnung.actions;
 
 import java.util.HashMap;
 
 import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.aufzählungen.SachKonto;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.entities.Abrechnung;
-import org.nill.abrechnung.entities.Buchung;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IBuchung;
+import org.nill.abrechnung.interfaces.SachKontoDelegate;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.abrechnung.values.KontoBewegung;
 import org.nill.allgemein.values.TypeReference;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
+import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
 public class EinBucher extends SachKontoDelegate {
 
@@ -19,14 +21,14 @@ public class EinBucher extends SachKontoDelegate {
         super(sachKontoProvider);
     }
 
-    public Buchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,
-            Abrechnung abrechnung) {
-        abrechnung = getAbrechnungRepository().save(abrechnung);
+    public IBuchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,
+            IAbrechnung abrechnung) {
+        abrechnung = getAbrechnungRepository().saveIAbrechnung(abrechnung);
         if (!auftrag.isEmpty()) {
-            Buchung buchung = new Buchung();
+            IBuchung buchung = createBuchung();
             buchung.setText(auftrag.getBeschreibung().getText());
             buchung.setArt(auftrag.getBeschreibung().getArt());
-            buchung.setAbrechnung(abrechnung);
+            buchung.setIAbrechnung(abrechnung);
 
             BetragsBündel<SachKonto> beträge = auftrag.getPositionen();
             for (SachKonto p : beträge.getKeys()) {
@@ -42,7 +44,7 @@ public class EinBucher extends SachKontoDelegate {
         return null;
     }
 
-    private void bewegungHinzufügen(Buchung buchung, SachKonto p,
+    private void bewegungHinzufügen(IBuchung buchung, SachKonto p,
             MonetaryAmount betrag) {
         if (!betrag.isZero()) {
             KontoBewegung bew = new KontoBewegung();
@@ -53,12 +55,12 @@ public class EinBucher extends SachKontoDelegate {
         }
     }
 
-    private void bezugHinzufügen(Buchung buchung, int rolle, Long refernzid) {
+    private void bezugHinzufügen(IBuchung buchung, int rolle, Long refernzid) {
         buchung.addBezug(new TypeReference(rolle,refernzid));
     }
 
     public BetragsBündel<SachKonto> beträgeEinerBuchungsartHolen(
-            Abrechnung abrechnung, int art) {
+            IAbrechnung abrechnung, int art) {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         for (Object o : getBuchungRepository()
                 .getSumBewegungen(abrechnung, art)) {
@@ -69,9 +71,9 @@ public class EinBucher extends SachKontoDelegate {
         return beträge;
     }
 
-    public Buchung erzeugeDifferenzBuchung(BuchungsAuftrag<SachKonto> auftrag,
-            Abrechnung abrechnung) {
-        abrechnung = getAbrechnungRepository().save(abrechnung);
+    public IBuchung erzeugeDifferenzBuchung(BuchungsAuftrag<SachKonto> auftrag,
+            IAbrechnung abrechnung) {
+        abrechnung = getAbrechnungRepository().saveIAbrechnung(abrechnung);
         BetragsBündel<SachKonto> aktuell = beträgeEinerBuchungsartHolen(
                 abrechnung, auftrag.getBeschreibung().getArt());
         BetragsBündel<SachKonto> differenz = (BetragsBündel<SachKonto>) aktuell

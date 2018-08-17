@@ -1,42 +1,44 @@
 package org.nill.abrechnung.tests.config;
 
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.flow.handler.AbrechnungsKonfigurator;
+import org.nill.abrechnung.interfaces.AbrechnungsKonfigurator;
+import org.nill.abrechnung.interfaces.IAusgangsDateiRepository;
+import org.nill.abrechnung.interfaces.IBuchungsRepository;
+import org.nill.abrechnung.interfaces.ILeistungRepository;
+import org.nill.abrechnung.interfaces.IMandantRepository;
+import org.nill.abrechnung.interfaces.IZahlungsAuftragRepository;
+import org.nill.abrechnung.interfaces.IÜberweisungRepository;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
-import org.nill.abrechnung.repositories.AusgangsDateiRepository;
-import org.nill.abrechnung.repositories.BuchungRepository;
-import org.nill.abrechnung.repositories.LeistungRepository;
-import org.nill.abrechnung.repositories.MandantRepository;
 import org.nill.abrechnung.repositories.ParameterRepository;
-import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
-import org.nill.abrechnung.repositories.ÜberweisungRepository;
 import org.nill.abrechnung.tests.flow.TestAbrechnungsKonfigurator;
 import org.nill.abrechnung.tests.konten.TestSachKontoProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@EntityScan(basePackageClasses = {org.nill.abrechnung.entities.Abrechnung.class,org.nill.abrechnung.entities.ZahlungsAuftrag.class })
 public class TestConfig {
 
     @Autowired
-    protected MandantRepository mandantRepository;
+    protected IMandantRepository mandantRepository;
     @Autowired
     protected AbrechnungRepository abrechnungRepository;
     @Autowired
-    protected BuchungRepository buchungRepository;
+    protected IBuchungsRepository buchungRepository;
     @Autowired
-    protected ZahlungsAuftragRepository zahlungsAuftragRepository;
+    protected IZahlungsAuftragRepository zahlungsAuftragRepository;
     @Autowired
-    protected ÜberweisungRepository überweisungRepository;
+    protected IÜberweisungRepository überweisungRepository;
     @Autowired
     protected ParameterRepository parameterRepository;
     @Autowired
-    protected AusgangsDateiRepository ausgangsDateiRepository;
+    protected IAusgangsDateiRepository ausgangsDateiRepository;
 
     @Bean
     public AbrechnungsKonfigurator configurator(
-            LeistungRepository leistungRepository) {
+            ILeistungRepository leistungRepository) {
         return new TestAbrechnungsKonfigurator(leistungRepository);
     }
 

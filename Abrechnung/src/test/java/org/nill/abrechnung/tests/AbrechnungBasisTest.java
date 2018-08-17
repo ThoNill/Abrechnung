@@ -2,7 +2,9 @@ package org.nill.abrechnung.tests;
 
 import org.junit.After;
 import org.junit.Before;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
+import org.nill.abrechnung.aufzählungen.ParameterKey;
+import org.nill.abrechnung.entities.Parameter;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
 import org.nill.abrechnung.repositories.AusgangsDateiRepository;
 import org.nill.abrechnung.repositories.BuchungRepository;
@@ -11,6 +13,8 @@ import org.nill.abrechnung.repositories.ParameterRepository;
 import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
 import org.nill.abrechnung.repositories.ÜberweisungRepository;
 import org.nill.abrechnung.tests.konten.TestSachKontoProvider;
+import org.nill.allgemein.values.MonatJahr;
+import org.nill.allgemein.values.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,9 +43,9 @@ public class AbrechnungBasisTest {
     @After
     @Transactional("dbATransactionManager")
     public void clear() {
-        ausgangsDateiRepository.deleteAll();
         buchungRepository.deleteAll();
         überweisungRepository.deleteAll();
+        ausgangsDateiRepository.deleteAll();
         zahlungsAuftragRepository.deleteAll();
         abrechnungRepository.deleteAll();
         mandantRepository.deleteAll();
@@ -54,5 +58,25 @@ public class AbrechnungBasisTest {
                 zahlungsAuftragRepository, überweisungRepository,
                 parameterRepository, ausgangsDateiRepository);
     }
+    
+    protected void fülleParameter(String tage) {
+        SachKontoProvider provider = sachKontoProvider();
+        
+        neuerParameter(provider, ParameterKey.ZINS_ÜBERZAHLUNGEN,"0.06");
+        neuerParameter(provider, ParameterKey.MWST_GANZ,"0.19");
+        neuerParameter(provider, ParameterKey.MWST_HALB,"0.07");
+        neuerParameter(provider, ParameterKey.ÜBERZAHLUNGSTAGE,tage);
+    }
+
+    private void neuerParameter(SachKontoProvider provider, ParameterKey key,
+            String wert) {
+        Parameter p = new Parameter();
+        p.setKey(key);
+        p.setMj(new MonatJahr(1,2000));
+        p.setRef(TypeReference.ALLE);
+        p.setWert(wert);
+        provider.getParameterRepository().save(p);
+    }
+
 
 }

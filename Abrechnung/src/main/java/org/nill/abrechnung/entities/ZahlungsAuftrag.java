@@ -21,6 +21,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IMandant;
+import org.nill.abrechnung.interfaces.IZahlungsAuftrag;
 import org.nill.zahlungen.values.BankVerbindung;
 
 @Data
@@ -29,7 +32,7 @@ import org.nill.zahlungen.values.BankVerbindung;
 @Entity
 @Table(name = "ZAHLUNGSAUFTRAG")
 @SequenceGenerator(name = "ZAHLUNGSAUFTRAG_SEQ", sequenceName = "ZAHLUNGSAUFTRAG_SEQ")
-public class ZahlungsAuftrag {
+public class ZahlungsAuftrag implements IZahlungsAuftrag {
 
     @EqualsAndHashCode.Include
     @ToString.Include
@@ -79,4 +82,17 @@ public class ZahlungsAuftrag {
     @Embedded
     private BankVerbindung bank;
 
+    @Override
+    public void setIAbrechnung(IAbrechnung abrechnung) {
+       this.setAbrechnung((Abrechnung)abrechnung);
+    }
+    
+    @Override
+    public void setIMandant(IMandant mandant) {
+       setMandant((Mandant)mandant);
+    }
+
+ 
+
+  
 }

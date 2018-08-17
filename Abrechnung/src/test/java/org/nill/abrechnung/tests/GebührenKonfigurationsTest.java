@@ -11,15 +11,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nill.abrechnung.actions.GebührenBerechnung;
+import org.nill.abrechnung.actions.EinBucher;
+import org.nill.abrechnung.aufzählungen.AbrechnungsArt;
 import org.nill.abrechnung.aufzählungen.BuchungsArt;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.entities.Abrechnung;
-import org.nill.abrechnung.entities.GebuehrDefinition;
+import org.nill.abrechnung.entities.GebührDefinition;
 import org.nill.abrechnung.entities.Leistung;
 import org.nill.abrechnung.entities.Mandant;
-import org.nill.abrechnung.flow.handler.AbrechnungsKonfigurator;
-import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
+import org.nill.abrechnung.interfaces.AbrechnungsKonfigurator;
+import org.nill.abrechnung.interfaces.IGebührBerechnung;
+import org.nill.abrechnung.interfaces.IGebührDefinition;
+import org.nill.abrechnung.interfaces.IMandant;
 import org.nill.abrechnung.repositories.LeistungRepository;
 import org.nill.abrechnung.tests.flow.TestAbrechnungsKonfigurator;
 import org.nill.abrechnung.tests.flow.TestLeistungsRepository;
@@ -28,7 +31,6 @@ import org.nill.allgemein.values.MonatJahr;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
-import org.nill.buchhaltung.eingang.EinBucher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -59,7 +61,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void mitEinemMandantenVerbinden() {
-        GebuehrDefinition d = erzeugeGebührDefinition();
+        GebührDefinition d = erzeugeGebührDefinition();
 
         verbindeMitEinemMandaten(d);
         assertEquals(1, mandantRepository.count());
@@ -68,7 +70,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void mitMehrerenMandantenVerbinden() {
-        GebuehrDefinition d = erzeugeGebührDefinition();
+        GebührDefinition d = erzeugeGebührDefinition();
 
         verbindeMitEinemMandaten(d);
         verbindeMitEinemMandaten(d);
@@ -76,19 +78,19 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         assertEquals(3, mandantRepository.count());
     }
 
-    private void verbindeMitEinemMandaten(GebuehrDefinition d) {
+    private void verbindeMitEinemMandaten(GebührDefinition d) {
         Mandant mandant = erzeugeMandant();
         verbindeMitMandanten(mandant, d);
     }
 
-    private Mandant verbindeMitMandanten(Mandant mandant, GebuehrDefinition d) {
+    private IMandant verbindeMitMandanten(Mandant mandant, GebührDefinition d) {
         d.addMandant(mandant);
         mandant.addGebuehrDefinitionen(d);
         return mandantRepository.save(mandant);
     }
 
-    private GebuehrDefinition erzeugeGebührDefinition() {
-        GebuehrDefinition d = new GebuehrDefinition();
+    private GebührDefinition erzeugeGebührDefinition() {
+        GebührDefinition d = new GebührDefinition();
         d.setArt(BuchungsArt.TESTBUCHUNG);
         d.setKontoNr(TestSachKonto.GEBÜHR.ordinal());
         d.setGebührArt(1);
@@ -123,7 +125,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
 
     public Abrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
-        abrechnung.setMandant(mandant);
+        abrechnung.setIMandant(mandant);
         abrechnung.setNummer(3);
         abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
@@ -161,7 +163,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         TestLeistungsRepository leistungsRepository = new TestLeistungsRepository();
         leistungsRepository.setLeistungsRepository(leistungRepository);
 
-        GebuehrDefinition gebührDefinition = new GebuehrDefinition();
+        IGebührDefinition gebührDefinition = new GebührDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setKontoNr(TestSachKonto.GEBÜHR.ordinal());
         gebührDefinition.setGebührArt(1);
@@ -174,7 +176,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
 
         AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(
                 leistungRepository);
-        GebührenBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
+        IGebührBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
                 gebührDefinition, sachKontoProvider(), AbrechnungsArt.NEU);
         BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(abrechnung);
@@ -190,6 +192,8 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         EinBucher bucher = new EinBucher(sachKontoProvider());
         // Noch einmal, darf nichts ausmachen
 
+        abrechnung = abrechnungRepository.save(abrechnung);
+        
         bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
 
         BetragsBündel<SachKonto> bündel = bucher.beträgeEinerBuchungsartHolen(

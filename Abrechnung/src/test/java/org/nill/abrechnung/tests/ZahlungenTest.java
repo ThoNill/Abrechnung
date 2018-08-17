@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nill.abrechnung.aufz‰hlungen.SachKontoProvider;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Mandant;
-import org.nill.abrechnung.entities.ZahlungsAuftrag;
+import org.nill.abrechnung.interfaces.IZahlungsAuftrag;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.abrechnung.values.ZahlungsDefinition;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.basiskomponenten.betrag.Geld;
@@ -47,7 +47,7 @@ public class ZahlungenTest extends AbrechnungBasisTest {
         abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
         abrechnung.setAngelegt(new Date());
-        abrechnung.setMandant(mandant);
+        abrechnung.setIMandant(mandant);
         mandant.addAbrechnung(abrechnung);
         return abrechnungRepository.save(abrechnung);
     }
@@ -61,7 +61,7 @@ public class ZahlungenTest extends AbrechnungBasisTest {
 
         ZahlungsAuftr‰geErzeugen manager = new ZahlungsAuftr‰geErzeugen(
                 sachKontoProvider);
-        List<ZahlungsAuftrag> auftr‰ge = manager.erzeugeAuftr‰ge(abrechnung,
+        List<IZahlungsAuftrag> auftr‰ge = manager.erzeugeAuftr‰ge(abrechnung,
                 Geld.createAmount(100), "verwendungszweck");
         assertEquals(2, auftr‰ge.size());
         assertEquals(Geld.createAmount(30), auftr‰ge.get(0).getBetrag());
@@ -79,7 +79,7 @@ public class ZahlungenTest extends AbrechnungBasisTest {
 
         ZahlungsAuftr‰geErzeugen manager = new ZahlungsAuftr‰geErzeugen(
                 sachKontoProvider);
-        List<ZahlungsAuftrag> auftr‰ge = manager.erzeugeAuftr‰ge(abrechnung,
+        List<IZahlungsAuftrag> auftr‰ge = manager.erzeugeAuftr‰ge(abrechnung,
                 Geld.createAmount(100), "verwendungszweck");
 
         manager.erzeuge‹berweisungen(auftr‰ge, new BankVerbindung(

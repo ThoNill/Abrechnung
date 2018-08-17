@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nill.abrechnung.aufzählungen.ParameterKey;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
 import org.nill.abrechnung.entities.Parameter;
-import org.nill.abrechnung.repositories.ParameterRepository;
+import org.nill.abrechnung.interfaces.IParameterRepository;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.allgemein.values.TypeReference;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ public class ParameterTest extends AbrechnungBasisTest {
     @Transactional("dbATransactionManager")
     public void lesen() {
         SachKontoProvider provider = sachKontoProvider();
-        ParameterRepository repo = provider.getParameterRepository();
+        IParameterRepository repo = provider.getParameterRepository();
 
         createParameter(repo, 1, 2018, 0.6);
         createParameter(repo, 1, 2017, 0.3);
@@ -43,7 +43,7 @@ public class ParameterTest extends AbrechnungBasisTest {
 
     }
 
-    private void createParameter(ParameterRepository repo, int monat, int jahr,
+    private void createParameter(IParameterRepository repo, int monat, int jahr,
             double wert) {
         Parameter p = new Parameter();
         p.setKey(ParameterKey.ZINS_ÜBERZAHLUNGEN);

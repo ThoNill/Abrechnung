@@ -1,11 +1,14 @@
 package org.nill.abrechnung.tests;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.flow.payloads.AuszahlungPayload;
+import org.nill.abrechnung.interfaces.IMandant;
 import org.nill.abrechnung.repositories.MandantRepository;
 import org.nill.abrechnung.repositories.ÜberweisungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.StandardIntegrationFlow;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -42,7 +47,7 @@ public class AuszahlungTest extends MitÜberweisungenTest {
         überweisungRepository.deleteAll();
     }
 
-    public Mandant erzeugeMandant() {
+    public IMandant erzeugeMandant() {
         return mandantRepository.save(new Mandant());
     }
 
@@ -50,6 +55,12 @@ public class AuszahlungTest extends MitÜberweisungenTest {
     @Qualifier("auszahlungChannel")
     public DirectChannel auszahlungChannel;
 
+
+    @Autowired
+    @Qualifier("auszahlungFlowEndChannel")
+    public DirectChannel auszahlungFlowEndChannel;
+
+    
     @Autowired
     @Qualifier("auszahlungFlow")
     StandardIntegrationFlow flow;
@@ -57,9 +68,20 @@ public class AuszahlungTest extends MitÜberweisungenTest {
     @Test
     public void normalerAblauf() {
 
+        auszahlungFlowEndChannel.addInterceptor(new ChannelInterceptorAdapter() {
+            @Override
+            public void postSend(Message message, MessageChannel channel,
+                    boolean sent) {
+                assertEquals(1,mandantRepository.count());
+                assertEquals(0,abrechnungRepository.count());
+                assertEquals(25,überweisungRepository.count());
+                assertEquals(3,ausgangsDateiRepository.count());
+            }
+        });
+        
         flow.start();
 
-        Mandant mandant = erzeugeMandant();
+        IMandant mandant = erzeugeMandant();
 
         createÜberweisung("DE02500105170137075030", 5, mandant,
                 überweisungRepository);

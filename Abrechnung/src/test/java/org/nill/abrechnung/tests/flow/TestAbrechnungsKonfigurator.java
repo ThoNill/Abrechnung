@@ -1,20 +1,21 @@
 package org.nill.abrechnung.tests.flow;
 
-import org.nill.abrechnung.actions.GebührRepository;
 import org.nill.abrechnung.actions.GebührenBerechnung;
+import org.nill.abrechnung.aufzählungen.AbrechnungsArt;
 import org.nill.abrechnung.aufzählungen.SachKonto;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.entities.GebuehrDefinition;
-import org.nill.abrechnung.flow.handler.AbrechnungsKonfigurator;
-import org.nill.abrechnung.flow.payloads.AbrechnungsArt;
-import org.nill.abrechnung.gebühren.GebührFabrik;
-import org.nill.abrechnung.repositories.LeistungRepository;
+import org.nill.abrechnung.interfaces.AbrechnungsKonfigurator;
+import org.nill.abrechnung.interfaces.GebührFabrik;
+import org.nill.abrechnung.interfaces.GebührRepository;
+import org.nill.abrechnung.interfaces.IGebührBerechnung;
+import org.nill.abrechnung.interfaces.IGebührDefinition;
+import org.nill.abrechnung.interfaces.ILeistungRepository;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 
 public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
 
-    private LeistungRepository leistungRepository;
+    private ILeistungRepository leistungRepository;
 
-    public TestAbrechnungsKonfigurator(LeistungRepository leistungRepository) {
+    public TestAbrechnungsKonfigurator(ILeistungRepository leistungRepository) {
         super();
         this.leistungRepository = leistungRepository;
     }
@@ -32,8 +33,8 @@ public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
     }
 
     @Override
-    public GebührenBerechnung erzeugeGebührenBerechner(
-            GebuehrDefinition definition, SachKontoProvider sachKontoProvider,
+    public IGebührBerechnung erzeugeGebührenBerechner(
+            IGebührDefinition definition, SachKontoProvider sachKontoProvider,
             AbrechnungsArt abrechnungsArt) {
         return new GebührenBerechnung(sachKontoProvider, definition,
                 erzeugeGebührRepository(definition.getDatenArt()),

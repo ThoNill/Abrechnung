@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -16,7 +17,13 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@EnableJpaRepositories(basePackageClasses = org.nill.abrechnung.repositories.BuchungRepository.class // eine
+@EntityScan(basePackageClasses = {
+        org.nill.abrechnung.entities.Abrechnung.class,
+        org.nill.abrechnung.entities.ZahlungsAuftrag.class,
+        org.nill.abrechnung.entities.Überweisung.class,
+        org.nill.abrechnung.entities.AusgangsDatei.class})
+@EnableJpaRepositories(basePackageClasses = { org.nill.abrechnung.repositories.BuchungRepository.class, 
+        org.nill.abrechnung.repositories.ZahlungsAuftragRepository.class}
 , transactionManagerRef = "dbATransactionManager" // Name des
 )
 public class TestDbConfig {

@@ -2,6 +2,7 @@ package org.nill.abrechnung.gebühren;
 
 import javax.money.MonetaryAmount;
 
+import org.nill.abrechnung.interfaces.Gebühr;
 import org.nill.basiskomponenten.betrag.Geld;
 
 public class ProzentualeGebühr implements Gebühr {

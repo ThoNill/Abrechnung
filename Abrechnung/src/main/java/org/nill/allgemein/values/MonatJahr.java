@@ -1,8 +1,10 @@
 package org.nill.allgemein.values;
 
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @EqualsAndHashCode
+@ToString
 public class MonatJahr implements Comparable<MonatJahr> {
     private int mj;
 

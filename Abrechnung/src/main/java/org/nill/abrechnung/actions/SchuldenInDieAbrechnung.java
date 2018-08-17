@@ -5,13 +5,12 @@ import java.util.Optional;
 import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.aufzählungen.SachKonto;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.entities.Abrechnung;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
-import org.nill.buchhaltung.eingang.EinBucher;
 
 public class SchuldenInDieAbrechnung extends EinBucher {
 
@@ -27,8 +26,8 @@ public class SchuldenInDieAbrechnung extends EinBucher {
     private double zinssatz;
     private double mwstsatz;
 
-    public void übertragen(Abrechnung abrechnung, int zinsDauer) {
-        Optional<Abrechnung> oAbrechnung = abrechnung
+    public void übertragen(IAbrechnung abrechnung, int zinsDauer) {
+        Optional<IAbrechnung> oAbrechnung = abrechnung
                 .getVorherigeAbrechnung(this);
         if (oAbrechnung.isPresent()) {
             MonetaryAmount saldo = getBuchungRepository().getSumKonto(
@@ -40,7 +39,7 @@ public class SchuldenInDieAbrechnung extends EinBucher {
         }
     }
 
-    private void buche(Abrechnung abrechnung, MonetaryAmount betrag,
+    private void buche(IAbrechnung abrechnung, MonetaryAmount betrag,
             int zinsDauer) {
         BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(betrag,
                 zinsDauer);

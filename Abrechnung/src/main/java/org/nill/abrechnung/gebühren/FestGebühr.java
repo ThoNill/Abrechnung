@@ -2,6 +2,8 @@ package org.nill.abrechnung.gebühren;
 
 import javax.money.MonetaryAmount;
 
+import org.nill.abrechnung.interfaces.Gebühr;
+
 public class FestGebühr implements Gebühr {
     private MonetaryAmount gebühr;
 

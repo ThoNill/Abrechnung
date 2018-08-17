@@ -20,6 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import org.nill.abrechnung.aufzählungen.ParameterKey;
+import org.nill.abrechnung.interfaces.IParameter;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.allgemein.values.MonatJahrAdapter;
 import org.nill.allgemein.values.TypeReference;
@@ -30,7 +31,7 @@ import org.nill.allgemein.values.TypeReference;
 @Entity
 @Table(name = "PARAMETER")
 @SequenceGenerator(name = "PARAMETER_SEQ", sequenceName = "PARAMETER_SEQ")
-public class Parameter {
+public class Parameter implements IParameter {
 
     @EqualsAndHashCode.Include
     @ToString.Include
@@ -58,4 +59,5 @@ public class Parameter {
     @Basic
     private String wert;
 
+ 
 }

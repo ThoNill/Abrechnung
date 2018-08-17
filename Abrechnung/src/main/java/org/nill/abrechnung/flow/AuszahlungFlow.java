@@ -4,8 +4,7 @@ import lombok.extern.java.Log;
 
 import org.nill.abrechnung.flow.handler.DateienMarkierenUndErstellen;
 import org.nill.abrechnung.flow.handler.MarkiereÜberweiungsDateien;
-import org.nill.abrechnung.repositories.AusgangsDateiRepository;
-import org.nill.abrechnung.repositories.ÜberweisungRepository;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.allgemein.values.TypeReference;
 import org.nill.zahlungen.actions.ÜberweisungsDatei;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,45 +24,47 @@ public class AuszahlungFlow {
         return new DirectChannel();
     };
 
+    @Bean
+    @Qualifier("auszahlungFlowEndChannel")
+    public DirectChannel auszahlungFlowEndChannell() {
+        return new DirectChannel();
+    };
+
+    
     @Value("${maxEntryInDatei}")
     int count;
 
     @Bean
     @Qualifier("auszahlungFlow")
     public StandardIntegrationFlow processFileFlowBuilder(
-            AusgangsDateiRepository ausgangsDateiRepository,
-            ÜberweisungRepository überweisungRepository,
+            SachKontoProvider sachKontoProvider,
             ApplicationContext applicationContext) {
         return IntegrationFlows
                 .from("auszahlungChannel")
                 .transform(
                         createMarkiereÜberweiungsDateien(
-                                ausgangsDateiRepository, überweisungRepository,
+                                sachKontoProvider,
                                 count))
                 .transform(
                         createMarkierenUndDateiErstellen(
-                                ausgangsDateiRepository, überweisungRepository))
+                                sachKontoProvider))
+                .channel("auszahlungFlowEndChannel")                      
                 .handle(x -> log.info("im Handler: " + x.toString())).get();
     }
 
     private DateienMarkierenUndErstellen createMarkierenUndDateiErstellen(
-            AusgangsDateiRepository ausgangsDateiRepository,
-            ÜberweisungRepository überweisungRepository) {
-        return new DateienMarkierenUndErstellen(createManager(
-                ausgangsDateiRepository, überweisungRepository));
+            SachKontoProvider provider) {
+        return new DateienMarkierenUndErstellen(createManager(provider));
     }
 
     private MarkiereÜberweiungsDateien createMarkiereÜberweiungsDateien(
-            AusgangsDateiRepository ausgangsDateiRepository,
-            ÜberweisungRepository überweisungRepository, int count) {
+            SachKontoProvider provider, int count) {
         return new MarkiereÜberweiungsDateien(createManager(
-                ausgangsDateiRepository, überweisungRepository), count);
+                provider), count);
     }
 
     ÜberweisungsDatei createManager(
-            AusgangsDateiRepository ausgangsDateiRepository,
-            ÜberweisungRepository überweisungRepository) {
-        return new ÜberweisungsDatei(ausgangsDateiRepository,
-                überweisungRepository, ".", "Test", 1, new TypeReference(1, 1L));
+            SachKontoProvider provider) {
+        return new ÜberweisungsDatei(provider, ".", "Test", 1, new TypeReference(1, 1L));
     }
 }

@@ -1,4 +1,4 @@
-package org.nill.abrechnung.flow.payloads;
+package org.nill.abrechnung.aufzählungen;
 
 public enum AbrechnungsArt {
     NEU, NACHBERCHNEN, ERGÄNZEN;

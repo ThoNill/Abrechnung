@@ -6,9 +6,9 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.nill.abrechnung.gebühren.AnzahlGebühr;
 import org.nill.abrechnung.gebühren.FestGebühr;
-import org.nill.abrechnung.gebühren.Gebühr;
 import org.nill.abrechnung.gebühren.MindestGebühr;
 import org.nill.abrechnung.gebühren.ProzentualeGebühr;
+import org.nill.abrechnung.interfaces.Gebühr;
 import org.nill.basiskomponenten.betrag.Geld;
 
 public class GebührenTest {

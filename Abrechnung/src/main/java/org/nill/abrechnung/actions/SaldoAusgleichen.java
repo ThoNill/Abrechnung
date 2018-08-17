@@ -3,12 +3,11 @@ package org.nill.abrechnung.actions;
 import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.aufzählungen.SachKonto;
-import org.nill.abrechnung.aufzählungen.SachKontoProvider;
-import org.nill.abrechnung.entities.Abrechnung;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.SachKontoProvider;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
-import org.nill.buchhaltung.eingang.EinBucher;
 
 public class SaldoAusgleichen extends EinBucher {
     private String textGuthaben;
@@ -21,7 +20,7 @@ public class SaldoAusgleichen extends EinBucher {
         this.textSchulden = textSchulden;
     }
 
-    public void saldoAusgleichen(Abrechnung abrechnung) {
+    public void saldoAusgleichen(IAbrechnung abrechnung) {
         MonetaryAmount saldo = getBuchungRepository().getSaldo(abrechnung);
         if (saldo.isNegative()) {
             buche(abrechnung, ABGLEICH_SCHULDEN(), SCHULDEN(), textSchulden,
@@ -32,7 +31,7 @@ public class SaldoAusgleichen extends EinBucher {
         }
     }
 
-    private void buche(Abrechnung abrechnung, int buchungstyp,
+    private void buche(IAbrechnung abrechnung, int buchungstyp,
             SachKonto kontonr, String text, MonetaryAmount betrag) {
         BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag(
                 buchungstyp, kontonr, text, betrag);

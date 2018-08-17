@@ -15,6 +15,8 @@ import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Buchung;
 import org.nill.abrechnung.entities.Mandant;
+import org.nill.abrechnung.interfaces.IAbrechnung;
+import org.nill.abrechnung.interfaces.IBuchung;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
 import org.nill.abrechnung.repositories.BuchungRepository;
 import org.nill.abrechnung.repositories.MandantRepository;
@@ -66,9 +68,9 @@ public class BuchungsauftragInDBTest {
         return new Mandant();
     }
 
-    public Abrechnung erzeugeAbrechnung(Mandant mandant) {
+    public IAbrechnung erzeugeAbrechnung(Mandant mandant) {
         Abrechnung abrechnung = new Abrechnung();
-        abrechnung.setMandant(mandant);
+        abrechnung.setIMandant(mandant);
         abrechnung.setNummer(3);
         abrechnung.setMj(new MonatJahr(4, 2018));
         abrechnung.setBezeichnung("Test");
@@ -78,12 +80,12 @@ public class BuchungsauftragInDBTest {
     }
 
     public Buchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,
-            Abrechnung abrechnung) {
+            IAbrechnung abrechnung) {
         BetragsBündel<SachKonto> beträge = auftrag.getPositionen();
         Buchung buchung = new Buchung();
         buchung.setText(auftrag.getBeschreibung().getText());
         buchung.setArt(auftrag.getBeschreibung().getArt());
-        buchung.setAbrechnung(abrechnung);
+        buchung.setIAbrechnung(abrechnung);
         for (SachKonto p : beträge.getKeys()) {
             KontoBewegung bew = new KontoBewegung();
             bew.setBetrag(beträge.getValue(p));
@@ -95,7 +97,7 @@ public class BuchungsauftragInDBTest {
     }
 
     public BetragsBündel<SachKonto> beträgeEinerBuchungsartHolen(
-            Abrechnung abrechnung, int art) {
+            IAbrechnung abrechnung, int art) {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         for (Object o : buchungRepository.getSumBewegungen(abrechnung, art)) {
             Object[] werte = (Object[]) o;
@@ -113,10 +115,10 @@ public class BuchungsauftragInDBTest {
         check();
     }
 
-    public Buchung insertBuchung() {
+    public IBuchung insertBuchung() {
         Mandant mandant = erzeugeMandant();
 
-        Abrechnung abrechnung = erzeugeAbrechnung(mandant);
+        IAbrechnung abrechnung = erzeugeAbrechnung(mandant);
         BuchungsAuftrag<SachKonto> auftrag = erzeugeBuchungsAuftrag();
         Buchung buchung = erzeugeBuchung(auftrag, abrechnung);
         return buchungRepository.save(buchung);
@@ -128,7 +130,7 @@ public class BuchungsauftragInDBTest {
         assertEquals(1, abrechnungRepository.count());
         assertEquals(1, buchungRepository.count());
 
-        for (Buchung buchung : buchungRepository.findAll()) {
+        for (IBuchung buchung : buchungRepository.findAll()) {
             assertEquals(1, buchung.getBewegungen().size());
         }
 
@@ -136,7 +138,7 @@ public class BuchungsauftragInDBTest {
 
     @Test
     public void insertAndLoadTest() {
-        Buchung buchung = insertBuchung();
+        IBuchung buchung = insertBuchung();
         BetragsBündel<SachKonto> beträge = beträgeEinerBuchungsartHolen(
                 buchung.getAbrechnung(), BuchungsArt.TESTBUCHUNG);
         assertEquals(Geld.createAmount(1.12),
@@ -145,7 +147,7 @@ public class BuchungsauftragInDBTest {
 
     @Test
     public void saldoTest() {
-        Buchung buchung = insertBuchung();
+        IBuchung buchung = insertBuchung();
         assertEquals(Geld.createAmount(1.12),
                 buchungRepository.getSaldo(buchung.getAbrechnung()));
     }

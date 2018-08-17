@@ -19,13 +19,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.nill.abrechnung.interfaces.IGebührDefinition;
+import org.nill.abrechnung.interfaces.IMandant;
+
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "GEBUEHRDEFINITION")
 @SequenceGenerator(name = "GEBUEHRDEFINITION_SEQ", sequenceName = "GEBUEHRDEFINITION_SEQ")
-public class GebuehrDefinition {
+public class GebührDefinition implements IGebührDefinition {
 
     @EqualsAndHashCode.Include
     @ToString.Include
@@ -82,8 +85,9 @@ public class GebuehrDefinition {
             CascadeType.MERGE }, mappedBy = "gebuehrDefinitionen")
     private Set<Mandant> mandanten = new HashSet<>();
 
-    public void addMandant(Mandant mandant) {
-        this.mandanten.add(mandant);
+    @Override
+    public void addMandant(IMandant mandant) {
+        this.mandanten.add((Mandant)mandant);
     }
 
 }
