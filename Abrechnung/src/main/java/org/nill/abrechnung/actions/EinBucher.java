@@ -7,18 +7,18 @@ import javax.money.MonetaryAmount;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IBuchung;
-import org.nill.abrechnung.interfaces.SachKontoDelegate;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.UmgebungDelegate;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.abrechnung.values.KontoBewegung;
 import org.nill.allgemein.values.TypeReference;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
-public class EinBucher extends SachKontoDelegate {
+public class EinBucher extends UmgebungDelegate {
 
-    public EinBucher(SachKontoProvider sachKontoProvider) {
-        super(sachKontoProvider);
+    public EinBucher(Umgebung umgebung) {
+        super(umgebung);
     }
 
     public IBuchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,

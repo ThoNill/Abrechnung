@@ -8,7 +8,7 @@ import org.nill.abrechnung.interfaces.GebührFabrik;
 import org.nill.abrechnung.interfaces.GebührRepository;
 import org.nill.abrechnung.interfaces.IGebührBerechnung;
 import org.nill.abrechnung.interfaces.IGebührDefinition;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.abrechnung.repositories.ILeistungRepository;
 
 public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
@@ -34,9 +34,9 @@ public class TestAbrechnungsKonfigurator implements AbrechnungsKonfigurator {
 
     @Override
     public IGebührBerechnung erzeugeGebührenBerechner(
-            IGebührDefinition definition, SachKontoProvider sachKontoProvider,
+            IGebührDefinition definition, Umgebung umgebung,
             AbrechnungsArt abrechnungsArt) {
-        return new GebührenBerechnung(sachKontoProvider, definition,
+        return new GebührenBerechnung(umgebung, definition,
                 erzeugeGebührRepository(definition.getDatenArt()),
                 erzeugeGebührFabrik(definition.getGebührArt()), abrechnungsArt);
     }

@@ -6,7 +6,7 @@ import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.interfaces.IAbrechnung;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
@@ -14,9 +14,9 @@ import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
 public class SchuldenInDieAbrechnung extends EinBucher {
 
-    public SchuldenInDieAbrechnung(SachKontoProvider sachKontoProvider,
+    public SchuldenInDieAbrechnung(Umgebung umgebung,
             String text, double zinssatz, double mwstsatz) {
-        super(sachKontoProvider);
+        super(umgebung);
         this.text = text;
         this.zinssatz = zinssatz;
         this.mwstsatz = mwstsatz;

@@ -4,7 +4,7 @@ import lombok.extern.java.Log;
 
 import org.nill.abrechnung.flow.handler.DateienMarkierenUndErstellen;
 import org.nill.abrechnung.flow.handler.Markiere‹berweiungsDateien;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.allgemein.values.TypeReference;
 import org.nill.zahlungen.actions.‹berweisungsDatei;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,34 +37,34 @@ public class AuszahlungFlow {
     @Bean
     @Qualifier("auszahlungFlow")
     public StandardIntegrationFlow processFileFlowBuilder(
-            SachKontoProvider sachKontoProvider,
+            Umgebung umgebung,
             ApplicationContext applicationContext) {
         return IntegrationFlows
                 .from("auszahlungChannel")
                 .transform(
                         createMarkiere‹berweiungsDateien(
-                                sachKontoProvider,
+                                umgebung,
                                 count))
                 .transform(
                         createMarkierenUndDateiErstellen(
-                                sachKontoProvider))
+                                umgebung))
                 .channel("auszahlungFlowEndChannel")                      
                 .handle(x -> log.info("im Handler: " + x.toString())).get();
     }
 
     private DateienMarkierenUndErstellen createMarkierenUndDateiErstellen(
-            SachKontoProvider provider) {
+            Umgebung provider) {
         return new DateienMarkierenUndErstellen(createManager(provider));
     }
 
     private Markiere‹berweiungsDateien createMarkiere‹berweiungsDateien(
-            SachKontoProvider provider, int count) {
+            Umgebung provider, int count) {
         return new Markiere‹berweiungsDateien(createManager(
                 provider), count);
     }
 
     ‹berweisungsDatei createManager(
-            SachKontoProvider provider) {
+            Umgebung provider) {
         return new ‹berweisungsDatei(provider, ".", "Test", 1, new TypeReference(1, 1L));
     }
 }

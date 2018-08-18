@@ -177,7 +177,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         AbrechnungsKonfigurator konfigurator = new TestAbrechnungsKonfigurator(
                 leistungRepository);
         IGebührBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
-                gebührDefinition, sachKontoProvider(), AbrechnungsArt.NEU);
+                gebührDefinition, umgebung(), AbrechnungsArt.NEU);
         BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(abrechnung);
         BetragsBündel<SachKonto> auftragBündel = auftrag.getPositionen();
@@ -189,7 +189,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         assertEquals(Geld.createAmount(-summe * 0.06 * 0.19),
                 auftragBündel.getBetrag(TestSachKonto.MWST));
 
-        EinBucher bucher = new EinBucher(sachKontoProvider());
+        EinBucher bucher = new EinBucher(umgebung());
         // Noch einmal, darf nichts ausmachen
 
         abrechnung = abrechnungRepository.save(abrechnung);

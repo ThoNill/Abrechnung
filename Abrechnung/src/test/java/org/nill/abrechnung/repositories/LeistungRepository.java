@@ -18,7 +18,7 @@ public interface LeistungRepository extends CrudRepository<Leistung, Long>, ILei
             @Param("art") int art);
 
     @Transactional
-    @Modifying(clearAutomatically = false)
+    @Modifying( clearAutomatically = false)
     @Query("update Leistung leist set leist.abrechnung = :abr  where leist.abrechnung is null and  leist.mandant = :mand and leist.art = :art")
     public Integer markData(
             @Param("abr") IAbrechnung abr,

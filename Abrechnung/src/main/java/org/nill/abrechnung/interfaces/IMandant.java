@@ -16,9 +16,9 @@ public interface IMandant {
     public void addGebuehrDefinitionen(IGebührDefinition d);
 
     public Optional<IAbrechnung> getLetzteAbgerechneteAbrechnung(
-            SachKontoProvider provider, MonatJahr mj, AbrechnungsTyp typ);
+            Umgebung provider, MonatJahr mj, AbrechnungsTyp typ);
 
-    public IAbrechnung createNeueAbrechnung(SachKontoProvider provider,
+    public IAbrechnung createNeueAbrechnung(Umgebung provider,
             MonatJahr mj, AbrechnungsTyp typ);
 
     public java.lang.Long getMandantId();

@@ -42,7 +42,7 @@ public class ÜberweisungenErzeugenUndVersendenTest extends MitÜberweisungenTest 
         assertEquals(25, überweisungRepository.count());
 
         try {
-            ÜberweisungsDatei manager = new ÜberweisungsDatei(sachKontoProvider()
+            ÜberweisungsDatei manager = new ÜberweisungsDatei(umgebung()
                     , ".",
                     "Test", 1, new TypeReference(1, 1L));
             manager.markiereÜberweisungsDateien(10);

@@ -20,7 +20,7 @@ import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.entities.Parameter;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IBuchung;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.abrechnung.tests.konten.TestSachKonto;
 import org.nill.abrechnung.values.ZahlungsDefinition;
 import org.nill.allgemein.values.MonatJahr;
@@ -70,7 +70,7 @@ public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
     }
 
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(sachKontoProvider());
+        return new EinBucher(umgebung());
     }
 
     @Test
@@ -121,7 +121,7 @@ public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
 
     private IAbrechnung abschließen(IAbrechnung abrechnung) {
         IAbrechnung nächsteAbrechnung = abrechnung.abschleißen(
-                sachKontoProvider());
+                umgebung());
         return nächsteAbrechnung;
     }
 
@@ -142,7 +142,7 @@ public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
         erzeugeBuchung(abrechnung, betrag);
 
-        SaldoAusgleichen abschluss = new SaldoAusgleichen(sachKontoProvider(),
+        SaldoAusgleichen abschluss = new SaldoAusgleichen(umgebung(),
                 "Guthaben", "Schulden");
         abschluss.saldoAusgleichen(abrechnung);
         return abrechnung;
@@ -182,12 +182,12 @@ public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
 
     public IAbrechnung schuldenÜbernahme(IAbrechnung abrechnung, double zinssatz,
             double mwstsatz, int tage) {
-        SachKontoProvider provider = sachKontoProvider();
+        Umgebung provider = umgebung();
         IAbrechnung nächsteAbrechnung = abrechnung
                 .createOrGetNächsteAbrechnung(provider);
 
         SchuldenInDieAbrechnung übernehmen = new SchuldenInDieAbrechnung(
-                sachKontoProvider(), "Schulden übernehmen", zinssatz, mwstsatz);
+                umgebung(), "Schulden übernehmen", zinssatz, mwstsatz);
         übernehmen.übertragen(nächsteAbrechnung, tage);
         return nächsteAbrechnung;
     }
@@ -246,7 +246,7 @@ public class AbrechnungAbschließenTest extends AbrechnungBasisTest {
         IAbrechnung nächsteAbrechnung = abschließen(abrechnung);
 
         ZahlungsAufträgeErzeugen zahlungenManager = new ZahlungsAufträgeErzeugen(
-                sachKontoProvider());
+                umgebung());
 
         checkKontoBetrag(abrechnung, BuchungsArt.ABGLEICH_GUTHABEN,
                 TestSachKonto.GUTHABEN, -100);

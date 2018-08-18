@@ -8,15 +8,15 @@ import org.nill.abrechnung.flow.payloads.AufrufPayload;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IAbrechnungRepository;
 import org.nill.abrechnung.interfaces.IMandant;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
 public class HoleAbrechnung extends
         AbstractPayloadTransformer<AufrufPayload, AbrechnungPayload> {
 
-    private SachKontoProvider provider;
+    private Umgebung provider;
 
-    public HoleAbrechnung(SachKontoProvider provider) {
+    public HoleAbrechnung(Umgebung provider) {
         super();
         this.provider = provider;
     }

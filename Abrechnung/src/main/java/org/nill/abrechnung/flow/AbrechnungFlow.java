@@ -9,7 +9,7 @@ import org.nill.abrechnung.flow.handler.GebührDefinitionSplitter;
 import org.nill.abrechnung.flow.handler.HoleAbrechnung;
 import org.nill.abrechnung.flow.handler.SchließeDieAbrechnungAb;
 import org.nill.abrechnung.interfaces.AbrechnungsKonfigurator;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -42,52 +42,52 @@ public class AbrechnungFlow {
     @Bean
     @Qualifier("abrechnungFlow")
     public StandardIntegrationFlow processFileFlowBuilder(
-            SachKontoProvider sachKontoProvider,
+            Umgebung umgebung,
             AbrechnungsKonfigurator konfigurator,
             ApplicationContext applicationContext) {
         return IntegrationFlows
                 .from("parameterChannel")
-                .transform(holeAbrechnung(sachKontoProvider))
+                .transform(holeAbrechnung(umgebung))
                 .channel("mandantChannel")
-                .split(gebührDefinitionSplitter(sachKontoProvider))
+                .split(gebührDefinitionSplitter(umgebung))
                 .transform(
-                        berechneBuchungsauftrag(konfigurator, sachKontoProvider))
+                        berechneBuchungsauftrag(konfigurator, umgebung))
                 .transform(
-                        bucheDenBuchungsauftrag(sachKontoProvider))
+                        bucheDenBuchungsauftrag(umgebung))
 
                 .aggregate(a -> a.processor(new GebührDefinitionAggregator()))
                 .transform(
-                        schließeDieAbrechnungAb(sachKontoProvider))
+                        schließeDieAbrechnungAb(umgebung))
                 .channel("abrechnungsFlowEndChannel")        
                 .handle(x -> log.info("im Handler: " + x.toString())).get();
 
     }
 
     private SchließeDieAbrechnungAb schließeDieAbrechnungAb(
-            SachKontoProvider sachKontoProvider) {
-        return new SchließeDieAbrechnungAb(sachKontoProvider);
+            Umgebung umgebung) {
+        return new SchließeDieAbrechnungAb(umgebung);
     }
 
     @Bean
-    HoleAbrechnung holeAbrechnung(SachKontoProvider provider) {
+    HoleAbrechnung holeAbrechnung(Umgebung provider) {
         return new HoleAbrechnung(provider);
     }
 
     @Bean
-    GebührDefinitionSplitter gebührDefinitionSplitter(SachKontoProvider sachKontoProvider) {
-        return new GebührDefinitionSplitter(sachKontoProvider);
+    GebührDefinitionSplitter gebührDefinitionSplitter(Umgebung umgebung) {
+        return new GebührDefinitionSplitter(umgebung);
     }
 
     @Bean
     BerechneBuchungsauftrag berechneBuchungsauftrag(
             AbrechnungsKonfigurator konfigurator,
-            SachKontoProvider sachKontoProvider) {
-        return new BerechneBuchungsauftrag(konfigurator, sachKontoProvider);
+            Umgebung umgebung) {
+        return new BerechneBuchungsauftrag(konfigurator, umgebung);
     }
 
     @Bean
     BucheDenBuchungsauftrag bucheDenBuchungsauftrag(
-            SachKontoProvider sachKontoProvider) {
-        return new BucheDenBuchungsauftrag(sachKontoProvider);
+            Umgebung umgebung) {
+        return new BucheDenBuchungsauftrag(umgebung);
     }
 }

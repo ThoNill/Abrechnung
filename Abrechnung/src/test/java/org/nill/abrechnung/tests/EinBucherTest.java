@@ -81,7 +81,7 @@ public class EinBucherTest extends AbrechnungBasisTest {
     }
 
     private EinBucher erzeugeEinbucher() {
-        return new EinBucher(sachKontoProvider());
+        return new EinBucher(umgebung());
     }
 
     @Test

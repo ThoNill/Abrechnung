@@ -17,7 +17,7 @@ import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IMandant;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.allgemein.values.MonatJahr;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -62,11 +62,11 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
 
     public IAbrechnung naechsteAbrechnung() {
         IAbrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
-        return abrechnung.createOrGetNächsteAbrechnung(sachKontoProvider());
+        return abrechnung.createOrGetNächsteAbrechnung(umgebung());
     }
 
     public IAbrechnung naechsteAbrechnungMerfacherAufruf() {
-        SachKontoProvider provider = sachKontoProvider();
+        Umgebung provider = umgebung();
         IAbrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
         abrechnung.createOrGetNächsteAbrechnung(provider);
         abrechnung.createOrGetNächsteAbrechnung(provider);
@@ -84,7 +84,7 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
 
     public Optional<IAbrechnung> vorherigeAbrechnung() {
         IAbrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
-        return abrechnung.getVorherigeAbrechnung(sachKontoProvider());
+        return abrechnung.getVorherigeAbrechnung(umgebung());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void zusammenspielNachherVorher() {
-        SachKontoProvider provider = sachKontoProvider();
+        Umgebung provider = umgebung();
 
         Abrechnung abrechnung = erzeugeAbrechnung(erzeugeMandant());
         IAbrechnung nächsteAbrechnung = abrechnung
@@ -122,7 +122,7 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
         abrechnung.setTyp(AbrechnungsTyp.TEILABRECHNUNG);
         abrechnung = abrechnungRepository.saveIAbrechnung(abrechnung);
         Optional<IAbrechnung> abgerechneteAbrechnung = mandant
-                .getLetzteAbgerechneteAbrechnung(sachKontoProvider(),
+                .getLetzteAbgerechneteAbrechnung(umgebung(),
                         new MonatJahr(3, 2018), AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
@@ -132,7 +132,7 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void neueAbrechnung() {
-        SachKontoProvider provider = sachKontoProvider();
+        Umgebung provider = umgebung();
 
         IMandant mandant = mandantRepository.save(erzeugeMandant());
         IAbrechnung neueAbrechnung = mandant.createNeueAbrechnung(provider,

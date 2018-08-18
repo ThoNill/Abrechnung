@@ -10,17 +10,17 @@ import org.nill.abrechnung.flow.payloads.GebührDefinitionPayload;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IGebührDefinition;
 import org.nill.abrechnung.interfaces.IMandant;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.springframework.integration.splitter.AbstractMessageSplitter;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 
 public class GebührDefinitionSplitter extends AbstractMessageSplitter {
     AtomicInteger correlationId = new AtomicInteger();
-    SachKontoProvider provider;
+    Umgebung provider;
     
     
-    public GebührDefinitionSplitter(SachKontoProvider provider) {
+    public GebührDefinitionSplitter(Umgebung provider) {
         super();
         this.provider = provider;
     }

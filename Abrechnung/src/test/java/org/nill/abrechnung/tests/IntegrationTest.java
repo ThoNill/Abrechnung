@@ -15,7 +15,7 @@ import org.nill.abrechnung.entities.GebührDefinition;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.flow.payloads.AufrufPayload;
 import org.nill.abrechnung.interfaces.IMandant;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.allgemein.values.MonatJahr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,15 +52,15 @@ public class IntegrationTest extends AbrechnungBasisTest {
 
     public IMandant erzeugeMandant() {
         Mandant mandant = mandantRepository.save(new Mandant());
-        SachKontoProvider sachKontoProvider = sachKontoProvider();
+        Umgebung umgebung = umgebung();
 
         GebührDefinition gebührDefinition = new GebührDefinition();
         gebührDefinition.setArt(BuchungsArt.TESTBUCHUNG);
-        gebührDefinition.setKontoNr(sachKontoProvider.GEBÜHR().ordinal());
+        gebührDefinition.setKontoNr(umgebung.GEBÜHR().ordinal());
         gebührDefinition.setGebührArt(1);
         gebührDefinition.setDatenArt(1);
         gebührDefinition.setParameter(0.06);
-        gebührDefinition.setMwstKonto(sachKontoProvider.MWST().ordinal());
+        gebührDefinition.setMwstKonto(umgebung.MWST().ordinal());
         gebührDefinition.setMwstSatz(0.19);
         gebührDefinition.setBuchungsArt(BuchungsArt.TESTBUCHUNG);
         gebührDefinition.setBuchungstext("Testbuchung");

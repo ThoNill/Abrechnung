@@ -2,107 +2,107 @@ package org.nill.abrechnung.interfaces;
 
 import org.nill.abrechnung.aufz‰hlungen.SachKonto;
 
-public class SachKontoDelegate implements SachKontoProvider {
-    private SachKontoProvider sachKontoProvider;
+public class UmgebungDelegate implements Umgebung {
+    private Umgebung umgebung;
 
-    public SachKontoDelegate(SachKontoProvider sachKontoProvider) {
+    public UmgebungDelegate(Umgebung umgebung) {
         super();
-        this.sachKontoProvider = sachKontoProvider;
+        this.umgebung = umgebung;
     }
 
     @Override
     public SachKonto GEB‹HR() {
-        return sachKontoProvider.GEB‹HR();
+        return umgebung.GEB‹HR();
     }
 
     @Override
     public SachKonto GUTHABEN() {
-        return sachKontoProvider.GUTHABEN();
+        return umgebung.GUTHABEN();
     }
 
     @Override
     public SachKonto AUSZUZAHLEN() {
-        return sachKontoProvider.AUSZUZAHLEN();
+        return umgebung.AUSZUZAHLEN();
     }
 
     @Override
     public SachKonto AUSBEZAHLT() {
-        return sachKontoProvider.AUSBEZAHLT();
+        return umgebung.AUSBEZAHLT();
     }
 
     @Override
     public SachKonto SCHULDEN() {
-        return sachKontoProvider.SCHULDEN();
+        return umgebung.SCHULDEN();
     }
 
     @Override
     public SachKonto ZINS() {
-        return sachKontoProvider.ZINS();
+        return umgebung.ZINS();
     }
 
     @Override
     public SachKonto MWST() {
-        return sachKontoProvider.MWST();
+        return umgebung.MWST();
     }
 
     @Override
     public SachKonto sachKontoFrom(int pos) {
-        return sachKontoProvider.sachKontoFrom(pos);
+        return umgebung.sachKontoFrom(pos);
     }
 
     @Override
     public IMandantRepository getMandantRepository() {
-        return sachKontoProvider.getMandantRepository();
+        return umgebung.getMandantRepository();
     }
 
     @Override
     public IAbrechnungRepository getAbrechnungRepository() {
-        return sachKontoProvider.getAbrechnungRepository();
+        return umgebung.getAbrechnungRepository();
     }
 
     @Override
     public IBuchungsRepository getBuchungRepository() {
-        return sachKontoProvider.getBuchungRepository();
+        return umgebung.getBuchungRepository();
     }
 
     @Override
     public IZahlungsAuftragRepository getZahlungsAuftragRepository() {
-        return sachKontoProvider.getZahlungsAuftragRepository();
+        return umgebung.getZahlungsAuftragRepository();
     }
 
     @Override
     public I‹berweisungRepository get‹berweisungRepository() {
-        return sachKontoProvider.get‹berweisungRepository();
+        return umgebung.get‹berweisungRepository();
     }
 
     @Override
     public IParameterRepository getParameterRepository() {
-        return sachKontoProvider.getParameterRepository();
+        return umgebung.getParameterRepository();
     }
 
     @Override
     public IAusgangsDateiRepository getAusgangsDateiRepository() {
-        return sachKontoProvider.getAusgangsDateiRepository();
+        return umgebung.getAusgangsDateiRepository();
     }
 
     @Override
     public IBuchung createBuchung() {
-       return sachKontoProvider.createBuchung();
+       return umgebung.createBuchung();
     }
 
     @Override
     public IAusgangsDatei createAusgangsDatei() {
-        return sachKontoProvider.createAusgangsDatei();
+        return umgebung.createAusgangsDatei();
     }
 
     @Override
     public IZahlungsAuftrag createZahlungsAuftrag() {
-      return sachKontoProvider.createZahlungsAuftrag();
+      return umgebung.createZahlungsAuftrag();
     }
 
     @Override
     public I‹berweisung create‹berweisung() {
-        return sachKontoProvider.create‹berweisung();
+        return umgebung.create‹berweisung();
     }
 
 }

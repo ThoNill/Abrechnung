@@ -8,24 +8,24 @@ import java.util.List;
 
 import org.nill.abrechnung.interfaces.IAusgangsDatei;
 import org.nill.abrechnung.interfaces.IÜberweisung;
-import org.nill.abrechnung.interfaces.SachKontoDelegate;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.UmgebungDelegate;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.allgemein.values.TypeReference;
 import org.nill.zahlungen.values.IBAN;
 import org.nill.zahlungen.vorlagen.BankExportModell;
 import org.nill.zahlungen.vorlagen.BankExportVorlage;
 import org.springframework.transaction.annotation.Transactional;
 
-public class ÜberweisungsDatei extends SachKontoDelegate{
+public class ÜberweisungsDatei extends UmgebungDelegate{
     private String ausgangsVerzeichnis;
     private String name;
     private int fileArt;
     private TypeReference protokoll;
 
-    public ÜberweisungsDatei(SachKontoProvider sachKontoProvider,
+    public ÜberweisungsDatei(Umgebung umgebung,
             String ausgangsVerzeichnis, String name, int fileArt,
             TypeReference protokoll) {
-        super(sachKontoProvider);
+        super(umgebung);
         this.ausgangsVerzeichnis = ausgangsVerzeichnis;
         this.name = name;
         this.fileArt = fileArt;

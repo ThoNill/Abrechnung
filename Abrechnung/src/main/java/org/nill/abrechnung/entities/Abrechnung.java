@@ -43,7 +43,7 @@ import org.nill.abrechnung.interfaces.IBuchung;
 import org.nill.abrechnung.interfaces.IGebührBerechnung;
 import org.nill.abrechnung.interfaces.IGebührDefinition;
 import org.nill.abrechnung.interfaces.IMandant;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.allgemein.values.MonatJahrAdapter;
 import org.nill.allgemein.values.TypeReference;
@@ -121,7 +121,7 @@ public class Abrechnung implements IAbrechnung {
 
     @Override
     public IAbrechnung createOrGetNächsteAbrechnung(
-            SachKontoProvider provider) {
+            Umgebung provider) {
         IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
 
@@ -145,7 +145,7 @@ public class Abrechnung implements IAbrechnung {
 
     @Override
     public Optional<IAbrechnung> getVorherigeAbrechnung(
-            SachKontoProvider provider) {
+            Umgebung provider) {
         IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
         List<IAbrechnung> liste = abrechnungRepository.getAbrechnung(
@@ -157,14 +157,14 @@ public class Abrechnung implements IAbrechnung {
     }
 
     @Override
-    public IAbrechnung abschleißen(SachKontoProvider provider) {
+    public IAbrechnung abschleißen(Umgebung provider) {
         int zinsDauer = provider.getParameterRepository().getIntZeitWert(ParameterKey.ÜBERZAHLUNGSTAGE,TypeReference.ALLE,getMj());
         double zinssatz = provider.getParameterRepository().getDoubleZeitWert(ParameterKey.ZINS_ÜBERZAHLUNGEN,TypeReference.ALLE,getMj());
         double mwstsatz = provider.getParameterRepository().getDoubleZeitWert(ParameterKey.MWST_GANZ,TypeReference.ALLE,getMj());
         return abschleißen(provider, zinsDauer, zinssatz, mwstsatz);
     }
 
-    public IAbrechnung abschleißen(SachKontoProvider provider, int zinsDauer,
+    public IAbrechnung abschleißen(Umgebung provider, int zinsDauer,
             double zinssatz, double mwstsatz) {
 
 
@@ -186,7 +186,7 @@ public class Abrechnung implements IAbrechnung {
 
     
     @Override
-    public void berechneDieGebühren(SachKontoProvider provider,
+    public void berechneDieGebühren(Umgebung provider,
             AbrechnungsKonfigurator konfigurator, AbrechnungsArt abrechnungsArt) {
         Set<GebührDefinition> liste = getMandant().getGebuehrDefinitionen();
 
@@ -199,7 +199,7 @@ public class Abrechnung implements IAbrechnung {
     }
 
     private BuchungsAuftrag<SachKonto> berechneDenAuftrag(
-            SachKontoProvider provider, AbrechnungsKonfigurator konfigurator,
+            Umgebung provider, AbrechnungsKonfigurator konfigurator,
             AbrechnungsArt abrechnungsArt, IGebührDefinition definition) {
 
         IGebührBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
@@ -207,24 +207,24 @@ public class Abrechnung implements IAbrechnung {
         return berechnung.markierenUndberechnen(this);
     }
 
-    private void bucheDenAuftrag(SachKontoProvider provider,
+    private void bucheDenAuftrag(Umgebung provider,
             BuchungsAuftrag<SachKonto> auftrag) {
         new EinBucher(provider).erzeugeDifferenzBuchung(auftrag, this);
     }
 
-    double getÜberzahlungsZins(SachKontoProvider provider) {
+    double getÜberzahlungsZins(Umgebung provider) {
         return provider.getParameterRepository().getDoubleZeitWert(
                 ParameterKey.ZINS_ÜBERZAHLUNGEN, TypeReference.ALLE, getMj());
 
     }
 
-    double getGanzeMwst(SachKontoProvider provider) {
+    double getGanzeMwst(Umgebung provider) {
         return provider.getParameterRepository().getDoubleZeitWert(
                 ParameterKey.MWST_GANZ, TypeReference.ALLE, getMj());
 
     }
 
-    double getHalbeMwst(SachKontoProvider provider) {
+    double getHalbeMwst(Umgebung provider) {
         return provider.getParameterRepository().getDoubleZeitWert(
                 ParameterKey.MWST_HALB, TypeReference.ALLE, getMj());
 

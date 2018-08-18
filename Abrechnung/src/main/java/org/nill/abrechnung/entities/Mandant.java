@@ -32,7 +32,7 @@ import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IAbrechnungRepository;
 import org.nill.abrechnung.interfaces.IGebührDefinition;
 import org.nill.abrechnung.interfaces.IMandant;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.abrechnung.values.ZahlungsDefinition;
 import org.nill.allgemein.values.MonatJahr;
 
@@ -86,7 +86,7 @@ public class  Mandant implements IMandant {
     
 
     @Override
-    public Optional<IAbrechnung> getLetzteAbgerechneteAbrechnung(SachKontoProvider provider, MonatJahr mj,
+    public Optional<IAbrechnung> getLetzteAbgerechneteAbrechnung(Umgebung provider, MonatJahr mj,
             AbrechnungsTyp typ) {
                 IAbrechnungRepository abrechnungRepository = provider
                         .getAbrechnungRepository();
@@ -102,7 +102,7 @@ public class  Mandant implements IMandant {
             }
 
     @Override
-    public IAbrechnung createNeueAbrechnung(SachKontoProvider provider, MonatJahr mj, AbrechnungsTyp typ) {
+    public IAbrechnung createNeueAbrechnung(Umgebung provider, MonatJahr mj, AbrechnungsTyp typ) {
         IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
     

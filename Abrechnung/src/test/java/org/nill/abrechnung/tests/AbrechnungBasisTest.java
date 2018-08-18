@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.nill.abrechnung.aufzählungen.ParameterKey;
 import org.nill.abrechnung.entities.Parameter;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
 import org.nill.abrechnung.repositories.AusgangsDateiRepository;
 import org.nill.abrechnung.repositories.BuchungRepository;
@@ -12,7 +12,7 @@ import org.nill.abrechnung.repositories.MandantRepository;
 import org.nill.abrechnung.repositories.ParameterRepository;
 import org.nill.abrechnung.repositories.ZahlungsAuftragRepository;
 import org.nill.abrechnung.repositories.ÜberweisungRepository;
-import org.nill.abrechnung.tests.konten.TestSachKontoProvider;
+import org.nill.abrechnung.tests.konten.TestUmgebung;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.allgemein.values.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,15 +61,15 @@ public class AbrechnungBasisTest {
         parameterRepository.deleteAll();
     }
 
-    protected SachKontoProvider sachKontoProvider() {
-        return new TestSachKontoProvider(mandantRepository,
+    protected Umgebung umgebung() {
+        return new TestUmgebung(mandantRepository,
                 abrechnungRepository, buchungRepository,
                 zahlungsAuftragRepository, überweisungRepository,
                 parameterRepository, ausgangsDateiRepository);
     }
     
     protected void fülleParameter(String tage) {
-        SachKontoProvider provider = sachKontoProvider();
+        Umgebung provider = umgebung();
         
         neuerParameter(provider, ParameterKey.ZINS_ÜBERZAHLUNGEN,"0.06");
         neuerParameter(provider, ParameterKey.MWST_GANZ,"0.19");
@@ -77,7 +77,7 @@ public class AbrechnungBasisTest {
         neuerParameter(provider, ParameterKey.ÜBERZAHLUNGSTAGE,tage);
     }
 
-    private void neuerParameter(SachKontoProvider provider, ParameterKey key,
+    private void neuerParameter(Umgebung provider, ParameterKey key,
             String wert) {
         Parameter p = new Parameter();
         p.setKey(key);

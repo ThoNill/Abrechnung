@@ -222,7 +222,7 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest {
     }
 
     private AbrechnungPayload aufruf(AufrufPayload parameter) {
-        HoleAbrechnung handler = new HoleAbrechnung(sachKontoProvider());
+        HoleAbrechnung handler = new HoleAbrechnung(umgebung());
         AbrechnungPayload testErgebnis;
         try {
             return handler.testTransformPayload(parameter);
@@ -235,7 +235,7 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest {
     }
 
     private void aufrufMitException(AufrufPayload parameter) {
-        HoleAbrechnung handler = new HoleAbrechnung(sachKontoProvider());
+        HoleAbrechnung handler = new HoleAbrechnung(umgebung());
 
         try {
             handler.testTransformPayload(parameter);

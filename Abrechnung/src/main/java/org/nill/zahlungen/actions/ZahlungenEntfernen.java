@@ -10,15 +10,15 @@ import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IZahlungsAuftrag;
 import org.nill.abrechnung.interfaces.IZahlungsAuftragRepository;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ZahlungenEntfernen extends EinBucher {
-    public ZahlungenEntfernen(SachKontoProvider sachKontoProvider) {
-        super(sachKontoProvider);
+    public ZahlungenEntfernen(Umgebung umgebung) {
+        super(umgebung);
     }
 
     @Transactional("dbATransactionManager")

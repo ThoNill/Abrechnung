@@ -9,5 +9,5 @@ public interface AbrechnungsKonfigurator {
     GebührRepository<SachKonto> erzeugeGebührRepository(int datenArt);
 
     IGebührBerechnung erzeugeGebührenBerechner(IGebührDefinition definition,
-            SachKontoProvider sachKontoProvider, AbrechnungsArt abrechnungsArt);
+            Umgebung umgebung, AbrechnungsArt abrechnungsArt);
 }

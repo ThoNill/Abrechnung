@@ -5,7 +5,7 @@ import org.nill.abrechnung.flow.payloads.BuchungAuftragPayload;
 import org.nill.abrechnung.flow.payloads.GebührDefinitionPayload;
 import org.nill.abrechnung.interfaces.AbrechnungsKonfigurator;
 import org.nill.abrechnung.interfaces.IGebührBerechnung;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.springframework.integration.transformer.AbstractPayloadTransformer;
 
@@ -14,13 +14,13 @@ public class BerechneBuchungsauftrag
         AbstractPayloadTransformer<GebührDefinitionPayload, BuchungAuftragPayload> {
 
     private AbrechnungsKonfigurator konfigurator;
-    private SachKontoProvider sachKontoProvider;
+    private Umgebung umgebung;
 
     public BerechneBuchungsauftrag(AbrechnungsKonfigurator konfigurator,
-            SachKontoProvider sachKontoProvider) {
+            Umgebung umgebung) {
         super();
         this.konfigurator = konfigurator;
-        this.sachKontoProvider = sachKontoProvider;
+        this.umgebung = umgebung;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class BerechneBuchungsauftrag
             GebührDefinitionPayload payload) throws Exception {
         System.out.println("BerechneBuchungsauftrag start");
         IGebührBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
-                payload.getDefinition(), sachKontoProvider, payload.getArt());
+                payload.getDefinition(), umgebung, payload.getArt());
         BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(payload.getAbrechnung());
         System.out.println("BerechneBuchungsauftrag stop");

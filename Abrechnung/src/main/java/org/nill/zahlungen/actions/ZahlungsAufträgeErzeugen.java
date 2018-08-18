@@ -14,7 +14,7 @@ import org.nill.abrechnung.interfaces.IBuchung;
 import org.nill.abrechnung.interfaces.IMandant;
 import org.nill.abrechnung.interfaces.IZahlungsAuftrag;
 import org.nill.abrechnung.interfaces.IÜberweisung;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.abrechnung.values.ZahlungsDefinition;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
@@ -25,8 +25,8 @@ import org.nill.zahlungen.values.BankVerbindung;
 
 public class ZahlungsAufträgeErzeugen extends EinBucher {
 
-    public ZahlungsAufträgeErzeugen(SachKontoProvider sachKontoProvider) {
-        super(sachKontoProvider);
+    public ZahlungsAufträgeErzeugen(Umgebung umgebung) {
+        super(umgebung);
     }
 
     public List<IZahlungsAuftrag> erzeugeAufträge(IAbrechnung abrechnung,

@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.nill.abrechnung.aufzählungen.ParameterKey;
 import org.nill.abrechnung.entities.Parameter;
 import org.nill.abrechnung.interfaces.IParameterRepository;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.allgemein.values.TypeReference;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +22,7 @@ public class ParameterTest extends AbrechnungBasisTest {
     @Test
     @Transactional("dbATransactionManager")
     public void lesen() {
-        SachKontoProvider provider = sachKontoProvider();
+        Umgebung provider = umgebung();
         IParameterRepository repo = provider.getParameterRepository();
 
         createParameter(repo, 1, 2018, 0.6);

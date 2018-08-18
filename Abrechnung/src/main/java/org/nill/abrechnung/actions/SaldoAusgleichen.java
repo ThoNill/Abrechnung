@@ -4,7 +4,7 @@ import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.interfaces.IAbrechnung;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
@@ -13,9 +13,9 @@ public class SaldoAusgleichen extends EinBucher {
     private String textGuthaben;
     private String textSchulden;
 
-    public SaldoAusgleichen(SachKontoProvider sachKontoProvider,
+    public SaldoAusgleichen(Umgebung umgebung,
             String textGuthaben, String textSchulden) {
-        super(sachKontoProvider);
+        super(umgebung);
         this.textGuthaben = textGuthaben;
         this.textSchulden = textSchulden;
     }

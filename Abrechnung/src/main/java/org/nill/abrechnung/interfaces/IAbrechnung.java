@@ -14,14 +14,14 @@ public interface IAbrechnung {
 
     void addBuchung(IBuchung buchung);
 
-    IAbrechnung createOrGetNächsteAbrechnung(SachKontoProvider provider);
+    IAbrechnung createOrGetNächsteAbrechnung(Umgebung provider);
 
     Optional<IAbrechnung> getVorherigeAbrechnung(
-            SachKontoProvider provider);
+            Umgebung provider);
 
-    IAbrechnung abschleißen(SachKontoProvider provider);
+    IAbrechnung abschleißen(Umgebung provider);
 
-    void berechneDieGebühren(SachKontoProvider provider,
+    void berechneDieGebühren(Umgebung provider,
             AbrechnungsKonfigurator konfigurator, AbrechnungsArt abrechnungsArt);
 
     

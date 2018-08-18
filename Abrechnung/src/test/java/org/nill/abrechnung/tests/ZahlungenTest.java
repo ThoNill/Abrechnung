@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.interfaces.IZahlungsAuftrag;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.abrechnung.values.ZahlungsDefinition;
 import org.nill.allgemein.values.MonatJahr;
 import org.nill.basiskomponenten.betrag.Geld;
@@ -57,10 +57,10 @@ public class ZahlungenTest extends AbrechnungBasisTest {
     public void aufträgeErzeugen() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        SachKontoProvider sachKontoProvider = sachKontoProvider();
+        Umgebung umgebung = umgebung();
 
         ZahlungsAufträgeErzeugen manager = new ZahlungsAufträgeErzeugen(
-                sachKontoProvider);
+                umgebung);
         List<IZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
                 Geld.createAmount(100), "verwendungszweck");
         assertEquals(2, aufträge.size());
@@ -75,10 +75,10 @@ public class ZahlungenTest extends AbrechnungBasisTest {
     public void überweisungenErzeugen() {
         Mandant mandant = erzeugeMandant();
         Abrechnung abrechnung = erzeugeAbrechnung(mandant);
-        SachKontoProvider sachKontoProvider = sachKontoProvider();
+        Umgebung umgebung = umgebung();
 
         ZahlungsAufträgeErzeugen manager = new ZahlungsAufträgeErzeugen(
-                sachKontoProvider);
+                umgebung);
         List<IZahlungsAuftrag> aufträge = manager.erzeugeAufträge(abrechnung,
                 Geld.createAmount(100), "verwendungszweck");
 

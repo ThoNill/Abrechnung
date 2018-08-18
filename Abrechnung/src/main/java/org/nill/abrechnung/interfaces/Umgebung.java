@@ -3,7 +3,7 @@ package org.nill.abrechnung.interfaces;
 import org.nill.abrechnung.aufzählungen.BuchungsArt;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 
-public interface SachKontoProvider extends RepositoryProvider, EntitiyFabrik {
+public interface Umgebung extends RepositoryProvider, EntitiyFabrik {
     SachKonto GEBÜHR();
 
     SachKonto GUTHABEN();

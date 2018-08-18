@@ -16,9 +16,9 @@ import org.nill.abrechnung.interfaces.IZahlungsAuftrag;
 import org.nill.abrechnung.interfaces.IZahlungsAuftragRepository;
 import org.nill.abrechnung.interfaces.IÜberweisung;
 import org.nill.abrechnung.interfaces.IÜberweisungRepository;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 
-public class TestSachKontoProvider implements SachKontoProvider {
+public class TestUmgebung implements Umgebung {
 
     private IMandantRepository mandantRepository;
     private IAbrechnungRepository abrechnungRepository;
@@ -33,7 +33,7 @@ public class TestSachKontoProvider implements SachKontoProvider {
 
     private IAusgangsDateiRepository ausgangsDateiRepository;
 
-    public TestSachKontoProvider(IMandantRepository mandantRepository,
+    public TestUmgebung(IMandantRepository mandantRepository,
             IAbrechnungRepository abrechnungRepository,
             IBuchungsRepository buchungRepository,
             IZahlungsAuftragRepository zahlungsAuftragRepository,

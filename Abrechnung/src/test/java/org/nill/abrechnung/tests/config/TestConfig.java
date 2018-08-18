@@ -6,12 +6,12 @@ import org.nill.abrechnung.interfaces.IBuchungsRepository;
 import org.nill.abrechnung.interfaces.IMandantRepository;
 import org.nill.abrechnung.interfaces.IZahlungsAuftragRepository;
 import org.nill.abrechnung.interfaces.IÜberweisungRepository;
-import org.nill.abrechnung.interfaces.SachKontoProvider;
+import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.abrechnung.repositories.AbrechnungRepository;
 import org.nill.abrechnung.repositories.ILeistungRepository;
 import org.nill.abrechnung.repositories.ParameterRepository;
 import org.nill.abrechnung.tests.flow.TestAbrechnungsKonfigurator;
-import org.nill.abrechnung.tests.konten.TestSachKontoProvider;
+import org.nill.abrechnung.tests.konten.TestUmgebung;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -43,8 +43,8 @@ public class TestConfig {
     }
 
     @Bean
-    protected SachKontoProvider sachKontoProvider() {
-        return new TestSachKontoProvider(mandantRepository,
+    protected Umgebung umgebung() {
+        return new TestUmgebung(mandantRepository,
                 abrechnungRepository, buchungRepository,
                 zahlungsAuftragRepository, überweisungRepository,
                 parameterRepository, ausgangsDateiRepository);
