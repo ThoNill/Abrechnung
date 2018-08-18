@@ -12,9 +12,11 @@ import org.springframework.data.repository.query.Param;
 public interface AusgangsDateiRepository extends
         CrudRepository<AusgangsDatei, Long>, IAusgangsDateiRepository {
     
+    @Override
     @Query("select a from org.nill.abrechnung.entities.AusgangsDatei a where a.gesendet is null and a.fileArt = :art ")
     public List<IAusgangsDatei> getNichVersendeteDateien(@Param("art") int art);
 
+    @Override
     public default IAusgangsDatei save(IAusgangsDatei d) {
         return this.save((AusgangsDatei)d);
     }

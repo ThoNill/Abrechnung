@@ -1,9 +1,8 @@
 package org.nill.allgemein.values;
 
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@EqualsAndHashCode
+
 @ToString
 public class MonatJahr implements Comparable<MonatJahr> {
     private int mj;
@@ -33,6 +32,28 @@ public class MonatJahr implements Comparable<MonatJahr> {
     @Override
     public int compareTo(MonatJahr o) {
         return mj - o.mj;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + mj;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MonatJahr other = (MonatJahr) obj;
+        if (mj != other.mj)
+            return false;
+        return true;
     }
 
 }

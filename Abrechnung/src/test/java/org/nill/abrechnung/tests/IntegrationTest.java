@@ -1,16 +1,14 @@
 package org.nill.abrechnung.tests;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
-
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nill.abrechnung.aufzählungen.AbrechnungsArt;
 import org.nill.abrechnung.aufzählungen.AbrechnungsTyp;
 import org.nill.abrechnung.aufzählungen.BuchungsArt;
-import org.nill.abrechnung.entities.Abrechnung;
 import org.nill.abrechnung.entities.GebührDefinition;
 import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.flow.payloads.AufrufPayload;
@@ -19,9 +17,7 @@ import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.allgemein.values.MonatJahr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.StandardIntegrationFlow;

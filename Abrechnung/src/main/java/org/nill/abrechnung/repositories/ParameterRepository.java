@@ -12,14 +12,17 @@ import org.springframework.data.repository.query.Param;
 
 public interface ParameterRepository extends CrudRepository<Parameter, Long>, IParameterRepository {
 
+    @Override
     @Query("select max(p.mj) from org.nill.abrechnung.entities.Parameter p where p.key = :key and p.ref = :ref and p.mj <= :mj")
     public MonatJahr getMJ(@Param("key") ParameterKey key,
             @Param("ref") TypeReference ref, @Param("mj") MonatJahr mj);
 
+    @Override
     @Query("select p.wert from org.nill.abrechnung.entities.Parameter p where p.key = :key and p.ref = :ref and p.mj is null")
     public String getWert(@Param("key") ParameterKey key,
             @Param("ref") TypeReference ref);
 
+    @Override
     @Query("select p.wert from org.nill.abrechnung.entities.Parameter p where p.key = :key and p.ref = :ref and p.mj = :mj")
     public String getWert(@Param("key") ParameterKey key,
             @Param("ref") TypeReference ref, @Param("mj") MonatJahr mj);
@@ -36,7 +39,7 @@ public interface ParameterRepository extends CrudRepository<Parameter, Long>, IP
             }
             return getWert(key, ref, mj);
         } catch (Exception ex) {
-            return null;
+            throw new IllegalArgumentException(ex);
         }
     };
 

@@ -12,11 +12,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface LeistungRepository extends CrudRepository<Leistung, Long>, ILeistungRepository {
+    @Override
     @Query("select sum(leist.betrag) from org.nill.abrechnung.entities.Leistung leist where leist.abrechnung = :abr and leist.art = :art")
     public MonetaryAmount getBetrag(
             @Param("abr") IAbrechnung abr,
             @Param("art") int art);
 
+    @Override
     @Transactional
     @Modifying( clearAutomatically = false)
     @Query("update Leistung leist set leist.abrechnung = :abr  where leist.abrechnung is null and  leist.mandant = :mand and leist.art = :art")

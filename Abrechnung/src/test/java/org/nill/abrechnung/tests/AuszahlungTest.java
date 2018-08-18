@@ -39,6 +39,7 @@ public class AuszahlungTest extends MitÜberweisungenTest {
     @Autowired
     private ÜberweisungRepository überweisungRepository;
 
+    @Override
     @Before
     @After
     @Transactional("dbATransactionManager")

@@ -13,10 +13,8 @@ import org.nill.abrechnung.repositories.ParameterRepository;
 import org.nill.abrechnung.tests.flow.TestAbrechnungsKonfigurator;
 import org.nill.abrechnung.tests.konten.TestUmgebung;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 public class TestConfig {

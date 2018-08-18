@@ -10,9 +10,12 @@ import org.nill.abrechnung.gebühren.MindestGebühr;
 import org.nill.abrechnung.gebühren.ProzentualeGebühr;
 import org.nill.abrechnung.interfaces.Gebühr;
 import org.nill.basiskomponenten.betrag.Geld;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GebührenTest {
-
+    protected static final Logger log = LoggerFactory
+            .getLogger(GebührenTest.class);
     @Test
     public void testeProzentualeGebühr() {
         ProzentualeGebühr g = new ProzentualeGebühr(0.05);
@@ -28,6 +31,7 @@ public class GebührenTest {
             ProzentualeGebühr g = new ProzentualeGebühr(-0.05);
             fail("Ausnahme erwartet");
         } catch (Exception ex) {
+            log.error("Erwartete Ausnahme", ex);
         }
     }
 
@@ -49,11 +53,13 @@ public class GebührenTest {
             Gebühr g = new MindestGebühr(Geld.createAmount(-25));
             fail("Ausnahme erwartet");
         } catch (Exception ex) {
+            log.error("Erwartete Ausnahme", ex);
         }
         try {
             Gebühr g = new MindestGebühr(null);
             fail("Ausnahme erwartet");
         } catch (Exception ex) {
+            log.error("Erwartete Ausnahme", ex);
         }
     }
 
@@ -71,11 +77,13 @@ public class GebührenTest {
             Gebühr g = new FestGebühr(Geld.createAmount(-25));
             fail("Ausnahme erwartet");
         } catch (Exception ex) {
+            log.error("Erwartete Ausnahme", ex);
         }
         try {
             Gebühr g = new FestGebühr(null);
             fail("Ausnahme erwartet");
         } catch (Exception ex) {
+            log.error("Erwartete Ausnahme", ex);
         }
     }
 
@@ -93,11 +101,13 @@ public class GebührenTest {
             Gebühr g = new AnzahlGebühr(Geld.createAmount(-25));
             fail("Ausnahme erwartet");
         } catch (Exception ex) {
+            log.error("Erwartete Ausnahme", ex);
         }
         try {
             Gebühr g = new AnzahlGebühr(null);
             fail("Ausnahme erwartet");
         } catch (Exception ex) {
+            log.error("Erwartete Ausnahme", ex);
         }
     }
 

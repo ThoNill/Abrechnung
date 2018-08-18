@@ -10,8 +10,8 @@ import org.nill.abrechnung.interfaces.GebührRepository;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IGebührBerechnung;
 import org.nill.abrechnung.interfaces.IGebührDefinition;
-import org.nill.abrechnung.interfaces.UmgebungDelegate;
 import org.nill.abrechnung.interfaces.Umgebung;
+import org.nill.abrechnung.interfaces.UmgebungDelegate;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.buchhaltung.eingang.Beschreibung;
@@ -33,6 +33,26 @@ public class GebührenBerechnung extends UmgebungDelegate implements IGebührBerec
         this.abrechnungsArt = abrechnungsArt;
     }
 
+    @Override
+    public BuchungsAuftrag<SachKonto> berechnen(IAbrechnung abrechnung) {
+        BetragsBündel<SachKonto> bündel = daten.getBeträge(abrechnung);
+        bündel = gebührDazu(abrechnung, bündel);
+        Beschreibung beschreibung = new Beschreibung(
+                definition.getBuchungsArt(), definition.getBuchungstext());
+        return new BuchungsAuftrag<>(beschreibung, bündel);
+    }
+
+    @Override
+    public BuchungsAuftrag<SachKonto> markierenUndberechnen(
+            IAbrechnung abrechnung) {
+        if (!AbrechnungsArt.NACHBERCHNEN.equals(abrechnungsArt)) {
+            daten.markieren(abrechnung);
+        }
+        return berechnen(abrechnung);
+    }
+
+    
+    
     private BetragsBündel<SachKonto> gebührDazu(IAbrechnung abrechnung,
             BetragsBündel<SachKonto> bündel) {
         MonetaryAmount basisBetrag = daten.getGebührenBasis(abrechnung);
@@ -52,22 +72,5 @@ public class GebührenBerechnung extends UmgebungDelegate implements IGebührBerec
         return gebührFabrik.createGebühr(definition.getParameter());
     }
 
-    @Override
-    public BuchungsAuftrag<SachKonto> berechnen(IAbrechnung abrechnung) {
-        BetragsBündel<SachKonto> bündel = daten.getBeträge(abrechnung);
-        bündel = gebührDazu(abrechnung, bündel);
-        Beschreibung beschreibung = new Beschreibung(
-                definition.getBuchungsArt(), definition.getBuchungstext());
-        return new BuchungsAuftrag<>(beschreibung, bündel);
-    }
-
-    @Override
-    public BuchungsAuftrag<SachKonto> markierenUndberechnen(
-            IAbrechnung abrechnung) {
-        if (!AbrechnungsArt.NACHBERCHNEN.equals(abrechnungsArt)) {
-            daten.markieren(abrechnung);
-        }
-        return berechnen(abrechnung);
-    }
-
+  
 }

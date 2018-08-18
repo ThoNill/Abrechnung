@@ -1,14 +1,15 @@
 package org.nill.abrechnung.actions;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IBuchung;
-import org.nill.abrechnung.interfaces.UmgebungDelegate;
 import org.nill.abrechnung.interfaces.Umgebung;
+import org.nill.abrechnung.interfaces.UmgebungDelegate;
 import org.nill.abrechnung.values.KontoBewegung;
 import org.nill.allgemein.values.TypeReference;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
@@ -23,7 +24,6 @@ public class EinBucher extends UmgebungDelegate {
 
     public IBuchung erzeugeBuchung(BuchungsAuftrag<SachKonto> auftrag,
             IAbrechnung abrechnung) {
-        abrechnung = getAbrechnungRepository().saveIAbrechnung(abrechnung);
         if (!auftrag.isEmpty()) {
             IBuchung buchung = createBuchung();
             buchung.setText(auftrag.getBeschreibung().getText());
@@ -36,8 +36,8 @@ public class EinBucher extends UmgebungDelegate {
                 bewegungHinzufügen(buchung, p, betrag);
             }
             HashMap<Integer, Long> bezüge = auftrag.getVerbundenMit();
-            for (Integer rolle : bezüge.keySet()) {
-                bezugHinzufügen(buchung, rolle, bezüge.get(rolle));
+            for (Map.Entry<Integer,Long> rolle : bezüge.entrySet()) {
+                bezugHinzufügen(buchung, rolle.getKey(),rolle.getValue());
             }
             return getBuchungRepository().save(buchung);
         }
@@ -73,7 +73,6 @@ public class EinBucher extends UmgebungDelegate {
 
     public IBuchung erzeugeDifferenzBuchung(BuchungsAuftrag<SachKonto> auftrag,
             IAbrechnung abrechnung) {
-        abrechnung = getAbrechnungRepository().saveIAbrechnung(abrechnung);
         BetragsBündel<SachKonto> aktuell = beträgeEinerBuchungsartHolen(
                 abrechnung, auftrag.getBeschreibung().getArt());
         BetragsBündel<SachKonto> differenz = (BetragsBündel<SachKonto>) aktuell

@@ -5,8 +5,6 @@ import static org.junit.Assert.fail;
 
 import java.util.Date;
 
-import lombok.extern.java.Log;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,17 +17,21 @@ import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.flow.handler.HoleAbrechnung;
 import org.nill.abrechnung.flow.payloads.AbrechnungPayload;
 import org.nill.abrechnung.flow.payloads.AufrufPayload;
-import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IMandant;
 import org.nill.allgemein.values.MonatJahr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@Log
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })
 public class HoleAbrechnungsTest extends AbrechnungBasisTest {
+    protected static final Logger LOG = LoggerFactory
+            .getLogger(HoleAbrechnungsTest.class);
+  
 
     @Override
     @Before
@@ -152,7 +154,7 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest {
     @Transactional("dbATransactionManager")
     public void rechneLetzteAbrechnungAb() {
         Mandant mandant = erzeugeMandant();
-        IAbrechnung abrechnung = erzeugeAbrechnung(mandant, 1);
+        erzeugeAbrechnung(mandant, 1);
         AufrufPayload parameter = new AufrufPayload(AbrechnungsArt.NEU,
                 mandant.getMandantId(), 0, new MonatJahr(4, 2018),
                 AbrechnungsTyp.MONATSABRECHNUNG);
@@ -223,13 +225,12 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest {
 
     private AbrechnungPayload aufruf(AufrufPayload parameter) {
         HoleAbrechnung handler = new HoleAbrechnung(umgebung());
-        AbrechnungPayload testErgebnis;
         try {
             return handler.testTransformPayload(parameter);
 
         } catch (Exception e) {
-            fail("Unerwertete Ausnahme");
-            log.severe(e.getMessage());
+            fail("Unerwartete Ausnahme");
+            LOG.error(e.getMessage());
         }
         return null;
     }
@@ -242,7 +243,7 @@ public class HoleAbrechnungsTest extends AbrechnungBasisTest {
 
             fail("Ausnahme erwartet");
         } catch (Exception e) {
-            log.severe(e.getMessage());
+            LOG.error(e.getMessage());
         }
     }
 
