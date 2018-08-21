@@ -24,19 +24,19 @@ public class AbrechnungFlow {
     @Qualifier("parameterChannel")
     public DirectChannel parameterChannel() {
         return new DirectChannel();
-    };
+    }
 
     @Bean
     @Qualifier("mandantChannel")
     public DirectChannel mandantChannel() {
         return new DirectChannel();
-    };
-
+    }
+    
     @Bean
     @Qualifier("abrechnungsFlowEndChannel")
     public DirectChannel abrechnungsFlowEndChannel() {
         return new DirectChannel();
-    };
+    }
 
     
     @Bean

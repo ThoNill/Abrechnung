@@ -2,7 +2,6 @@ package org.nill.abrechnung.interfaces;
 
 import java.util.Date;
 import java.util.Optional;
-import java.util.Set;
 
 import org.nill.abrechnung.aufzählungen.AbrechnungsArt;
 import org.nill.abrechnung.aufzählungen.AbrechnungsStatus;
@@ -11,8 +10,6 @@ import org.nill.abrechnung.aufzählungen.RunStatus;
 import org.nill.allgemein.values.MonatJahr;
 
 public interface IAbrechnung {
-
-    void addBuchung(IBuchung buchung);
 
     IAbrechnung createOrGetNächsteAbrechnung(Umgebung provider);
 
@@ -58,7 +55,5 @@ public interface IAbrechnung {
     Date getAngelegt();
 
     void setAngelegt(Date angelegt) ;
-
-    Set<? extends IBuchung> getBuchung() ;
 
 }

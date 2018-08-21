@@ -85,14 +85,11 @@ public class HoleAbrechnung extends
 
     private IAbrechnung ohneAbrechnungsId(AufrufPayload payload) {
         IMandant mandant = sucheMandant(payload);
-        IAbrechnungRepository abrechnungRepository = provider
-                .getAbrechnungRepository();
         Optional<IAbrechnung> oAbrechnung = mandant
                 .getLetzteAbgerechneteAbrechnung(provider, payload.getMj(),
                         payload.getTyp());
         if (oAbrechnung.isPresent()) {
-            return fallsEineAbrechnungSchonAbgerechnetWurde(payload,
-                    oAbrechnung.get());
+            return fallsEineAbrechnungSchonAbgerechnetWurde(oAbrechnung.get());
         } else {
             return ohneBereitsAbgerechneteAbrechnungen(payload, mandant);
         }
@@ -109,7 +106,7 @@ public class HoleAbrechnung extends
     }
 
     private IAbrechnung fallsEineAbrechnungSchonAbgerechnetWurde(
-            AufrufPayload payload, IAbrechnung abrechnung) {
+            IAbrechnung abrechnung) {
         return abrechnung.createOrGetNächsteAbrechnung(provider);
     }
 

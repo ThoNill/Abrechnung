@@ -39,7 +39,7 @@ public class Parameter implements IParameter {
     @Column(name = "PARAMETER")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PARAMETER_SEQ")
-    private java.lang.Long ParameterId;
+    private java.lang.Long parameterId;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "KEY")

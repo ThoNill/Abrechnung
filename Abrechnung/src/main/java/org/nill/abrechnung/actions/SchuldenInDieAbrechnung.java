@@ -13,6 +13,9 @@ import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
 public class SchuldenInDieAbrechnung extends EinBucher {
+    private String text;
+    private double zinssatz;
+    private double mwstsatz;
 
     public SchuldenInDieAbrechnung(Umgebung umgebung,
             String text, double zinssatz, double mwstsatz) {
@@ -21,10 +24,6 @@ public class SchuldenInDieAbrechnung extends EinBucher {
         this.zinssatz = zinssatz;
         this.mwstsatz = mwstsatz;
     }
-
-    private String text;
-    private double zinssatz;
-    private double mwstsatz;
 
     public void übertragen(IAbrechnung abrechnung, int zinsDauer) {
         Optional<IAbrechnung> oAbrechnung = abrechnung
@@ -56,7 +55,7 @@ public class SchuldenInDieAbrechnung extends EinBucher {
         beträge.put(MWST(), mwst);
 
         Beschreibung beschreibung = new Beschreibung(ÜBERNAHME_SCHULDEN(), text);
-        return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
+        return new BuchungsAuftrag<>(beschreibung, beträge);
     }
 
     private MonetaryAmount berechneZins(MonetaryAmount betrag, int zinsDauer) {

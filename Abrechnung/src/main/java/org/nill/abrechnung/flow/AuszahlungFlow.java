@@ -17,22 +17,22 @@ import org.springframework.integration.dsl.StandardIntegrationFlow;
 
 @Log
 public class AuszahlungFlow {
+    
+    @Value("${maxEntryInDatei}")
+    int count;
 
     @Bean
     @Qualifier("auszahlungChannel")
     public DirectChannel mandantChannel() {
         return new DirectChannel();
-    };
+    }
 
     @Bean
     @Qualifier("auszahlungFlowEndChannel")
     public DirectChannel auszahlungFlowEndChannell() {
         return new DirectChannel();
-    };
+    }
 
-    
-    @Value("${maxEntryInDatei}")
-    int count;
 
     @Bean
     @Qualifier("auszahlungFlow")

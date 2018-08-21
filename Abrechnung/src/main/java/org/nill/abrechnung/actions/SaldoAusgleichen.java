@@ -43,7 +43,7 @@ public class SaldoAusgleichen extends EinBucher {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         beträge.put(kontonr, betrag);
         Beschreibung beschreibung = new Beschreibung(buchungstyp, text);
-        return new BuchungsAuftrag<SachKonto>(beschreibung, beträge);
+        return new BuchungsAuftrag<>(beschreibung, beträge);
     }
 
 }

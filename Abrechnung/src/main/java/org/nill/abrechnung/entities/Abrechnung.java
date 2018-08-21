@@ -1,7 +1,6 @@
 package org.nill.abrechnung.entities;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -13,13 +12,11 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -39,7 +36,6 @@ import org.nill.abrechnung.aufzählungen.SachKonto;
 import org.nill.abrechnung.interfaces.AbrechnungsKonfigurator;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.IAbrechnungRepository;
-import org.nill.abrechnung.interfaces.IBuchung;
 import org.nill.abrechnung.interfaces.IGebührBerechnung;
 import org.nill.abrechnung.interfaces.IGebührDefinition;
 import org.nill.abrechnung.interfaces.IMandant;
@@ -65,7 +61,7 @@ public class Abrechnung implements IAbrechnung {
     @Column(name = "ABRECHNUNGID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ABRECHNUNG_SEQ")
-    private java.lang.Long AbrechnungId;
+    private java.lang.Long abrechnungId;
 
     @ToString.Include
     @EqualsAndHashCode.Include
@@ -105,33 +101,18 @@ public class Abrechnung implements IAbrechnung {
     @Column(name = "ANGELEGT")
     private Date angelegt = new Date();
 
-    // TODO Zeitraum zeitraum;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "abrechnung", fetch = FetchType.LAZY)
-    private Set<Buchung> buchung = new HashSet<>();
-
-    @Override
-    public void addBuchung(IBuchung buchung) {
-        this.buchung.add((Buchung)buchung);
-    };
-
-    public void removeBuchung(IBuchung buchung) {
-        this.buchung.remove(buchung);
-    };
-
     @Override
     public IAbrechnung createOrGetNächsteAbrechnung(
             Umgebung provider) {
         IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
 
-        IMandant mandant = provider.getMandantRepository().save(getMandant());
         List<IAbrechnung> liste = abrechnungRepository.getAbrechnung(
                 getMandant(), getNummer() + 1);
         if (liste.isEmpty()) {
             Abrechnung neu = new Abrechnung();
             neu.setNummer(getNummer() + 1);
-            neu.setIMandant(mandant);
+            neu.setIMandant(getMandant());
             neu.setMj(getMj());
             neu.setTyp(getTyp());
             return abrechnungRepository.saveIAbrechnung(neu);
@@ -228,6 +209,8 @@ public class Abrechnung implements IAbrechnung {
     double getHalbeMwst(Umgebung provider) {
         return provider.getParameterRepository().getDoubleZeitWert(
                 ParameterKey.MWST_HALB, TypeReference.ALLE, getMj());
-
     }
+
+    
+    
 }

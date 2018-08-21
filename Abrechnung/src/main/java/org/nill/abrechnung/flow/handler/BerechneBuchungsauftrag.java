@@ -26,12 +26,10 @@ public class BerechneBuchungsauftrag
     @Override
     protected BuchungAuftragPayload transformPayload(
             GebührDefinitionPayload payload) throws Exception {
-        System.out.println("BerechneBuchungsauftrag start");
         IGebührBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
                 payload.getDefinition(), umgebung, payload.getArt());
         BuchungsAuftrag<SachKonto> auftrag = berechnung
                 .markierenUndberechnen(payload.getAbrechnung());
-        System.out.println("BerechneBuchungsauftrag stop");
         return new BuchungAuftragPayload(payload.getAbrechnung(),
                 payload.getMandant(), payload.getArt(),
                 payload.getDefinition(), auftrag);

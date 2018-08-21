@@ -20,10 +20,10 @@ public class MindestGebühr implements Gebühr {
     @Override
     public MonetaryAmount apply(MonetaryAmount gebühr) {
         if (gebühr.isPositive()) {
-            return (gebühr.isLessThan(minimum)) ? minimum : Geld.getNull();
+            return gebühr.isLessThan(minimum) ? minimum : Geld.getNull();
         } else {
             MonetaryAmount negGebühr = gebühr.negate();
-            return (negGebühr.isLessThan(minimum)) ? minimum.negate() : Geld
+            return negGebühr.isLessThan(minimum) ? minimum.negate() : Geld
                     .getNull();
         }
     }

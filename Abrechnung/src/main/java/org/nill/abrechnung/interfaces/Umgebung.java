@@ -22,14 +22,14 @@ public interface Umgebung extends RepositoryProvider, EntitiyFabrik {
 
     default int ABGLEICH_GUTHABEN() {
         return BuchungsArt.ABGLEICH_GUTHABEN;
-    };
+    }
 
     default int ABGLEICH_SCHULDEN() {
         return BuchungsArt.ABGLEICH_SCHULDEN;
-    };
+    }
 
     default int ÜBERNAHME_SCHULDEN() {
         return BuchungsArt.ÜBERNAHME_SCHULDEN;
-    };
+    }
 
 }

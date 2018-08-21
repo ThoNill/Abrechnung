@@ -49,7 +49,7 @@ public class  Mandant implements IMandant {
     @Column(name = "MANDANTID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MANDANT_SEQ")
-    private java.lang.Long MandantId;
+    private java.lang.Long mandantId;
 
     @EqualsAndHashCode.Include
     @ToString.Include

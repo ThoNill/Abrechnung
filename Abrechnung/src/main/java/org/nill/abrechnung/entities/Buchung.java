@@ -41,7 +41,7 @@ public class Buchung implements IBuchung {
     @Column(name = "BUCHUNGID")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BUCHUNG_SEQ")
-    private java.lang.Long BuchungId;
+    private java.lang.Long buchungId;
 
     @Basic
     @Column(name = "BUCHUNGSDATUM")
@@ -62,33 +62,36 @@ public class Buchung implements IBuchung {
     @CollectionTable(name="Buchung_KontoBewegung", joinColumns=@JoinColumn(name="BUCHUNGID"))
     private Set<KontoBewegung> bewegungen = new HashSet<>();
 
-    @Override
-    public void addBewegungen(KontoBewegung bewegungen) {
-        this.bewegungen.add(bewegungen);
-    };
 
-    @Override
-    public void removeBewegungen(KontoBewegung bewegungen) {
-        this.bewegungen.remove(bewegungen);
-    };
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "AbrechnungId")
+    private Abrechnung abrechnung;
 
     @ElementCollection
     @CollectionTable(name="Buchung_TypeReference", joinColumns=@JoinColumn(name="BUCHUNGID"))
     private Set<TypeReference> bezüge = new HashSet<>();
 
+    
+    @Override
+    public void addBewegungen(KontoBewegung bewegungen) {
+        this.bewegungen.add(bewegungen);
+    }
+
+    @Override
+    public void removeBewegungen(KontoBewegung bewegungen) {
+        this.bewegungen.remove(bewegungen);
+    }
+
+
     @Override
     public void addBezug(TypeReference bezug) {
         this.bezüge.add(bezug);
-    };
+    }
 
     @Override
     public void removeBezug(TypeReference bezug) {
         this.bezüge.remove(bezug);
-    };
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "AbrechnungId")
-    private Abrechnung abrechnung;
+    }
 
     @Override
     public void setIAbrechnung(IAbrechnung abrechnung2) {

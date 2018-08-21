@@ -39,19 +39,6 @@ public class AuszahlungTest extends MitÜberweisungenTest {
     @Autowired
     private ÜberweisungRepository überweisungRepository;
 
-    @Override
-    @Before
-    @After
-    @Transactional("dbATransactionManager")
-    public void clear() {
-        mandantRepository.deleteAll();
-        überweisungRepository.deleteAll();
-    }
-
-    public IMandant erzeugeMandant() {
-        return mandantRepository.save(new Mandant());
-    }
-
     @Autowired
     @Qualifier("auszahlungChannel")
     public DirectChannel auszahlungChannel;
@@ -65,6 +52,21 @@ public class AuszahlungTest extends MitÜberweisungenTest {
     @Autowired
     @Qualifier("auszahlungFlow")
     StandardIntegrationFlow flow;
+    
+    
+    @Override
+    @Before
+    @After
+    @Transactional("dbATransactionManager")
+    public void clear() {
+        mandantRepository.deleteAll();
+        überweisungRepository.deleteAll();
+    }
+
+    public IMandant erzeugeMandant() {
+        return mandantRepository.save(new Mandant());
+    }
+
 
     @Test
     public void normalerAblauf() {

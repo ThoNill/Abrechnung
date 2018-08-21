@@ -38,6 +38,23 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class IntegrationTest extends AbrechnungBasisTest {
 
+    @Autowired
+    @Qualifier("parameterChannel")
+    public DirectChannel parameterChannel;
+
+    @Autowired
+    @Qualifier("mandantChannel")
+    public DirectChannel mandantChannel;
+
+    @Autowired
+    @Qualifier("abrechnungsFlowEndChannel")
+    public DirectChannel abrechnungsFlowEndChannel;
+    
+    @Autowired
+    @Qualifier("abrechnungFlow")
+    StandardIntegrationFlow flow;
+
+
     @Override
     @Before
     @After
@@ -65,22 +82,7 @@ public class IntegrationTest extends AbrechnungBasisTest {
         return mandantRepository.save(mandant);
     }
 
-    @Autowired
-    @Qualifier("parameterChannel")
-    public DirectChannel parameterChannel;
-
-    @Autowired
-    @Qualifier("mandantChannel")
-    public DirectChannel mandantChannel;
-
-    @Autowired
-    @Qualifier("abrechnungsFlowEndChannel")
-    public DirectChannel abrechnungsFlowEndChannel;
     
-    @Autowired
-    @Qualifier("abrechnungFlow")
-    StandardIntegrationFlow flow;
-
     @Test
     @Transactional("dbATransactionManager")
     public void normalerAblauf() {
