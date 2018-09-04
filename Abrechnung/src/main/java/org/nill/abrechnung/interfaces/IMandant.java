@@ -7,6 +7,13 @@ import org.nill.abrechnung.aufzählungen.AbrechnungsTyp;
 import org.nill.abrechnung.values.ZahlungsDefinition;
 import org.nill.allgemein.values.MonatJahr;
 
+/**
+ * Repräsentiert einen Mandanten, für den {@link IAbrechnung} erstellt werden.
+ * 
+ * 
+ * @author javaman
+ *
+ */
 public interface IMandant {
 
     public void addAbrechnung(IAbrechnung a);

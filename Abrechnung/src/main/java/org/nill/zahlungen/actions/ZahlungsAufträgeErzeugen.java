@@ -23,6 +23,12 @@ import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.zahlungen.values.BankVerbindung;
 
+/**
+ * Erzeugt Zahlungsaufträge aufgrund der {@link ZahlungsDefinition} eines {@link IMandant} 
+ * 
+ * @author javaman
+ *
+ */
 public class ZahlungsAufträgeErzeugen extends EinBucher {
 
     public ZahlungsAufträgeErzeugen(Umgebung umgebung) {

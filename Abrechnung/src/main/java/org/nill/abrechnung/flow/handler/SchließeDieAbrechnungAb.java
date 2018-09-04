@@ -18,7 +18,7 @@ public class SchlieﬂeDieAbrechnungAb extends
     protected AbrechnungPayload transformPayload(AbrechnungPayload payload)
             throws Exception {
         IAbrechnung abrechnung = payload.getAbrechnung();
-        abrechnung.abschleiﬂen(umgebung);
+        abrechnung.abschlieﬂen(umgebung);
         return payload;
     }
 }

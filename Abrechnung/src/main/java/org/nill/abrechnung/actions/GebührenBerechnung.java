@@ -17,6 +17,13 @@ import org.nill.basiskomponenten.gemeinsam.BetragsBündel;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
+/**
+ * Aufgrund einer {@link IGebührDefinition}, {@link GebührRepository} und einer {@link GebührFabrik}
+ * wird ein {@link BuchungsAuftrag} erstellt. 
+ * 
+ * @author Thomas Nill
+ *
+ */
 public class GebührenBerechnung extends UmgebungDelegate implements IGebührBerechnung {
     private IGebührDefinition definition;
     private GebührRepository<SachKonto> daten;

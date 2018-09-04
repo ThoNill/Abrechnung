@@ -3,12 +3,20 @@ package org.nill.abrechnung.actions;
 import javax.money.MonetaryAmount;
 
 import org.nill.abrechnung.aufzählungen.SachKonto;
+import org.nill.abrechnung.entities.Mandant;
 import org.nill.abrechnung.interfaces.IAbrechnung;
 import org.nill.abrechnung.interfaces.Umgebung;
 import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
+/**
+ * Nach der Berechnung der Gebühren bleibt auf dem Konto des {@link IMandant} ein
+ * Saldo, dieses wird entweder durch eine Buchung in die andere Richtung ausgeglichen.  
+ * 
+ * @author Thomas Nill
+ *
+ */
 public class SaldoAusgleichen extends EinBucher {
     private String textGuthaben;
     private String textSchulden;

@@ -3,6 +3,16 @@ package org.nill.abrechnung.interfaces;
 import org.nill.abrechnung.aufzählungen.BuchungsArt;
 import org.nill.abrechnung.aufzählungen.SachKonto;
 
+/**
+ * Die {@link Umgebung} stellt verschiedene Sachkonten für Buchungen,
+ * ein paar Buchungstypen zur Verfügung, erzeugt Entities
+ * und stellt Repositorys zur Verfügung.
+ * 
+ * Diese Klasse abstrahiert also gewissermaßen die Ablaufumgebung der Abrechnung 
+ * 
+ * @author Thomas Nill
+ *
+ */
 public interface Umgebung extends RepositoryProvider, EntitiyFabrik {
     SachKonto GEBÜHR();
 

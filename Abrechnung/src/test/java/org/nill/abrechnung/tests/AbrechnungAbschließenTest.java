@@ -117,7 +117,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     }
 
     private IAbrechnung abschlieﬂen(IAbrechnung abrechnung) {
-        IAbrechnung n‰chsteAbrechnung = abrechnung.abschleiﬂen(
+        IAbrechnung n‰chsteAbrechnung = abrechnung.abschlieﬂen(
                 umgebung());
         return n‰chsteAbrechnung;
     }

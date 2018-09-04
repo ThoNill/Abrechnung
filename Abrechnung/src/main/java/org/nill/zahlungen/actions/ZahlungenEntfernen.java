@@ -16,6 +16,14 @@ import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Restschulden, Restguthaben und nicht ausbezahlte Zahlungsaufträge 
+ * einer vorherigen Abrechnungsabschußes entfernen, um mehrere
+ * Korrekturen einer {@link IAbrechnung} zu ermöglichen.
+ * 
+ * @author javaman
+ *
+ */
 public class ZahlungenEntfernen extends EinBucher {
     public ZahlungenEntfernen(Umgebung umgebung) {
         super(umgebung);
@@ -31,29 +39,12 @@ public class ZahlungenEntfernen extends EinBucher {
         }
     }
 
-    @Transactional("dbATransactionManager")
-    public void entferneZahlungsaufträge(IAbrechnung abrechnung) {
+    private void entferneZahlungsaufträge(IAbrechnung abrechnung) {
         IZahlungsAuftragRepository zahlungsAuftragRepository = getZahlungsAuftragRepository();
         List<IZahlungsAuftrag> aufträge = zahlungsAuftragRepository
                 .getOffeneZahlungen(abrechnung, ABGLEICH_GUTHABEN());
         for (IZahlungsAuftrag a : aufträge) {
             entferneZahlungsauftrag(a);
-        }
-    }
-
-    private void entferneRestGuthaben(IAbrechnung abrechnung) {
-        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,
-                ABGLEICH_GUTHABEN(), GUTHABEN().ordinal());
-        if (betrag != null && !betrag.isZero()) {
-            bucheStorno(abrechnung, betrag, ABGLEICH_GUTHABEN(), GUTHABEN());
-        }
-    }
-
-    private void entferneRestSchulden(IAbrechnung abrechnung) {
-        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,
-                ABGLEICH_SCHULDEN(), SCHULDEN().ordinal());
-        if (betrag != null && !betrag.isZero()) {
-            bucheStorno(abrechnung, betrag, ABGLEICH_SCHULDEN(), SCHULDEN());
         }
     }
 
@@ -72,4 +63,22 @@ public class ZahlungenEntfernen extends EinBucher {
                 beschreibung, beträge);
         erzeugeBuchung(auftrag, abrechnung);
     }
+
+
+    private void entferneRestGuthaben(IAbrechnung abrechnung) {
+        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,
+                ABGLEICH_GUTHABEN(), GUTHABEN().ordinal());
+        if (betrag != null && !betrag.isZero()) {
+            bucheStorno(abrechnung, betrag, ABGLEICH_GUTHABEN(), GUTHABEN());
+        }
+    }
+
+    private void entferneRestSchulden(IAbrechnung abrechnung) {
+        MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,
+                ABGLEICH_SCHULDEN(), SCHULDEN().ordinal());
+        if (betrag != null && !betrag.isZero()) {
+            bucheStorno(abrechnung, betrag, ABGLEICH_SCHULDEN(), SCHULDEN());
+        }
+    }
+
 }

@@ -12,6 +12,12 @@ import org.nill.basiskomponenten.gemeinsam.BetragsBündelMap;
 import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
+/**
+ * Überträgt eventuell in einer vorherigen Abrechung aufgetretene Schulden in die {@link IAbrechnung}
+ * 
+ * @author Thomas Nill
+ *
+ */
 public class SchuldenInDieAbrechnung extends EinBucher {
     private String text;
     private double zinssatz;

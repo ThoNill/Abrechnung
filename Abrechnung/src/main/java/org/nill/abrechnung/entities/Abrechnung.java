@@ -139,17 +139,28 @@ public class Abrechnung implements IAbrechnung {
     }
 
     @Override
-    public IAbrechnung abschleiﬂen(Umgebung provider) {
+    public IAbrechnung abschlieﬂen(Umgebung provider) {
         int zinsDauer = provider.getParameterRepository().getIntZeitWert(ParameterKey.‹BERZAHLUNGSTAGE,TypeReference.ALLE,getMj());
         double zinssatz = provider.getParameterRepository().getDoubleZeitWert(ParameterKey.ZINS_‹BERZAHLUNGEN,TypeReference.ALLE,getMj());
         double mwstsatz = provider.getParameterRepository().getDoubleZeitWert(ParameterKey.MWST_GANZ,TypeReference.ALLE,getMj());
-        return abschleiﬂen(provider, zinsDauer, zinssatz, mwstsatz);
+        return abschlieﬂen(provider, zinsDauer, zinssatz, mwstsatz);
     }
 
-    public IAbrechnung abschleiﬂen(Umgebung provider, int zinsDauer,
+    /**
+     * Diese Methode greift auf ein paar Helfer zur¸ck, die einzelne Abschnitte des Abschuﬂes einer Abrechnung abkapseln
+     * 
+     * {@link ZahlungenEntfernen}
+     * {@link SaldoAusgleichen}
+     * {@link SchuldenInDieAbrechnung}
+     * 
+     * @param provider
+     * @param zinsDauer
+     * @param zinssatz
+     * @param mwstsatz
+     * @return
+     */
+    public IAbrechnung abschlieﬂen(Umgebung provider, int zinsDauer,
             double zinssatz, double mwstsatz) {
-
-
 
         ZahlungenEntfernen zahlungenEntfernen = new ZahlungenEntfernen(provider);
         zahlungenEntfernen.entferneZahlungsauftr‰geFallsRestguthaben(this);

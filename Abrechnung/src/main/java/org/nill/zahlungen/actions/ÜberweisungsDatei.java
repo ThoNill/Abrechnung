@@ -16,6 +16,12 @@ import org.nill.zahlungen.vorlagen.BankExportModell;
 import org.nill.zahlungen.vorlagen.BankExportVorlage;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Erzeugt eine {@link IAusgangsDatei} im Sepa-Format zum Übertragen an die Bank.
+ * 
+ * @author javaman
+ *
+ */
 public class ÜberweisungsDatei extends UmgebungDelegate{
     private String ausgangsVerzeichnis;
     private String name;
