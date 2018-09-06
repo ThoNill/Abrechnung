@@ -51,6 +51,21 @@ public class EinBucher extends UmgebungDelegate {
         return null;
     }
 
+    private void bewegungHinzufügen(IBuchung buchung, SachKonto p,
+            MonetaryAmount betrag) {
+        if (!betrag.isZero()) {
+            KontoBewegung bew = new KontoBewegung();
+            bew.setBetrag(betrag);
+            bew.setArt(1);
+            bew.setKontoNr(p.ordinal());
+            buchung.addBewegungen(bew);
+        }
+    }
+
+    private void bezugHinzufügen(IBuchung buchung, int rolle, Long refernzid) {
+        buchung.addBezug(new TypeReference(rolle, refernzid));
+    }
+
 
     public IBuchung erzeugeDifferenzBuchung(BuchungsAuftrag<SachKonto> auftrag,
             IAbrechnung abrechnung) {
@@ -76,19 +91,5 @@ public class EinBucher extends UmgebungDelegate {
         return beträge;
     }
 
-    private void bewegungHinzufügen(IBuchung buchung, SachKonto p,
-            MonetaryAmount betrag) {
-        if (!betrag.isZero()) {
-            KontoBewegung bew = new KontoBewegung();
-            bew.setBetrag(betrag);
-            bew.setArt(1);
-            bew.setKontoNr(p.ordinal());
-            buchung.addBewegungen(bew);
-        }
-    }
-
-    private void bezugHinzufügen(IBuchung buchung, int rolle, Long refernzid) {
-        buchung.addBezug(new TypeReference(rolle, refernzid));
-    }
 
 }

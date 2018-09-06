@@ -24,8 +24,11 @@ public class BuchungsAuftrag<KEY>
         getVerbundenMit().put(rolle, value);
     }
 
-    public Beschreibung getBeschreibung() {
-        return getKopf();
+    public synchronized HashMap<Integer, Long> getVerbundenMit() {
+        if (verbundenMit == null) {
+            verbundenMit = new HashMap<>();
+        }
+        return verbundenMit;
     }
 
     public boolean isEmpty() {
@@ -39,10 +42,8 @@ public class BuchungsAuftrag<KEY>
         return true;
     }
 
-    public synchronized HashMap<Integer, Long> getVerbundenMit() {
-        if (verbundenMit == null) {
-            verbundenMit = new HashMap<>();
-        }
-        return verbundenMit;
+    
+    public Beschreibung getBeschreibung() {
+        return getKopf();
     }
 }

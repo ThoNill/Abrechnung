@@ -24,7 +24,8 @@ import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.nill.zahlungen.values.BankVerbindung;
 
 /**
- * Erzeugt Zahlungsaufträge aufgrund der {@link ZahlungsDefinition} eines {@link IMandant} 
+ * Erzeugt Zahlungsaufträge aufgrund der {@link ZahlungsDefinition} eines
+ * {@link IMandant}
  * 
  * @author javaman
  *
@@ -35,31 +36,47 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
         super(umgebung);
     }
 
+    /**
+     * Erzeugt aus einem übergebenen Betrag für eine {@link IAbrechnung}
+     * Zahlungsaufträge. Der beschreibende Verwendungszweck wird mit übergeben.
+     * 
+     * @param abrechnung
+     * @param betrag
+     * @param verwendungszweck
+     * @return
+     */
     public List<IZahlungsAuftrag> erzeugeAufträge(IAbrechnung abrechnung,
             MonetaryAmount betrag, String verwendungszweck) {
         IMandant mandant = abrechnung.getMandant();
         Set<ZahlungsDefinition> definitionen = mandant
                 .getZahlungsDefinitionen();
+        BetragsBündel<ZahlungsDefinition> beträge = aufgrundZahlungsdefinitionenDenBetragVerteilen(
+                betrag, definitionen);
+        List<IZahlungsAuftrag> aufträge = erzeugeZahlungsaufträge(abrechnung,
+                verwendungszweck, mandant, definitionen, beträge);
+        return aufträge;
+    }
+
+    private BetragsBündel<ZahlungsDefinition> aufgrundZahlungsdefinitionenDenBetragVerteilen(
+            MonetaryAmount betrag, Set<ZahlungsDefinition> definitionen) {
         ProzentBündelMap<ZahlungsDefinition> prozentMap = new ProzentBündelMap<>();
         for (ZahlungsDefinition d : definitionen) {
             prozentMap.put(d, d.getProzentSatz());
         }
         BetragsBündel<ZahlungsDefinition> beträge = prozentMap
                 .verteilen(betrag);
+        return beträge;
+    }
+
+    private List<IZahlungsAuftrag> erzeugeZahlungsaufträge(
+            IAbrechnung abrechnung, String verwendungszweck, IMandant mandant,
+            Set<ZahlungsDefinition> definitionen,
+            BetragsBündel<ZahlungsDefinition> beträge) {
         List<IZahlungsAuftrag> aufträge = new ArrayList<>();
         for (ZahlungsDefinition d : definitionen) {
-            IZahlungsAuftrag zahlungsAuftrag = createZahlungsAuftrag();
-            zahlungsAuftrag.setBetrag(beträge.getBetrag(d));
-            zahlungsAuftrag.setBank(d.getBank());
-            zahlungsAuftrag.setBuchungsart(d.getBuchungsart());
-            zahlungsAuftrag.setVerwendungszweck(verwendungszweck);
-            zahlungsAuftrag.setZuZahlenAm(d
-                    .berechneAuszahlungsTernin(new Date()));
-            zahlungsAuftrag.setIAbrechnung(abrechnung);
-            zahlungsAuftrag.setIMandant(mandant);
-            zahlungsAuftrag = getZahlungsAuftragRepository().save(
-                    zahlungsAuftrag);
-            getZahlungsAuftragRepository().save(zahlungsAuftrag);
+            MonetaryAmount teilBetrag = beträge.getBetrag(d);
+            IZahlungsAuftrag zahlungsAuftrag = erzeugeZahlungsauftrag(
+                    abrechnung, verwendungszweck, mandant, teilBetrag, d);
             aufträge.add(zahlungsAuftrag);
             erzeugeBuchung(GUTHABEN(), AUSZUZAHLEN(),
                     "Zahlungsauftrag erzeugt", abrechnung, zahlungsAuftrag);
@@ -67,6 +84,54 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
         return aufträge;
     }
 
+    private IZahlungsAuftrag erzeugeZahlungsauftrag(IAbrechnung abrechnung,
+            String verwendungszweck, IMandant mandant, MonetaryAmount betrag,
+            ZahlungsDefinition d) {
+        IZahlungsAuftrag zahlungsAuftrag = createZahlungsAuftrag();
+        zahlungsAuftrag.setBetrag(betrag);
+        zahlungsAuftrag.setBank(d.getBank());
+        zahlungsAuftrag.setBuchungsart(d.getBuchungsart());
+        zahlungsAuftrag.setVerwendungszweck(verwendungszweck);
+        zahlungsAuftrag.setZuZahlenAm(d.berechneAuszahlungsTernin(new Date()));
+        zahlungsAuftrag.setIAbrechnung(abrechnung);
+        zahlungsAuftrag.setIMandant(mandant);
+        zahlungsAuftrag = getZahlungsAuftragRepository().save(zahlungsAuftrag);
+        getZahlungsAuftragRepository().save(zahlungsAuftrag);
+        return zahlungsAuftrag;
+    }
+
+    private IBuchung erzeugeBuchung(SachKonto von, SachKonto nach,
+            String buchungstext, IAbrechnung abrechnung,
+            IZahlungsAuftrag auftrag) {
+
+        return erzeugeBuchung(
+                erzeugeBuchungsAuftrag(von, nach, buchungstext, auftrag),
+                abrechnung);
+    }
+
+    private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(SachKonto von,
+            SachKonto nach, String buchungstext,
+            IZahlungsAuftrag zahlungsAuftrag) {
+        MonetaryAmount betrag = zahlungsAuftrag.getBetrag();
+        int buchungsart = zahlungsAuftrag.getBuchungsart();
+        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
+        beträge.put(von, betrag.negate());
+        beträge.put(nach, betrag);
+        Beschreibung beschreibung = new Beschreibung(buchungsart, buchungstext);
+        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(
+                beschreibung, beträge);
+        auftrag.verbinde(1, zahlungsAuftrag.getZahlungsAuftragsId());
+        return auftrag;
+    }
+
+    /**
+     * Erstellt aufgrund der übergebenen Liste von {@link IZahlungsAuftrag} eine
+     * Liste von {@link IÜberweisung}. Die Angabe von welchen Konto überwiesen
+     * wird, wir mit übergeben.
+     * 
+     * @param zahlungsAufträge
+     * @param vonBank
+     */
     public void erzeugeÜberweisungen(List<IZahlungsAuftrag> zahlungsAufträge,
             BankVerbindung vonBank) {
         for (IZahlungsAuftrag auftrag : zahlungsAufträge) {
@@ -86,6 +151,15 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
         }
     }
 
+    private IBuchung erzeugeBuchung(SachKonto von, SachKonto nach,
+            String buchungstext, IAbrechnung abrechnung,
+            IÜberweisung überweisung) {
+
+        return erzeugeBuchung(
+                erzeugeBuchungsAuftrag(von, nach, buchungstext, überweisung),
+                abrechnung);
+    }
+
     private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(SachKonto von,
             SachKonto nach, String buchungstext, IÜberweisung überweisung) {
         MonetaryAmount betrag = überweisung.getBetrag();
@@ -98,36 +172,6 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
                 beschreibung, beträge);
         auftrag.verbinde(2, überweisung.getUeberweisungsId());
         return auftrag;
-    }
-
-    private IBuchung erzeugeBuchung(SachKonto von, SachKonto nach,
-            String buchungstext, IAbrechnung abrechnung, IÜberweisung überweisung) {
-
-        return erzeugeBuchung(
-                erzeugeBuchungsAuftrag(von, nach, buchungstext, überweisung),
-                abrechnung);
-    }
-
-    private BuchungsAuftrag<SachKonto> erzeugeBuchungsAuftrag(SachKonto von,
-            SachKonto nach, String buchungstext, IZahlungsAuftrag zahlungsAuftrag) {
-        MonetaryAmount betrag = zahlungsAuftrag.getBetrag();
-        int buchungsart = zahlungsAuftrag.getBuchungsart();
-        BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
-        beträge.put(von, betrag.negate());
-        beträge.put(nach, betrag);
-        Beschreibung beschreibung = new Beschreibung(buchungsart, buchungstext);
-        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(
-                beschreibung, beträge);
-        auftrag.verbinde(1, zahlungsAuftrag.getZahlungsAuftragsId());
-        return auftrag;
-    }
-
-    private IBuchung erzeugeBuchung(SachKonto von, SachKonto nach,
-            String buchungstext, IAbrechnung abrechnung, IZahlungsAuftrag auftrag) {
-
-        return erzeugeBuchung(
-                erzeugeBuchungsAuftrag(von, nach, buchungstext, auftrag),
-                abrechnung);
     }
 
 }

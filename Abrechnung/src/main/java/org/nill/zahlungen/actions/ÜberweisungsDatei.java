@@ -47,6 +47,7 @@ public class ‹berweisungsDatei extends UmgebungDelegate{
         }
     }
 
+
     private List<List<I‹berweisung>> nicht‹bertragene‹berweisungen(int count,
             IBAN iban) {
         List<I‹berweisung> alle = get‹berweisungRepository()
@@ -74,6 +75,7 @@ public class ‹berweisungsDatei extends UmgebungDelegate{
         return liste;
     }
 
+    
     private void markiere‹berweisungMitAusgangsDateien(
             List<List<I‹berweisung>> abschnitte) {
         for (List<I‹berweisung> abschnitt : abschnitte) {

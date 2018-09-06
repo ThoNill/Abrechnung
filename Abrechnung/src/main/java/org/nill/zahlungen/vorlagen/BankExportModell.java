@@ -10,6 +10,12 @@ import org.nill.abrechnung.interfaces.IÜberweisung;
 import org.nill.basiskomponenten.betrag.Geld;
 import org.nill.zahlungen.values.BankVerbindung;
 
+/**
+ * Datenmodell für die Erstellung der Bankdatei
+ * 
+ * @author javaman
+ *
+ */
 public class BankExportModell {
     private int anzahl;
     private long referenz;
@@ -27,6 +33,7 @@ public class BankExportModell {
         this.name = name;
     }
 
+
     private MonetaryAmount berechneSumme(List<IÜberweisung> überweisungen) {
         MonetaryAmount summe = Geld.getNull();
         for (IÜberweisung ü : überweisungen) {
@@ -35,6 +42,7 @@ public class BankExportModell {
         return summe;
     }
 
+    
     public String getAktuelleZeit() {
         Date jetzt = new Date();
         // 2010-11-11T09:30:47.000Z

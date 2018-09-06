@@ -40,15 +40,7 @@ public class GebührenBerechnung extends UmgebungDelegate implements IGebührBerec
         this.abrechnungsArt = abrechnungsArt;
     }
 
-    @Override
-    public BuchungsAuftrag<SachKonto> berechnen(IAbrechnung abrechnung) {
-        BetragsBündel<SachKonto> bündel = daten.getBeträge(abrechnung);
-        bündel = gebührDazu(abrechnung, bündel);
-        Beschreibung beschreibung = new Beschreibung(
-                definition.getBuchungsArt(), definition.getBuchungstext());
-        return new BuchungsAuftrag<>(beschreibung, bündel);
-    }
-
+  
     @Override
     public BuchungsAuftrag<SachKonto> markierenUndberechnen(
             IAbrechnung abrechnung) {
@@ -58,7 +50,15 @@ public class GebührenBerechnung extends UmgebungDelegate implements IGebührBerec
         return berechnen(abrechnung);
     }
 
-    
+    @Override
+    public BuchungsAuftrag<SachKonto> berechnen(IAbrechnung abrechnung) {
+        BetragsBündel<SachKonto> bündel = daten.getBeträge(abrechnung);
+        bündel = gebührDazu(abrechnung, bündel);
+        Beschreibung beschreibung = new Beschreibung(
+                definition.getBuchungsArt(), definition.getBuchungstext());
+        return new BuchungsAuftrag<>(beschreibung, bündel);
+    }
+  
     
     private BetragsBündel<SachKonto> gebührDazu(IAbrechnung abrechnung,
             BetragsBündel<SachKonto> bündel) {
