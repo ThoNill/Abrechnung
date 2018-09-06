@@ -22,7 +22,7 @@ public class MonatJahr implements Comparable<MonatJahr> {
     }
 
     public int getJahr() {
-        return (mj / 12);
+        return mj / 12;
     }
 
     public int getMJ() {

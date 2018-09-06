@@ -4,7 +4,8 @@ import javax.persistence.Embeddable;
 
 import org.nill.basiskomponenten.ddd.Value;
 
-public @Embeddable class TypeReference implements Value {
+@Embeddable 
+public class TypeReference implements Value {
     public static final TypeReference ALLE = new TypeReference(0, 0);
 
     private int art;

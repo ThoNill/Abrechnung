@@ -1,6 +1,7 @@
 package org.nill.buchhaltung.eingang;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.money.MonetaryAmount;
 
@@ -24,7 +25,7 @@ public class BuchungsAuftrag<KEY>
         getVerbundenMit().put(rolle, value);
     }
 
-    public synchronized HashMap<Integer, Long> getVerbundenMit() {
+    public synchronized Map<Integer, Long> getVerbundenMit() {
         if (verbundenMit == null) {
             verbundenMit = new HashMap<>();
         }

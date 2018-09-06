@@ -118,7 +118,7 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
         beträge.put(von, betrag.negate());
         beträge.put(nach, betrag);
         Beschreibung beschreibung = new Beschreibung(buchungsart, buchungstext);
-        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(
+        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<>(
                 beschreibung, beträge);
         auftrag.verbinde(1, zahlungsAuftrag.getZahlungsAuftragsId());
         return auftrag;
@@ -168,7 +168,7 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
         beträge.put(von, betrag.negate());
         beträge.put(nach, betrag);
         Beschreibung beschreibung = new Beschreibung(buchungsart, buchungstext);
-        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(
+        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<>(
                 beschreibung, beträge);
         auftrag.verbinde(2, überweisung.getUeberweisungsId());
         return auftrag;

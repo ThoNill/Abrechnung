@@ -41,7 +41,7 @@ public interface ParameterRepository extends CrudRepository<Parameter, Long>, IP
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex);
         }
-    };
+    }
 
     @Override
     public default Double getDoubleZeitWert(ParameterKey key,

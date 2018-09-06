@@ -59,7 +59,7 @@ public class ZahlungenEntfernen extends EinBucher {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
         beträge.put(sachKonto, betrag.negate());
         Beschreibung beschreibung = new Beschreibung(buchungsart, "Storno");
-        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<SachKonto>(
+        BuchungsAuftrag<SachKonto> auftrag = new BuchungsAuftrag<>(
                 beschreibung, beträge);
         erzeugeBuchung(auftrag, abrechnung);
     }

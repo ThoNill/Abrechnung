@@ -42,7 +42,7 @@ public class EinBucher extends UmgebungDelegate {
                 MonetaryAmount betrag = beträge.getValue(p);
                 bewegungHinzufügen(buchung, p, betrag);
             }
-            HashMap<Integer, Long> bezüge = auftrag.getVerbundenMit();
+            Map<Integer, Long> bezüge = auftrag.getVerbundenMit();
             for (Map.Entry<Integer, Long> rolle : bezüge.entrySet()) {
                 bezugHinzufügen(buchung, rolle.getKey(), rolle.getValue());
             }
