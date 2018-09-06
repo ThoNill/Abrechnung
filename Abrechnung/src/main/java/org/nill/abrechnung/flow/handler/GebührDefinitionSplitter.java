@@ -18,13 +18,11 @@ import org.springframework.messaging.Message;
 public class GebührDefinitionSplitter extends AbstractMessageSplitter {
     AtomicInteger correlationId = new AtomicInteger();
     Umgebung provider;
-    
-    
+
     public GebührDefinitionSplitter(Umgebung provider) {
         super();
         this.provider = provider;
     }
-
 
     @Override
     protected List<Message> splitMessage(Message<?> message) {
@@ -32,13 +30,14 @@ public class GebührDefinitionSplitter extends AbstractMessageSplitter {
         IMandant mandant = param.getMandant();
         int id = correlationId.addAndGet(1);
         List<Message> messages = new ArrayList<>();
-        Set<? extends IGebührDefinition> liste = mandant.getGebuehrDefinitionen();
+        Set<? extends IGebührDefinition> liste = mandant
+                .getGebuehrDefinitionen();
         int nr = 1;
         IAbrechnung abrechnung = param.getAbrechnung();
         for (IGebührDefinition gdef : liste) {
 
-            GebührDefinitionPayload gdParam = new GebührDefinitionPayload(abrechnung
-                    , mandant, param.getArt(), gdef);
+            GebührDefinitionPayload gdParam = new GebührDefinitionPayload(
+                    abrechnung, mandant, param.getArt(), gdef);
             MessageBuilder<GebührDefinitionPayload> builder = MessageBuilder
                     .withPayload(gdParam);
             builder.setHeaderIfAbsent("inDatenbank", Boolean.TRUE);
@@ -49,7 +48,7 @@ public class GebührDefinitionSplitter extends AbstractMessageSplitter {
             messages.add(builder.build());
             nr++;
         }
-        
+
         return messages;
     }
 

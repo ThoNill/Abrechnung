@@ -40,13 +40,12 @@ import org.xml.sax.SAXParseException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })
-public class BankDateiTest extends AbrechnungBasisTest{
+public class BankDateiTest extends AbrechnungBasisTest {
     protected static final Logger log = LoggerFactory
             .getLogger(BankDateiTest.class);
 
     @Value("classpath:pain.001.003.03.xsd")
     Resource überweisungsXmlSchema;
-
 
     public IMandant erzeugeMandant() {
         Mandant mandant = mandantRepository.save(new Mandant());

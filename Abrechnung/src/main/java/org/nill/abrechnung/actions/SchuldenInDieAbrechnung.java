@@ -13,7 +13,8 @@ import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
 /**
- * Überträgt eventuell in einer vorherigen Abrechung aufgetretene Schulden in die {@link IAbrechnung}
+ * Überträgt eventuell in einer vorherigen Abrechung aufgetretene Schulden in
+ * die {@link IAbrechnung}
  * 
  * @author Thomas Nill
  *
@@ -23,8 +24,8 @@ public class SchuldenInDieAbrechnung extends EinBucher {
     private double zinssatz;
     private double mwstsatz;
 
-    public SchuldenInDieAbrechnung(Umgebung umgebung,
-            String text, double zinssatz, double mwstsatz) {
+    public SchuldenInDieAbrechnung(Umgebung umgebung, String text,
+            double zinssatz, double mwstsatz) {
         super(umgebung);
         this.text = text;
         this.zinssatz = zinssatz;

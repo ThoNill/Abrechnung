@@ -44,5 +44,4 @@ public interface IBuchung {
 
     public IAbrechnung getAbrechnung();
 
- 
 }

@@ -33,7 +33,6 @@ public class BankExportModell {
         this.name = name;
     }
 
-
     private MonetaryAmount berechneSumme(List<IÜberweisung> überweisungen) {
         MonetaryAmount summe = Geld.getNull();
         for (IÜberweisung ü : überweisungen) {
@@ -42,7 +41,6 @@ public class BankExportModell {
         return summe;
     }
 
-    
     public String getAktuelleZeit() {
         Date jetzt = new Date();
         // 2010-11-11T09:30:47.000Z

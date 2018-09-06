@@ -43,8 +43,8 @@ public class ParameterTest extends AbrechnungBasisTest {
 
     }
 
-    private void createParameter(IParameterRepository repo, int monat, int jahr,
-            double wert) {
+    private void createParameter(IParameterRepository repo, int monat,
+            int jahr, double wert) {
         Parameter p = new Parameter();
         p.setKey(ParameterKey.ZINS_ÜBERZAHLUNGEN);
         p.setMj(new MonatJahr(monat, jahr));

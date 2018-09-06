@@ -22,8 +22,7 @@ import org.nill.zahlungen.values.BankVerbindung;
 @ToString
 @Embeddable
 public class ZahlungsDefinition {
-    
-    
+
     @Basic
     @Column(name = "BUCHUNGSART")
     private int buchungsart;
@@ -42,9 +41,9 @@ public class ZahlungsDefinition {
 
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "iban.iban", column = @Column(name = "bank_iban")),
-        @AttributeOverride(name = "iban.bic", column = @Column(name = "bank_bic")),
-        @AttributeOverride(name = "name", column = @Column(name = "bank_name")) })
+            @AttributeOverride(name = "iban.iban", column = @Column(name = "bank_iban")),
+            @AttributeOverride(name = "iban.bic", column = @Column(name = "bank_bic")),
+            @AttributeOverride(name = "name", column = @Column(name = "bank_name")) })
     public BankVerbindung bank;
 
     public Date berechneAuszahlungsTernin(Date ausgangsTermin) {

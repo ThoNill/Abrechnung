@@ -54,7 +54,6 @@ import org.nill.zahlungen.actions.ZahlungenEntfernen;
 @SequenceGenerator(name = "ABRECHNUNG_SEQ", sequenceName = "ABRECHNUNG_SEQ")
 public class Abrechnung implements IAbrechnung {
 
-   
     @EqualsAndHashCode.Include
     @ToString.Include
     @Basic
@@ -86,7 +85,6 @@ public class Abrechnung implements IAbrechnung {
     @Column(name = "BEZEICHNUNG")
     private String bezeichnung;
 
-    
     @EqualsAndHashCode.Include
     @ToString.Include
     @Basic
@@ -102,8 +100,7 @@ public class Abrechnung implements IAbrechnung {
     private Date angelegt = new Date();
 
     @Override
-    public IAbrechnung createOrGetNächsteAbrechnung(
-            Umgebung provider) {
+    public IAbrechnung createOrGetNächsteAbrechnung(Umgebung provider) {
         IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
 
@@ -122,12 +119,11 @@ public class Abrechnung implements IAbrechnung {
 
     @Override
     public void setIMandant(IMandant mandant) {
-        setMandant((Mandant)mandant);
+        setMandant((Mandant) mandant);
     }
 
     @Override
-    public Optional<IAbrechnung> getVorherigeAbrechnung(
-            Umgebung provider) {
+    public Optional<IAbrechnung> getVorherigeAbrechnung(Umgebung provider) {
         IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
         List<IAbrechnung> liste = abrechnungRepository.getAbrechnung(
@@ -140,17 +136,20 @@ public class Abrechnung implements IAbrechnung {
 
     @Override
     public IAbrechnung abschließen(Umgebung provider) {
-        int zinsDauer = provider.getParameterRepository().getIntZeitWert(ParameterKey.ÜBERZAHLUNGSTAGE,TypeReference.ALLE,getMj());
-        double zinssatz = provider.getParameterRepository().getDoubleZeitWert(ParameterKey.ZINS_ÜBERZAHLUNGEN,TypeReference.ALLE,getMj());
-        double mwstsatz = provider.getParameterRepository().getDoubleZeitWert(ParameterKey.MWST_GANZ,TypeReference.ALLE,getMj());
+        int zinsDauer = provider.getParameterRepository().getIntZeitWert(
+                ParameterKey.ÜBERZAHLUNGSTAGE, TypeReference.ALLE, getMj());
+        double zinssatz = provider.getParameterRepository().getDoubleZeitWert(
+                ParameterKey.ZINS_ÜBERZAHLUNGEN, TypeReference.ALLE, getMj());
+        double mwstsatz = provider.getParameterRepository().getDoubleZeitWert(
+                ParameterKey.MWST_GANZ, TypeReference.ALLE, getMj());
         return abschließen(provider, zinsDauer, zinssatz, mwstsatz);
     }
 
     /**
-     * Diese Methode greift auf ein paar Helfer zurück, die einzelne Abschnitte des Abschußes einer Abrechnung abkapseln
+     * Diese Methode greift auf ein paar Helfer zurück, die einzelne Abschnitte
+     * des Abschußes einer Abrechnung abkapseln
      * 
-     * {@link ZahlungenEntfernen}
-     * {@link SaldoAusgleichen}
+     * {@link ZahlungenEntfernen} {@link SaldoAusgleichen}
      * {@link SchuldenInDieAbrechnung}
      * 
      * @param provider
@@ -168,16 +167,16 @@ public class Abrechnung implements IAbrechnung {
         SaldoAusgleichen ausgleichen = new SaldoAusgleichen(provider,
                 "Guthaben", "Schulden");
         ausgleichen.saldoAusgleichen(this);
-        
+
         IAbrechnung nächsteAbrechnung = createOrGetNächsteAbrechnung(provider);
-  
+
         SchuldenInDieAbrechnung schuldenÜbertragen = new SchuldenInDieAbrechnung(
                 provider, "Schulden übernehmen", zinssatz, mwstsatz);
         schuldenÜbertragen.übertragen(nächsteAbrechnung, zinsDauer);
-        return provider.getAbrechnungRepository().saveIAbrechnung(nächsteAbrechnung);
+        return provider.getAbrechnungRepository().saveIAbrechnung(
+                nächsteAbrechnung);
     }
 
-    
     @Override
     public void berechneDieGebühren(Umgebung provider,
             AbrechnungsKonfigurator konfigurator, AbrechnungsArt abrechnungsArt) {
@@ -191,8 +190,8 @@ public class Abrechnung implements IAbrechnung {
         }
     }
 
-    private BuchungsAuftrag<SachKonto> berechneDenAuftrag(
-            Umgebung provider, AbrechnungsKonfigurator konfigurator,
+    private BuchungsAuftrag<SachKonto> berechneDenAuftrag(Umgebung provider,
+            AbrechnungsKonfigurator konfigurator,
             AbrechnungsArt abrechnungsArt, IGebührDefinition definition) {
 
         IGebührBerechnung berechnung = konfigurator.erzeugeGebührenBerechner(
@@ -222,6 +221,4 @@ public class Abrechnung implements IAbrechnung {
                 ParameterKey.MWST_HALB, TypeReference.ALLE, getMj());
     }
 
-    
-    
 }

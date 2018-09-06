@@ -1,6 +1,5 @@
 package org.nill.abrechnung.actions;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.money.MonetaryAmount;
@@ -66,7 +65,6 @@ public class EinBucher extends UmgebungDelegate {
         buchung.addBezug(new TypeReference(rolle, refernzid));
     }
 
-
     public IBuchung erzeugeDifferenzBuchung(BuchungsAuftrag<SachKonto> auftrag,
             IAbrechnung abrechnung) {
         BetragsBündel<SachKonto> aktuell = beträgeEinerBuchungsartHolen(
@@ -78,7 +76,6 @@ public class EinBucher extends UmgebungDelegate {
         return erzeugeBuchung(differenzAuftrag, abrechnung);
     }
 
-    
     public BetragsBündel<SachKonto> beträgeEinerBuchungsartHolen(
             IAbrechnung abrechnung, int art) {
         BetragsBündelMap<SachKonto> beträge = new BetragsBündelMap<>();
@@ -90,6 +87,5 @@ public class EinBucher extends UmgebungDelegate {
         }
         return beträge;
     }
-
 
 }

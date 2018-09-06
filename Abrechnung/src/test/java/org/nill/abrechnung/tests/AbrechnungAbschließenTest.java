@@ -36,7 +36,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
-@EntityScan(basePackageClasses= {org.nill.abrechnung.entities.Abrechnung.class,org.nill.abrechnung.entities.ZahlungsAuftrag.class })
+@EntityScan(basePackageClasses = {
+        org.nill.abrechnung.entities.Abrechnung.class,
+        org.nill.abrechnung.entities.ZahlungsAuftrag.class })
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })
 public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
 
@@ -117,8 +119,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
     }
 
     private IAbrechnung abschlieﬂen(IAbrechnung abrechnung) {
-        IAbrechnung n‰chsteAbrechnung = abrechnung.abschlieﬂen(
-                umgebung());
+        IAbrechnung n‰chsteAbrechnung = abrechnung.abschlieﬂen(umgebung());
         return n‰chsteAbrechnung;
     }
 
@@ -177,8 +178,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         assertEquals(Geld.createAmount(betrag), dbBetrag);
     }
 
-    public IAbrechnung schulden‹bernahme(IAbrechnung abrechnung, double zinssatz,
-            double mwstsatz, int tage) {
+    public IAbrechnung schulden‹bernahme(IAbrechnung abrechnung,
+            double zinssatz, double mwstsatz, int tage) {
         Umgebung provider = umgebung();
         IAbrechnung n‰chsteAbrechnung = abrechnung
                 .createOrGetN‰chsteAbrechnung(provider);
@@ -189,7 +190,8 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         return n‰chsteAbrechnung;
     }
 
-    public void check‹bernahme(IAbrechnung abrechnung, double betrag, double zins) {
+    public void check‹bernahme(IAbrechnung abrechnung, double betrag,
+            double zins) {
 
         MonetaryAmount dbBetrag = buchungRepository.getSumKonto(abrechnung,
                 BuchungsArt.‹BERNAHME_SCHULDEN,
@@ -317,7 +319,7 @@ public class AbrechnungAbschlieﬂenTest extends AbrechnungBasisTest {
         mandant.addZahlungsDefinitionen(d);
         return mandantRepository.save(mandant);
     }
-    
+
     private void f¸lleParameter() {
         f¸lleParameter("180");
     }

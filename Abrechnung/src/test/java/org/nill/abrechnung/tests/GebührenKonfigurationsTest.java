@@ -193,7 +193,7 @@ public class GebührenKonfigurationsTest extends AbrechnungBasisTest {
         // Noch einmal, darf nichts ausmachen
 
         abrechnung = abrechnungRepository.save(abrechnung);
-        
+
         bucher.erzeugeDifferenzBuchung(auftrag, abrechnung);
 
         BetragsBündel<SachKonto> bündel = bucher.beträgeEinerBuchungsartHolen(

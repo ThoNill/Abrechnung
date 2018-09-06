@@ -43,7 +43,6 @@ public class BuchungsAuftrag<KEY>
         return true;
     }
 
-    
     public Beschreibung getBeschreibung() {
         return getKopf();
     }

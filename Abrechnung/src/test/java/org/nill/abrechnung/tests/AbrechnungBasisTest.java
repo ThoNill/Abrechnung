@@ -20,12 +20,12 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.Transactional;
 
-@EntityScan(basePackageClasses = {org.nill.abrechnung.entities.Leistung.class,
-        org.nill.abrechnung.entities.Abrechnung.class})
-@EnableJpaRepositories(basePackageClasses = { 
-        org.nill.abrechnung.repositories.BuchungRepository.class, 
-        org.nill.abrechnung.repositories.LeistungRepository.class}
-, transactionManagerRef = "dbATransactionManager" // Name des
+@EntityScan(basePackageClasses = { org.nill.abrechnung.entities.Leistung.class,
+        org.nill.abrechnung.entities.Abrechnung.class })
+@EnableJpaRepositories(basePackageClasses = {
+        org.nill.abrechnung.repositories.BuchungRepository.class,
+        org.nill.abrechnung.repositories.LeistungRepository.class }, transactionManagerRef = "dbATransactionManager" // Name
+                                                                                                                     // des
 )
 public class AbrechnungBasisTest {
 
@@ -62,30 +62,28 @@ public class AbrechnungBasisTest {
     }
 
     protected Umgebung umgebung() {
-        return new TestUmgebung(mandantRepository,
-                abrechnungRepository, buchungRepository,
-                zahlungsAuftragRepository, überweisungRepository,
-                parameterRepository, ausgangsDateiRepository);
-    }
-    
-    protected void fülleParameter(String tage) {
-        Umgebung provider = umgebung();
-        
-        neuerParameter(provider, ParameterKey.ZINS_ÜBERZAHLUNGEN,"0.06");
-        neuerParameter(provider, ParameterKey.MWST_GANZ,"0.19");
-        neuerParameter(provider, ParameterKey.MWST_HALB,"0.07");
-        neuerParameter(provider, ParameterKey.ÜBERZAHLUNGSTAGE,tage);
+        return new TestUmgebung(mandantRepository, abrechnungRepository,
+                buchungRepository, zahlungsAuftragRepository,
+                überweisungRepository, parameterRepository,
+                ausgangsDateiRepository);
     }
 
-    private void neuerParameter(Umgebung provider, ParameterKey key,
-            String wert) {
+    protected void fülleParameter(String tage) {
+        Umgebung provider = umgebung();
+
+        neuerParameter(provider, ParameterKey.ZINS_ÜBERZAHLUNGEN, "0.06");
+        neuerParameter(provider, ParameterKey.MWST_GANZ, "0.19");
+        neuerParameter(provider, ParameterKey.MWST_HALB, "0.07");
+        neuerParameter(provider, ParameterKey.ÜBERZAHLUNGSTAGE, tage);
+    }
+
+    private void neuerParameter(Umgebung provider, ParameterKey key, String wert) {
         Parameter p = new Parameter();
         p.setKey(key);
-        p.setMj(new MonatJahr(1,2000));
+        p.setMj(new MonatJahr(1, 2000));
         p.setRef(TypeReference.ALLE);
         p.setWert(wert);
         provider.getParameterRepository().save(p);
     }
-
 
 }

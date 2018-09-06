@@ -87,7 +87,7 @@ public class GebührDefinition implements IGebührDefinition {
 
     @Override
     public void addMandant(IMandant mandant) {
-        this.mandanten.add((Mandant)mandant);
+        this.mandanten.add((Mandant) mandant);
     }
 
 }

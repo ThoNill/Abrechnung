@@ -9,7 +9,7 @@ import org.nill.basiskomponenten.ddd.Value;
 
 @Data
 public @Embeddable class BankVerbindung implements Value {
-    
+
     @Embedded
     private IBAN iban;
 
@@ -24,7 +24,7 @@ public @Embeddable class BankVerbindung implements Value {
 
     public BankVerbindung(IBAN iban, BIC bic) {
         super();
-        this.iban   = iban;
+        this.iban = iban;
         this.bic = bic;
         this.name = "NN";
     }

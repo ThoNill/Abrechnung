@@ -87,7 +87,7 @@ public class UmgebungDelegate implements Umgebung {
 
     @Override
     public IBuchung createBuchung() {
-       return umgebung.createBuchung();
+        return umgebung.createBuchung();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class UmgebungDelegate implements Umgebung {
 
     @Override
     public IZahlungsAuftrag createZahlungsAuftrag() {
-      return umgebung.createZahlungsAuftrag();
+        return umgebung.createZahlungsAuftrag();
     }
 
     @Override

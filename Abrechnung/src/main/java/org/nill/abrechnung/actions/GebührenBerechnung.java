@@ -18,21 +18,22 @@ import org.nill.buchhaltung.eingang.Beschreibung;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
 /**
- * Aufgrund einer {@link IGebührDefinition}, {@link GebührRepository} und einer {@link GebührFabrik}
- * wird ein {@link BuchungsAuftrag} erstellt. 
+ * Aufgrund einer {@link IGebührDefinition}, {@link GebührRepository} und einer
+ * {@link GebührFabrik} wird ein {@link BuchungsAuftrag} erstellt.
  * 
  * @author Thomas Nill
  *
  */
-public class GebührenBerechnung extends UmgebungDelegate implements IGebührBerechnung {
+public class GebührenBerechnung extends UmgebungDelegate implements
+        IGebührBerechnung {
     private IGebührDefinition definition;
     private GebührRepository<SachKonto> daten;
     private GebührFabrik gebührFabrik;
     private AbrechnungsArt abrechnungsArt;
 
-    public GebührenBerechnung(Umgebung umgebung,
-            IGebührDefinition definition, GebührRepository<SachKonto> daten,
-            GebührFabrik gebührFabrik, AbrechnungsArt abrechnungsArt) {
+    public GebührenBerechnung(Umgebung umgebung, IGebührDefinition definition,
+            GebührRepository<SachKonto> daten, GebührFabrik gebührFabrik,
+            AbrechnungsArt abrechnungsArt) {
         super(umgebung);
         this.definition = definition;
         this.daten = daten;
@@ -40,7 +41,6 @@ public class GebührenBerechnung extends UmgebungDelegate implements IGebührBerec
         this.abrechnungsArt = abrechnungsArt;
     }
 
-  
     @Override
     public BuchungsAuftrag<SachKonto> markierenUndberechnen(
             IAbrechnung abrechnung) {
@@ -58,8 +58,7 @@ public class GebührenBerechnung extends UmgebungDelegate implements IGebührBerec
                 definition.getBuchungsArt(), definition.getBuchungstext());
         return new BuchungsAuftrag<>(beschreibung, bündel);
     }
-  
-    
+
     private BetragsBündel<SachKonto> gebührDazu(IAbrechnung abrechnung,
             BetragsBündel<SachKonto> bündel) {
         MonetaryAmount basisBetrag = daten.getGebührenBasis(abrechnung);
@@ -79,5 +78,4 @@ public class GebührenBerechnung extends UmgebungDelegate implements IGebührBerec
         return gebührFabrik.createGebühr(definition.getParameter());
     }
 
-  
 }

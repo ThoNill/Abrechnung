@@ -52,9 +52,8 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
                 .getZahlungsDefinitionen();
         BetragsBündel<ZahlungsDefinition> beträge = aufgrundZahlungsdefinitionenDenBetragVerteilen(
                 betrag, definitionen);
-        List<IZahlungsAuftrag> aufträge = erzeugeZahlungsaufträge(abrechnung,
-                verwendungszweck, mandant, definitionen, beträge);
-        return aufträge;
+        return erzeugeZahlungsaufträge(abrechnung, verwendungszweck, mandant,
+                definitionen, beträge);
     }
 
     private BetragsBündel<ZahlungsDefinition> aufgrundZahlungsdefinitionenDenBetragVerteilen(
@@ -63,9 +62,7 @@ public class ZahlungsAufträgeErzeugen extends EinBucher {
         for (ZahlungsDefinition d : definitionen) {
             prozentMap.put(d, d.getProzentSatz());
         }
-        BetragsBündel<ZahlungsDefinition> beträge = prozentMap
-                .verteilen(betrag);
-        return beträge;
+        return prozentMap.verteilen(betrag);
     }
 
     private List<IZahlungsAuftrag> erzeugeZahlungsaufträge(

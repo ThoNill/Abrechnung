@@ -2,7 +2,6 @@ package org.nill.allgemein.values;
 
 import lombok.ToString;
 
-
 @ToString
 public class MonatJahr implements Comparable<MonatJahr> {
     private int mj;

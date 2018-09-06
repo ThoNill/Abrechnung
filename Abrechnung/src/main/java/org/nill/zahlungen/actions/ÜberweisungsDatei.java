@@ -17,20 +17,20 @@ import org.nill.zahlungen.vorlagen.BankExportVorlage;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Erzeugt eine {@link IAusgangsDatei} im Sepa-Format zum ‹bertragen an die Bank.
+ * Erzeugt eine {@link IAusgangsDatei} im Sepa-Format zum ‹bertragen an die
+ * Bank.
  * 
  * @author javaman
  *
  */
-public class ‹berweisungsDatei extends UmgebungDelegate{
+public class ‹berweisungsDatei extends UmgebungDelegate {
     private String ausgangsVerzeichnis;
     private String name;
     private int fileArt;
     private TypeReference protokoll;
 
-    public ‹berweisungsDatei(Umgebung umgebung,
-            String ausgangsVerzeichnis, String name, int fileArt,
-            TypeReference protokoll) {
+    public ‹berweisungsDatei(Umgebung umgebung, String ausgangsVerzeichnis,
+            String name, int fileArt, TypeReference protokoll) {
         super(umgebung);
         this.ausgangsVerzeichnis = ausgangsVerzeichnis;
         this.name = name;
@@ -46,7 +46,6 @@ public class ‹berweisungsDatei extends UmgebungDelegate{
                     count, iban));
         }
     }
-
 
     private List<List<I‹berweisung>> nicht‹bertragene‹berweisungen(int count,
             IBAN iban) {
@@ -75,7 +74,6 @@ public class ‹berweisungsDatei extends UmgebungDelegate{
         return liste;
     }
 
-    
     private void markiere‹berweisungMitAusgangsDateien(
             List<List<I‹berweisung>> abschnitte) {
         for (List<I‹berweisung> abschnitt : abschnitte) {
@@ -83,7 +81,8 @@ public class ‹berweisungsDatei extends UmgebungDelegate{
         }
     }
 
-    private void markiere‹berweisungMitAusgangsDatei(List<I‹berweisung> abschnitt) {
+    private void markiere‹berweisungMitAusgangsDatei(
+            List<I‹berweisung> abschnitt) {
         IAusgangsDatei ausgangsDatei = createAusgangsDatei();
         ausgangsDatei.setFileArt(fileArt);
         ausgangsDatei.setAngelegt(new Date());

@@ -8,7 +8,7 @@ import org.nill.zahlungen.values.BIC;
 import org.nill.zahlungen.values.BankVerbindung;
 import org.nill.zahlungen.values.IBAN;
 
-public class Mit‹berweisungenTest extends AbrechnungBasisTest{
+public class Mit‹berweisungenTest extends AbrechnungBasisTest {
 
     public Mit‹berweisungenTest() {
         super();

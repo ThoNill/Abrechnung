@@ -26,10 +26,10 @@ public interface ÜberweisungRepository extends
     @Query("select u from org.nill.abrechnung.entities.Überweisung u where u.ausgangsDatei = :datei ")
     public List<IÜberweisung> getÜberweisungen(
             @Param("datei") IAusgangsDatei datei);
-    
+
     @Override
     default IÜberweisung save(IÜberweisung überweisung) {
-        return this.save((Überweisung)überweisung);
+        return this.save((Überweisung) überweisung);
     }
 
 }

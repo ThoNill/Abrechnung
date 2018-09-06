@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 @Embeddable
 public class KontoBewegung {
-    
+
     @Basic
     @Column(name = "ART")
     private int art;

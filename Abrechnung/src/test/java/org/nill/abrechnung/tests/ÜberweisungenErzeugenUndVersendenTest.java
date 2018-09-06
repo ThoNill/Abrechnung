@@ -25,7 +25,6 @@ public class ÜberweisungenErzeugenUndVersendenTest extends MitÜberweisungenTest 
     @Value("classpath:pain.001.003.03.xsd")
     Resource überweisungsXmlSchema;
 
-
     public IMandant erzeugeMandant() {
         return mandantRepository.save(new Mandant());
     }
@@ -42,8 +41,7 @@ public class ÜberweisungenErzeugenUndVersendenTest extends MitÜberweisungenTest 
         assertEquals(25, überweisungRepository.count());
 
         try {
-            ÜberweisungsDatei manager = new ÜberweisungsDatei(umgebung()
-                    , ".",
+            ÜberweisungsDatei manager = new ÜberweisungsDatei(umgebung(), ".",
                     "Test", 1, new TypeReference(1, 1L));
             manager.markiereÜberweisungsDateien(10);
             manager.dateienMarkierenUndErstellen();

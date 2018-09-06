@@ -84,15 +84,12 @@ public class ZahlungsAuftrag implements IZahlungsAuftrag {
 
     @Override
     public void setIAbrechnung(IAbrechnung abrechnung) {
-       this.setAbrechnung((Abrechnung)abrechnung);
+        this.setAbrechnung((Abrechnung) abrechnung);
     }
-    
+
     @Override
     public void setIMandant(IMandant mandant) {
-       setMandant((Mandant)mandant);
+        setMandant((Mandant) mandant);
     }
 
- 
-
-  
 }

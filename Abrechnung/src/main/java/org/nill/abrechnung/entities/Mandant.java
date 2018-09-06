@@ -42,7 +42,7 @@ import org.nill.allgemein.values.MonatJahr;
 @Entity
 @Table(name = "MANDANT")
 @SequenceGenerator(name = "MANDANT_SEQ", sequenceName = "MANDANT_SEQ")
-public class  Mandant implements IMandant {
+public class Mandant implements IMandant {
     @EqualsAndHashCode.Include
     @ToString.Include
     @Basic
@@ -64,15 +64,15 @@ public class  Mandant implements IMandant {
     @JoinTable(name = "mandant_gebuehrdefinition", joinColumns = { @JoinColumn(name = "mandantId") }, inverseJoinColumns = { @JoinColumn(name = "gebuehrDefinitionId") })
     private Set<GebührDefinition> gebuehrDefinitionen = new HashSet<>();
 
-    
-    @ElementCollection(targetClass=ZahlungsDefinition.class)
-    @CollectionTable(name="mandant_zahlungsDefinitionen", joinColumns=@JoinColumn(name="MANDANTID"))
+    @ElementCollection(targetClass = ZahlungsDefinition.class)
+    @CollectionTable(name = "mandant_zahlungsDefinitionen", joinColumns = @JoinColumn(name = "MANDANTID"))
     private Set<ZahlungsDefinition> zahlungsDefinitionen = new HashSet<>();
-    
+
     @Override
     public void addAbrechnung(IAbrechnung a) {
-        abrechnung.add((Abrechnung)a);
+        abrechnung.add((Abrechnung) a);
     }
+
     @Override
     public void addZahlungsDefinitionen(ZahlungsDefinition d) {
         zahlungsDefinitionen.add(d);
@@ -80,32 +80,32 @@ public class  Mandant implements IMandant {
 
     @Override
     public void addGebuehrDefinitionen(IGebührDefinition d) {
-        gebuehrDefinitionen.add((GebührDefinition)d);
+        gebuehrDefinitionen.add((GebührDefinition) d);
 
     }
-    
 
     @Override
-    public Optional<IAbrechnung> getLetzteAbgerechneteAbrechnung(Umgebung provider, MonatJahr mj,
-            AbrechnungsTyp typ) {
-                IAbrechnungRepository abrechnungRepository = provider
-                        .getAbrechnungRepository();
-            
-                Integer n = abrechnungRepository.getLetzteAbgerechneteAbrechnung(this,
-                        AbrechnungsStatus.ABGERECHNET, mj);
-                if (n != null && n > 0) {
-                    List<IAbrechnung> liste = abrechnungRepository
-                            .getAbrechnung(this, n);
-                    return Optional.of(liste.get(0));
-                }
-                return Optional.empty();
-            }
-
-    @Override
-    public IAbrechnung createNeueAbrechnung(Umgebung provider, MonatJahr mj, AbrechnungsTyp typ) {
+    public Optional<IAbrechnung> getLetzteAbgerechneteAbrechnung(
+            Umgebung provider, MonatJahr mj, AbrechnungsTyp typ) {
         IAbrechnungRepository abrechnungRepository = provider
                 .getAbrechnungRepository();
-    
+
+        Integer n = abrechnungRepository.getLetzteAbgerechneteAbrechnung(this,
+                AbrechnungsStatus.ABGERECHNET, mj);
+        if (n != null && n > 0) {
+            List<IAbrechnung> liste = abrechnungRepository.getAbrechnung(this,
+                    n);
+            return Optional.of(liste.get(0));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public IAbrechnung createNeueAbrechnung(Umgebung provider, MonatJahr mj,
+            AbrechnungsTyp typ) {
+        IAbrechnungRepository abrechnungRepository = provider
+                .getAbrechnungRepository();
+
         Integer n = abrechnungRepository.getLetzteAbrechnung(this);
         Abrechnung neu = new Abrechnung();
         neu.setNummer((n == null) ? 1 : n.intValue() + 1);
@@ -114,7 +114,5 @@ public class  Mandant implements IMandant {
         neu.setTyp(typ);
         return abrechnungRepository.saveIAbrechnung(neu);
     }
-   
-
 
 }

@@ -42,10 +42,10 @@ public class TestConfig {
 
     @Bean
     protected Umgebung umgebung() {
-        return new TestUmgebung(mandantRepository,
-                abrechnungRepository, buchungRepository,
-                zahlungsAuftragRepository, überweisungRepository,
-                parameterRepository, ausgangsDateiRepository);
+        return new TestUmgebung(mandantRepository, abrechnungRepository,
+                buchungRepository, zahlungsAuftragRepository,
+                überweisungRepository, parameterRepository,
+                ausgangsDateiRepository);
     }
 
 }

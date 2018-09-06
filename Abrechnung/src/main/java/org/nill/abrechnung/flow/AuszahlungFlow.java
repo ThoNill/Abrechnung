@@ -17,7 +17,7 @@ import org.springframework.integration.dsl.StandardIntegrationFlow;
 
 @Log
 public class AuszahlungFlow {
-    
+
     @Value("${maxEntryInDatei}")
     int count;
 
@@ -33,22 +33,14 @@ public class AuszahlungFlow {
         return new DirectChannel();
     }
 
-
     @Bean
     @Qualifier("auszahlungFlow")
-    public StandardIntegrationFlow processFileFlowBuilder(
-            Umgebung umgebung,
+    public StandardIntegrationFlow processFileFlowBuilder(Umgebung umgebung,
             ApplicationContext applicationContext) {
-        return IntegrationFlows
-                .from("auszahlungChannel")
-                .transform(
-                        createMarkiereÜberweiungsDateien(
-                                umgebung,
-                                count))
-                .transform(
-                        createMarkierenUndDateiErstellen(
-                                umgebung))
-                .channel("auszahlungFlowEndChannel")                      
+        return IntegrationFlows.from("auszahlungChannel")
+                .transform(createMarkiereÜberweiungsDateien(umgebung, count))
+                .transform(createMarkierenUndDateiErstellen(umgebung))
+                .channel("auszahlungFlowEndChannel")
                 .handle(x -> log.info("im Handler: " + x.toString())).get();
     }
 
@@ -59,12 +51,11 @@ public class AuszahlungFlow {
 
     private MarkiereÜberweiungsDateien createMarkiereÜberweiungsDateien(
             Umgebung provider, int count) {
-        return new MarkiereÜberweiungsDateien(createManager(
-                provider), count);
+        return new MarkiereÜberweiungsDateien(createManager(provider), count);
     }
 
-    ÜberweisungsDatei createManager(
-            Umgebung provider) {
-        return new ÜberweisungsDatei(provider, ".", "Test", 1, new TypeReference(1, 1L));
+    ÜberweisungsDatei createManager(Umgebung provider) {
+        return new ÜberweisungsDatei(provider, ".", "Test", 1,
+                new TypeReference(1, 1L));
     }
 }

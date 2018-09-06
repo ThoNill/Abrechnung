@@ -29,7 +29,7 @@ public class BankExportVorlage<VORLAGEN_MODELL> {
         group = new STGroupFile(dateiName + ".stg", '$', '$');
         group.registerRenderer(String.class, new StringRenderer());
     }
-    
+
     public String erzeugeAusgabe() throws IOException {
         String dateiName = getZielVerzeichnis() + File.separatorChar
                 + getPfadMitDateiName();
@@ -48,7 +48,6 @@ public class BankExportVorlage<VORLAGEN_MODELL> {
         return apply("dateiName");
     }
 
-    
     private void erzeugeEventuellFehlendeVerzeichnisse(String dateiName)
             throws IOException {
         File f = new File(dateiName);
@@ -60,13 +59,12 @@ public class BankExportVorlage<VORLAGEN_MODELL> {
         return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
                 dateName), charSet));
     }
-    
+
     private void erzeugeAusgabe(Writer writer) throws IOException {
         writer.write(apply("dateiInhalt"));
         writer.flush();
     }
 
-    
     private String apply(String templateName) {
         ST t = group.getInstanceOf(templateName);
         setzeSTModel(t, model);

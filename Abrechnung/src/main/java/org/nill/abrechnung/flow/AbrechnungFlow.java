@@ -31,40 +31,32 @@ public class AbrechnungFlow {
     public DirectChannel mandantChannel() {
         return new DirectChannel();
     }
-    
+
     @Bean
     @Qualifier("abrechnungsFlowEndChannel")
     public DirectChannel abrechnungsFlowEndChannel() {
         return new DirectChannel();
     }
 
-    
     @Bean
     @Qualifier("abrechnungFlow")
-    public StandardIntegrationFlow processFileFlowBuilder(
-            Umgebung umgebung,
+    public StandardIntegrationFlow processFileFlowBuilder(Umgebung umgebung,
             AbrechnungsKonfigurator konfigurator,
             ApplicationContext applicationContext) {
-        return IntegrationFlows
-                .from("parameterChannel")
-                .transform(holeAbrechnung(umgebung))
-                .channel("mandantChannel")
+        return IntegrationFlows.from("parameterChannel")
+                .transform(holeAbrechnung(umgebung)).channel("mandantChannel")
                 .split(geb¸hrDefinitionSplitter(umgebung))
-                .transform(
-                        berechneBuchungsauftrag(konfigurator, umgebung))
-                .transform(
-                        bucheDenBuchungsauftrag(umgebung))
+                .transform(berechneBuchungsauftrag(konfigurator, umgebung))
+                .transform(bucheDenBuchungsauftrag(umgebung))
 
                 .aggregate(a -> a.processor(new Geb¸hrDefinitionAggregator()))
-                .transform(
-                        schlieﬂeDieAbrechnungAb(umgebung))
-                .channel("abrechnungsFlowEndChannel")        
+                .transform(schlieﬂeDieAbrechnungAb(umgebung))
+                .channel("abrechnungsFlowEndChannel")
                 .handle(x -> log.info("im Handler: " + x.toString())).get();
 
     }
 
-    private SchlieﬂeDieAbrechnungAb schlieﬂeDieAbrechnungAb(
-            Umgebung umgebung) {
+    private SchlieﬂeDieAbrechnungAb schlieﬂeDieAbrechnungAb(Umgebung umgebung) {
         return new SchlieﬂeDieAbrechnungAb(umgebung);
     }
 
@@ -80,14 +72,12 @@ public class AbrechnungFlow {
 
     @Bean
     BerechneBuchungsauftrag berechneBuchungsauftrag(
-            AbrechnungsKonfigurator konfigurator,
-            Umgebung umgebung) {
+            AbrechnungsKonfigurator konfigurator, Umgebung umgebung) {
         return new BerechneBuchungsauftrag(konfigurator, umgebung);
     }
 
     @Bean
-    BucheDenBuchungsauftrag bucheDenBuchungsauftrag(
-            Umgebung umgebung) {
+    BucheDenBuchungsauftrag bucheDenBuchungsauftrag(Umgebung umgebung) {
         return new BucheDenBuchungsauftrag(umgebung);
     }
 }

@@ -59,5 +59,4 @@ public class Parameter implements IParameter {
     @Basic
     private String wert;
 
- 
 }

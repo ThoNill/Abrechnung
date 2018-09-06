@@ -61,5 +61,4 @@ public class AusgangsDatei implements IAusgangsDatei {
     @Basic
     private Date gesendet;
 
-
 }

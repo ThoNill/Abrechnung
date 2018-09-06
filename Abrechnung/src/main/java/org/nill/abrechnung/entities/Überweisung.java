@@ -94,18 +94,17 @@ public class Überweisung implements IÜberweisung {
 
     @Override
     public void setIAusgangsDatei(IAusgangsDatei ausgangsDatei) {
-       setAusgangsDatei((AusgangsDatei)ausgangsDatei);
+        setAusgangsDatei((AusgangsDatei) ausgangsDatei);
     }
 
     @Override
     public void setIMandat(IMandant mandant) {
-        setMandant((Mandant)mandant);
+        setMandant((Mandant) mandant);
     }
 
     @Override
     public void setIZahlungsAuftrag(IZahlungsAuftrag auftrag) {
-      setZahlungsAuftrag((ZahlungsAuftrag)auftrag); 
+        setZahlungsAuftrag((ZahlungsAuftrag) auftrag);
     }
-
 
 }

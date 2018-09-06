@@ -17,9 +17,9 @@ import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Restschulden, Restguthaben und nicht ausbezahlte Zahlungsaufträge 
- * einer vorherigen Abrechnungsabschußes entfernen, um mehrere
- * Korrekturen einer {@link IAbrechnung} zu ermöglichen.
+ * Restschulden, Restguthaben und nicht ausbezahlte Zahlungsaufträge einer
+ * vorherigen Abrechnungsabschußes entfernen, um mehrere Korrekturen einer
+ * {@link IAbrechnung} zu ermöglichen.
  * 
  * @author javaman
  *
@@ -63,7 +63,6 @@ public class ZahlungenEntfernen extends EinBucher {
                 beschreibung, beträge);
         erzeugeBuchung(auftrag, abrechnung);
     }
-
 
     private void entferneRestGuthaben(IAbrechnung abrechnung) {
         MonetaryAmount betrag = getBuchungRepository().getSumKonto(abrechnung,

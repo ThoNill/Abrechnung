@@ -122,8 +122,8 @@ public class AbrechnungsTest extends AbrechnungBasisTest {
         abrechnung.setTyp(AbrechnungsTyp.TEILABRECHNUNG);
         abrechnung = abrechnungRepository.saveIAbrechnung(abrechnung);
         Optional<IAbrechnung> abgerechneteAbrechnung = mandant
-                .getLetzteAbgerechneteAbrechnung(umgebung(),
-                        new MonatJahr(3, 2018), AbrechnungsTyp.TEILABRECHNUNG);
+                .getLetzteAbgerechneteAbrechnung(umgebung(), new MonatJahr(3,
+                        2018), AbrechnungsTyp.TEILABRECHNUNG);
         assertEquals(1, mandantRepository.count());
         assertEquals(1, abrechnungRepository.count());
         assertTrue(abgerechneteAbrechnung.isPresent());

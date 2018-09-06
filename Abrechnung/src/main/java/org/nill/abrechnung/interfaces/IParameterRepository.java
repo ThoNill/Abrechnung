@@ -20,7 +20,7 @@ public interface IParameterRepository {
 
     public Integer getIntZeitWert(ParameterKey key, TypeReference ref,
             MonatJahr akuellesMj);
-    
+
     public IParameter save(IParameter p);
 
 }

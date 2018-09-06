@@ -31,7 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableIntegration
-@SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class,
+@SpringBootTest(classes = {
+        org.nill.abrechnung.tests.config.TestDbConfig.class,
         org.nill.abrechnung.tests.config.LeistungConfig.class,
         org.nill.abrechnung.tests.config.TestConfig.class,
         org.nill.abrechnung.flow.AbrechnungFlow.class })
@@ -49,11 +50,10 @@ public class IntegrationTest extends AbrechnungBasisTest {
     @Autowired
     @Qualifier("abrechnungsFlowEndChannel")
     public DirectChannel abrechnungsFlowEndChannel;
-    
+
     @Autowired
     @Qualifier("abrechnungFlow")
     StandardIntegrationFlow flow;
-
 
     @Override
     @Before
@@ -82,20 +82,20 @@ public class IntegrationTest extends AbrechnungBasisTest {
         return mandantRepository.save(mandant);
     }
 
-    
     @Test
     @Transactional("dbATransactionManager")
     public void normalerAblauf() {
-       fülleParameter("30");
-       
-        abrechnungsFlowEndChannel.addInterceptor(new ChannelInterceptorAdapter() {
-            @Override
-            public void postSend(Message message, MessageChannel channel,
-                    boolean sent) {
-                assertEquals(1,mandantRepository.count());
-                assertEquals(2,abrechnungRepository.count());
-            }
-        });
+        fülleParameter("30");
+
+        abrechnungsFlowEndChannel
+                .addInterceptor(new ChannelInterceptorAdapter() {
+                    @Override
+                    public void postSend(Message message,
+                            MessageChannel channel, boolean sent) {
+                        assertEquals(1, mandantRepository.count());
+                        assertEquals(2, abrechnungRepository.count());
+                    }
+                });
         flow.start();
 
         IMandant mandant = erzeugeMandant();
@@ -107,7 +107,6 @@ public class IntegrationTest extends AbrechnungBasisTest {
         Message<AufrufPayload> message = MessageBuilder.withPayload(aufruf)
                 .setHeader("foo", "foo").setHeader("bar", "bar").build();
         parameterChannel.send(message);
-        
-        
+
     }
 }

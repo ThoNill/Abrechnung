@@ -25,13 +25,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { org.nill.abrechnung.tests.config.TestDbConfig.class })
 public class HoleAbrechnungsTest extends AbrechnungBasisTest {
     protected static final Logger LOG = LoggerFactory
             .getLogger(HoleAbrechnungsTest.class);
-  
 
     @Override
     @Before

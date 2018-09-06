@@ -17,10 +17,10 @@ public interface ZahlungsAuftragRepository extends
     @Query("select z from org.nill.abrechnung.entities.ZahlungsAuftrag z where z.abrechnung = :abr and z.buchungsart = :art and z.ausbezahlt is null")
     public List<IZahlungsAuftrag> getOffeneZahlungen(
             @Param("abr") IAbrechnung abrechnung, @Param("art") int art);
-    
+
     @Override
     public default ZahlungsAuftrag save(IZahlungsAuftrag zahlungsAuftrag) {
-        return this.save((ZahlungsAuftrag)zahlungsAuftrag);
+        return this.save((ZahlungsAuftrag) zahlungsAuftrag);
     }
 
 }

@@ -5,8 +5,7 @@ import java.util.List;
 public interface IAusgangsDateiRepository {
 
     public List<IAusgangsDatei> getNichVersendeteDateien(int art);
-    
-    public IAusgangsDatei save(IAusgangsDatei d);
 
+    public IAusgangsDatei save(IAusgangsDatei d);
 
 }

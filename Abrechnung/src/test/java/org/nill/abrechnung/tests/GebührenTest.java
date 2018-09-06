@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 public class GebührenTest {
     protected static final Logger log = LoggerFactory
             .getLogger(GebührenTest.class);
+
     @Test
     public void testeProzentualeGebühr() {
         ProzentualeGebühr g = new ProzentualeGebühr(0.05);

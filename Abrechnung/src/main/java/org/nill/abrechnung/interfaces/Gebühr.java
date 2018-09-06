@@ -3,8 +3,8 @@ package org.nill.abrechnung.interfaces;
 import javax.money.MonetaryAmount;
 
 /**
- * Eine Gebührberechnung, die aus einem Basisbetrag
- * den Betrag der Gebühr berechnet.
+ * Eine Gebührberechnung, die aus einem Basisbetrag den Betrag der Gebühr
+ * berechnet.
  * 
  * @author Thomas Nill
  *

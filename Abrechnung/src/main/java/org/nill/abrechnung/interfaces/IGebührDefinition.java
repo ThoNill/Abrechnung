@@ -1,10 +1,12 @@
 package org.nill.abrechnung.interfaces;
 
 import org.nill.abrechnung.aufzählungen.SachKonto;
+import org.nill.abrechnung.entities.GebührDefinition;
 import org.nill.buchhaltung.eingang.BuchungsAuftrag;
 
 /**
- * Eine {@link GebührDefinition} legt die Parameter fest, aufgrund derer eine Gebührbuchung berechnet werden soll.
+ * Eine {@link GebührDefinition} legt die Parameter fest, aufgrund derer eine
+ * Gebührbuchung berechnet werden soll.
  * 
  */
 public interface IGebührDefinition {
@@ -16,9 +18,9 @@ public interface IGebührDefinition {
     public void setGebuehrDefinitionId(long gebuehrDefinitionId);
 
     /**
-     * Legt den Parameterwert fest, aufgrund der eine {@link GebührFabrik}
-     * eine {@link Gebühr}} erzeugt.
-     *  
+     * Legt den Parameterwert fest, aufgrund der eine {@link GebührFabrik} eine
+     * {@link Gebühr} erzeugt.
+     * 
      * @return
      */
     public double getParameter();
@@ -44,7 +46,8 @@ public interface IGebührDefinition {
     public void setKontoNr(int kontoNr);
 
     /**
-     * Art der Daten aufgrund der ein {@link AbrechnungsKonfigurator} ein {@link GebührRepository} erzeugt.
+     * Art der Daten aufgrund der ein {@link AbrechnungsKonfigurator} ein
+     * {@link GebührRepository} erzeugt.
      * 
      * @return
      */
@@ -53,8 +56,8 @@ public interface IGebührDefinition {
     public void setDatenArt(int datenArt);
 
     /**
-     * Legt die Art der Gebühr fest, damit ein {@link AbrechnungsKonfigurator} eine {@link GebührFabrik}
-     * erzeugen kann.
+     * Legt die Art der Gebühr fest, damit ein {@link AbrechnungsKonfigurator}
+     * eine {@link GebührFabrik} erzeugen kann.
      * 
      * @return
      */
@@ -62,10 +65,9 @@ public interface IGebührDefinition {
 
     public void setGebührArt(int gebührArt);
 
-
     /**
-     * Legt die BuchungsArt der Gebühr fest, damit ein {@link BuchungsAuftrag} mit 
-     * dieser Art erzeugt wird.
+     * Legt die BuchungsArt der Gebühr fest, damit ein {@link BuchungsAuftrag}
+     * mit dieser Art erzeugt wird.
      * 
      * @return
      */
@@ -73,7 +75,6 @@ public interface IGebührDefinition {
     public int getBuchungsArt();
 
     public void setBuchungsArt(int buchungsArt);
-
 
     /**
      * Der Name dieser Gebühr um sie für den Benutzer zu bezeichnen.
@@ -105,6 +106,7 @@ public interface IGebührDefinition {
 
     /**
      * Die Kontonummer der Mehrwertsteuerkontos
+     * 
      * @return
      */
     public int getMwstKonto();
@@ -113,6 +115,7 @@ public interface IGebührDefinition {
 
     /**
      * Der Buchungstext für den {@link BuchungsAuftrag}.
+     * 
      * @return
      */
     public String getBuchungstext();

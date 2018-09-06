@@ -24,12 +24,13 @@ public class BucheDenBuchungsauftrag
     @Override
     protected BuchungAuftragPayload transformPayload(
             BuchungAuftragPayload payload) throws Exception {
-        erzeugeEinbucher().erzeugeDifferenzBuchung(payload.getAuftrag(),payload.getAbrechnung());
-      
-        IAbrechnung abrechnung = umgebung.getAbrechnungRepository().saveIAbrechnung(payload.getAbrechnung());
-        return new BuchungAuftragPayload(abrechnung,
-                payload.getMandant(), payload.getArt(),
-                payload.getDefinition(), payload.getAuftrag());
+        erzeugeEinbucher().erzeugeDifferenzBuchung(payload.getAuftrag(),
+                payload.getAbrechnung());
+
+        IAbrechnung abrechnung = umgebung.getAbrechnungRepository()
+                .saveIAbrechnung(payload.getAbrechnung());
+        return new BuchungAuftragPayload(abrechnung, payload.getMandant(),
+                payload.getArt(), payload.getDefinition(), payload.getAuftrag());
     }
 
 }

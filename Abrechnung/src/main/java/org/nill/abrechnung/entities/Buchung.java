@@ -59,19 +59,17 @@ public class Buchung implements IBuchung {
     private int art;
 
     @ElementCollection
-    @CollectionTable(name="Buchung_KontoBewegung", joinColumns=@JoinColumn(name="BUCHUNGID"))
+    @CollectionTable(name = "Buchung_KontoBewegung", joinColumns = @JoinColumn(name = "BUCHUNGID"))
     private Set<KontoBewegung> bewegungen = new HashSet<>();
-
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AbrechnungId")
     private Abrechnung abrechnung;
 
     @ElementCollection
-    @CollectionTable(name="Buchung_TypeReference", joinColumns=@JoinColumn(name="BUCHUNGID"))
+    @CollectionTable(name = "Buchung_TypeReference", joinColumns = @JoinColumn(name = "BUCHUNGID"))
     private Set<TypeReference> bezüge = new HashSet<>();
 
-    
     @Override
     public void addBewegungen(KontoBewegung bewegungen) {
         this.bewegungen.add(bewegungen);
@@ -81,7 +79,6 @@ public class Buchung implements IBuchung {
     public void removeBewegungen(KontoBewegung bewegungen) {
         this.bewegungen.remove(bewegungen);
     }
-
 
     @Override
     public void addBezug(TypeReference bezug) {
@@ -95,8 +92,7 @@ public class Buchung implements IBuchung {
 
     @Override
     public void setIAbrechnung(IAbrechnung abrechnung2) {
-        setAbrechnung((Abrechnung)abrechnung2);
+        setAbrechnung((Abrechnung) abrechnung2);
     }
-
 
 }

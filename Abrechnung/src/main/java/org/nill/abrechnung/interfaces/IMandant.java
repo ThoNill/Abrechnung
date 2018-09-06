@@ -25,8 +25,8 @@ public interface IMandant {
     public Optional<IAbrechnung> getLetzteAbgerechneteAbrechnung(
             Umgebung provider, MonatJahr mj, AbrechnungsTyp typ);
 
-    public IAbrechnung createNeueAbrechnung(Umgebung provider,
-            MonatJahr mj, AbrechnungsTyp typ);
+    public IAbrechnung createNeueAbrechnung(Umgebung provider, MonatJahr mj,
+            AbrechnungsTyp typ);
 
     public java.lang.Long getMandantId();
 
@@ -42,5 +42,4 @@ public interface IMandant {
 
     public Set<ZahlungsDefinition> getZahlungsDefinitionen();
 
- 
 }

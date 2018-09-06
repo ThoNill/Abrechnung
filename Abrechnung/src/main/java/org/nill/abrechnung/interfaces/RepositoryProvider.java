@@ -1,6 +1,5 @@
 package org.nill.abrechnung.interfaces;
 
-
 /**
  * Zentraler Zugriff auf die unterschiedlichen Repositories
  * 

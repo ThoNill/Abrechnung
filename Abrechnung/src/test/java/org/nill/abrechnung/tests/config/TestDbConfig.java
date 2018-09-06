@@ -17,11 +17,9 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@EntityScan(basePackageClasses = {
-        org.nill.abrechnung.entities.Parameter.class})
-@EnableJpaRepositories(basePackageClasses = { 
-        org.nill.abrechnung.repositories.BuchungRepository.class}
-, transactionManagerRef = "dbATransactionManager" // Name des
+@EntityScan(basePackageClasses = { org.nill.abrechnung.entities.Parameter.class })
+@EnableJpaRepositories(basePackageClasses = { org.nill.abrechnung.repositories.BuchungRepository.class }, transactionManagerRef = "dbATransactionManager" // Name
+                                                                                                                                                          // des
 )
 public class TestDbConfig {
 

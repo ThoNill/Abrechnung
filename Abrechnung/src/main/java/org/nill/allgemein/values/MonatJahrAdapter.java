@@ -18,7 +18,7 @@ public class MonatJahrAdapter extends XmlAdapter<Integer, MonatJahr> implements
 
     @Override
     public MonatJahr convertToEntityAttribute(Integer dbData) {
-        if(dbData == null) {
+        if (dbData == null) {
             return null;
         }
         return new MonatJahr(dbData.intValue());

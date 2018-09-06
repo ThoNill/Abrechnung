@@ -11,7 +11,7 @@ import org.springframework.integration.config.EnableIntegration;
 @EnableIntegration
 @IntegrationComponentScan(basePackages = { "org.nill" })
 @ComponentScan(basePackages = { "org.nill" })
-@EntityScan(basePackages = { "org.nill"})
+@EntityScan(basePackages = { "org.nill" })
 public class Application {
 
     public static void main(String[] args) {

@@ -43,17 +43,14 @@ public class AuszahlungTest extends MitÜberweisungenTest {
     @Qualifier("auszahlungChannel")
     public DirectChannel auszahlungChannel;
 
-
     @Autowired
     @Qualifier("auszahlungFlowEndChannel")
     public DirectChannel auszahlungFlowEndChannel;
 
-    
     @Autowired
     @Qualifier("auszahlungFlow")
     StandardIntegrationFlow flow;
-    
-    
+
     @Override
     @Before
     @After
@@ -67,21 +64,21 @@ public class AuszahlungTest extends MitÜberweisungenTest {
         return mandantRepository.save(new Mandant());
     }
 
-
     @Test
     public void normalerAblauf() {
 
-        auszahlungFlowEndChannel.addInterceptor(new ChannelInterceptorAdapter() {
-            @Override
-            public void postSend(Message message, MessageChannel channel,
-                    boolean sent) {
-                assertEquals(1,mandantRepository.count());
-                assertEquals(0,abrechnungRepository.count());
-                assertEquals(25,überweisungRepository.count());
-                assertEquals(3,ausgangsDateiRepository.count());
-            }
-        });
-        
+        auszahlungFlowEndChannel
+                .addInterceptor(new ChannelInterceptorAdapter() {
+                    @Override
+                    public void postSend(Message message,
+                            MessageChannel channel, boolean sent) {
+                        assertEquals(1, mandantRepository.count());
+                        assertEquals(0, abrechnungRepository.count());
+                        assertEquals(25, überweisungRepository.count());
+                        assertEquals(3, ausgangsDateiRepository.count());
+                    }
+                });
+
         flow.start();
 
         IMandant mandant = erzeugeMandant();

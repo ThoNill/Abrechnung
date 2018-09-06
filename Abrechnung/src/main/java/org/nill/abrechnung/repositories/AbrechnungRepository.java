@@ -12,34 +12,32 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface AbrechnungRepository extends CrudRepository<Abrechnung, Long>, IAbrechnungRepository {
+public interface AbrechnungRepository extends CrudRepository<Abrechnung, Long>,
+        IAbrechnungRepository {
 
     @Override
     @Query("select abr from org.nill.abrechnung.entities.Abrechnung abr where abr.mandant = :mand and abr.nummer = :n")
-    public List<IAbrechnung> getAbrechnung(
-            @Param("mand") IMandant mand,
+    public List<IAbrechnung> getAbrechnung(@Param("mand") IMandant mand,
             @Param("n") int n);
 
     @Override
     @Query("select max(abr.nummer) from org.nill.abrechnung.entities.Abrechnung abr where abr.mandant = :mand and abr.status = :s and abr.mj =:mj ")
     public Integer getLetzteAbgerechneteAbrechnung(
-            @Param("mand") IMandant mand,
-            @Param("s") AbrechnungsStatus status, @Param("mj") MonatJahr mj);
+            @Param("mand") IMandant mand, @Param("s") AbrechnungsStatus status,
+            @Param("mj") MonatJahr mj);
 
     @Override
     @Query("select max(abr.nummer) from org.nill.abrechnung.entities.Abrechnung abr where abr.mandant = :mand  and abr.mj =:mj ")
-    public Integer getLetzteAbrechnung(
-            @Param("mand") IMandant mand,
+    public Integer getLetzteAbrechnung(@Param("mand") IMandant mand,
             @Param("mj") MonatJahr mj);
 
     @Override
     @Query("select max(abr.nummer) from org.nill.abrechnung.entities.Abrechnung abr where abr.mandant = :mand ")
-    public Integer getLetzteAbrechnung(
-            @Param("mand") IMandant mand);
+    public Integer getLetzteAbrechnung(@Param("mand") IMandant mand);
 
-     @Override
+    @Override
     public default IAbrechnung saveIAbrechnung(IAbrechnung abrechnung) {
-            return save((Abrechnung)abrechnung);
+        return save((Abrechnung) abrechnung);
     }
 
 }
